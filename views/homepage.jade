@@ -1,11 +1,15 @@
 extends ./layout
 
 block body
-	p Name:
-		input(type="text", ng-model="name")
-	h1
-		Hello {{name}}
+	form(ng-controller="MessageController")
+		ul
+			li(ng-repeat="message in messages")
+				button(ng-click="edit(message.id)")
+					| Edit
+				{{message.createdAt}} | {{message.content}}
+				span(ng-show="message.updatedAt !== message.createdAt")
+					|  | {{message.updatedAt}}
 
-	ul(ng-controller="MessageController")
-		li(ng-repeat="message in messages")
-			{{message.createdAt}} | {{message.content}}
+		input(type="text", ng-model="text" ng-disabled="sending")
+		button(type="submit", ng-click="send()" ng-disabled="!text")
+			| Send
