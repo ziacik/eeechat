@@ -1,19 +1,23 @@
 /**
  * Message.js
  * 
- * @description :: TODO: You might write a short summary of how this model works
- *              and what it represents here.
+ * @description :: A chat message with sender and recipients identification.
  * @docs :: http://sailsjs.org/#!documentation/models
  */
 
 module.exports = {
+	//schema : true,
 	attributes : {
 		sender : {
-			model : 'user'
+			model : 'user',
+			required : true
 		},
 		recipients : {
 			collection : 'user'			
 		},
-		content : 'string'
+		content : {
+			type : 'string',
+			required : true
+		}
 	}
 };

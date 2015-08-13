@@ -1,14 +1,18 @@
 /**
  * User.js
  * 
- * @description :: TODO: You might write a short summary of how this model works
- *              and what it represents here.
+ * @description :: Chat user.
  * @docs :: http://sailsjs.org/#!documentation/models
  */
 
 module.exports = {
+	//schema : true,
 	attributes : {
-		nickName : 'string',
+		nickName : {
+			type : 'string',
+			required : true,
+			unique : true
+		},
 		passwordSalt : 'string',
 		passwordHash : 'string'
 	}

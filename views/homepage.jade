@@ -6,7 +6,7 @@ block body
 			li(ng-repeat="message in messages")
 				button(ng-click="edit(message.id)")
 					| Edit
-				{{message.createdAt}} | {{message.content}}
+				| {{message.createdAt}} | {{message.content}}
 				span(ng-show="message.updatedAt !== message.createdAt")
 					|  | {{message.updatedAt}}
 

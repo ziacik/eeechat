@@ -7,7 +7,7 @@ app.controller("MessageController", function($scope, $sails) {
 	$scope.editingId = null;
 
 	(function() {
-		$sails.get("/message").then(function(resp) {
+		$sails.get("/message/today").then(function(resp) {
 			$scope.messages = resp.data;
 		}, function(resp) {
 			alert(resp.status + ' - ' + resp.body);
