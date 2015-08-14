@@ -1,15 +1,27 @@
 extends ./layout
 
 block body
-	form(ng-controller="MessageController")
-		ul
-			li(ng-repeat="message in messages")
-				button(ng-click="edit(message.id)")
-					| Edit
-				| {{message.createdAt}} | {{message.content}}
-				span(ng-show="message.updatedAt !== message.createdAt")
-					|  | {{message.updatedAt}}
-
-		input(type="text", ng-model="text" ng-disabled="sending")
-		button(type="submit", ng-click="send()" ng-disabled="!text")
-			| Send
+	.container(ng-controller="MessageController")
+		.row
+			.col-md-5
+				ul.chat
+					li.left.clear-fix(ng-repeat="message in messages")
+						span.chat-img.pull-left
+							img.img-circle(src="http://placehold.it/50/F5C1E7/fff&text={{message.sender.nickName}}", alt="User Avatar")
+						.chat-body.clearfix
+							.header
+								strong.primary-font
+									| {{message.sender.nickName}}
+								small.pull-right.text-muted
+									span.glyphicon.glyphicon-time
+									| {{message.createdAt | date : 'HH:mm'}}
+									span(ng-show="message.updatedAt !== message.createdAt")
+										span.glyphicon.glyphicon-time
+										| {{message.updatedAt}}							
+							p
+								| {{message.content}}
+				.input-group
+					input.form-control.input-sm(type="text", placeholder="Type your message here...", ng-model="text" ng-disabled="sending")
+					span.input-group-btn
+						button.btn.btn-warning.btn-sm(ng-click="send()" ng-disabled="!text")
+							| Send

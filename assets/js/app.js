@@ -53,6 +53,7 @@ app.controller("MessageController", function($scope, $sails) {
 				sender : 1,
 				content : $scope.text
 			}).then(function(resp) {
+				resp.body.sender = { nickName : 'Sorry For Now' };
 				$scope.messages.push(resp.body);
 				$scope.text++;
 				$scope.sending = false;
