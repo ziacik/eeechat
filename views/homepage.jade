@@ -21,10 +21,10 @@ block body
 								small.pull-right.text-muted(style="padding-right:0.6em")
 									a(href="#", ng-click="edit(message.id)")
 										span.glyphicon.glyphicon-edit
-							p
+							p(style="white-space: pre-wrap")
 								| {{message.content}}
 				.input-group
-					input.form-control.input-sm(type="text", placeholder="Type your message here...", ng-model="text" ng-disabled="sending")
+					textarea.form-control.input-sm(type="text", placeholder="Type your message here...", ng-model="text" ng-disabled="sending")
 					span.input-group-btn
 						button.btn.btn-warning.btn-sm(ng-click="send()" ng-disabled="!text")
 							| Send
