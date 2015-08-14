@@ -12,12 +12,15 @@ block body
 							.header
 								strong.primary-font
 									| {{message.sender.nickName}}
+								small.pull-right.text-muted(style="padding-left:0.6em", ng-show="message.updatedAt !== message.createdAt")
+									span.glyphicon.glyphicon-time
+									| {{message.updatedAt | date : 'HH:mm'}}
 								small.pull-right.text-muted
 									span.glyphicon.glyphicon-time
 									| {{message.createdAt | date : 'HH:mm'}}
-									span(ng-show="message.updatedAt !== message.createdAt")
-										span.glyphicon.glyphicon-time
-										| {{message.updatedAt}}							
+								small.pull-right.text-muted(style="padding-right:0.6em")
+									a(href="#", ng-click="edit(message.id)")
+										span.glyphicon.glyphicon-edit
 							p
 								| {{message.content}}
 				.input-group
