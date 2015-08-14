@@ -7,7 +7,10 @@ app.controller("MessageController", function($scope, $sails) {
 	$scope.editingId = null;
 
 	(function() {
-		$sails.get("/message/today").then(function(resp) {
+		var today = new Date();
+		today.setHours(0, 0, 0, 0);
+
+		$sails.get("/message", { createdAt : { '>' : today } }).then(function(resp) {
 			$scope.messages = resp.data;
 		}, function(resp) {
 			alert(resp.status + ' - ' + resp.body);
