@@ -19,8 +19,7 @@ app.controller("MessageController", function($scope, $sails) {
 				$scope.messages.push(item.data);
 			} else if (item.verb === "updated") {
 				var message = findById(item.id);
-				message.content = item.data.content;
-				message.updatedAt = item.data.updatedAt;
+				$.extend(message, item.data);
 			}
 		});
 
@@ -38,7 +37,7 @@ app.controller("MessageController", function($scope, $sails) {
 			$sails.put("/message/" + $scope.editingId, {
 				content : $scope.text
 			}).then(function(resp) {
-				findById($scope.editingId).content = resp.body.content;
+				$.extend(findById($scope.editingId), resp.body);
 				$scope.text = "";
 				$scope.editingId = null;
 				$scope.sending = false;
