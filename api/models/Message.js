@@ -6,7 +6,8 @@
  */
 
 module.exports = {
-	//schema : true,
+	schema : true,
+	
 	attributes : {
 		sender : {
 			model : 'user',

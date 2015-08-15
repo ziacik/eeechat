@@ -26,5 +26,5 @@ block body
 				.input-group
 					textarea.form-control.input-sm(type="text", placeholder="Type your message here...", ng-model="text" ng-disabled="sending")
 					span.input-group-btn
-						button.btn.btn-warning.btn-sm(ng-click="send()" ng-disabled="!text")
+						button.btn.btn-warning.btn-sm(ng-click="send()" ng-disabled="!text || sending")
 							| Send
