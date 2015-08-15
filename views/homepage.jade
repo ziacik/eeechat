@@ -7,11 +7,11 @@ block body
 				ul.chat
 					li.left.clear-fix(ng-repeat="message in messages")
 						span.chat-img.pull-left
-							img.img-circle(src="http://placehold.it/50/F5C1E7/fff&text={{message.sender.nickName}}", alt="User Avatar")
+							img.img-circle(src="http://placehold.it/50/F5C1E7/fff&text={{message.sender.username}}", alt="User Avatar")
 						.chat-body.clearfix
 							.header
 								strong.primary-font
-									| {{message.sender.nickName}}
+									| {{message.sender.username}}
 								small.pull-right.text-muted(style="padding-left:0.6em", ng-show="message.updatedAt !== message.createdAt")
 									span.glyphicon.glyphicon-time
 									| {{message.updatedAt | date : 'HH:mm'}}

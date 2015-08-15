@@ -1,19 +1,21 @@
-/**
- * User.js
- * 
- * @description :: Chat user.
- * @docs :: http://sailsjs.org/#!documentation/models
- */
+var User = {
+    // Enforce model schema in the case of schemaless databases
+    schema : true,
 
-module.exports = {
-	//schema : true,
-	attributes : {
-		nickName : {
-			type : 'string',
-			required : true,
-			unique : true
-		},
-		passwordSalt : 'string',
-		passwordHash : 'string'
-	}
+    attributes : {
+        username : {
+            type : 'string',
+            unique : true
+        },
+        email : {
+            type : 'email',
+            unique : true
+        },
+        passports : {
+            collection : 'Passport',
+            via : 'user'
+        }
+    }
 };
+
+module.exports = User;
