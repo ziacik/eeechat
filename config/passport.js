@@ -61,7 +61,7 @@ module.exports.passport = {
     options: {
       clientID: '319700997687.apps.googleusercontent.com',
       clientSecret: '0bSGvKf7AuLX28BMClx9_9gM',
-      scope: ['https://www.googleapis.com/auth/userinfo.profile',"https://www.googleapis.com/auth/userinfo.email"]
+      scope: ['profile',"email"]
     }
   }/*,
 
