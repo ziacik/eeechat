@@ -15,7 +15,7 @@ var User = {
             collection : 'Passport',
             via : 'user'
         },
-        image : {
+        imageUrl : {
 	        type : 'string'
         }
     }

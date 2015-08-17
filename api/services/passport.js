@@ -26,6 +26,18 @@ var path = require('path'), url = require('url'), passport = require('passport')
 // Load authentication protocols
 passport.protocols = require('./protocols');
 
+var generatePlaceholderImageUrl = function(userName) {
+	var letters = '0123456789ABCDEF'.split('');
+	var color = '';
+
+	for (var i = 0; i < 6; i++) {
+		var index = Math.floor(Math.random() * 16);
+		color += letters[index];
+	}
+
+	return 'http://placehold.it/50/' + color + '/?text=+';	
+}
+
 /**
  * Connect a third-party profile to a local user
  * 
@@ -100,17 +112,13 @@ passport.connect = function(req, query, profile, next) {
 	}
 
 	if (profile.hasOwnProperty('photos')) {
-		user.image = profile.photos[0].value;
+		user.imageUrl = profile.photos[0].value;
+	} else if (profile._json && profile._json.avatar_url) {
+		user.imageUrl = profile._json.avatar_url;
+	} else if (provider === 'facebook') {
+		user.imageUrl = '//graph.facebook.com/' + profile.id + '/picture';
 	} else {
-		var letters = '0123456789ABCDEF'.split('');
-		var color = '';
-
-		for (var i = 0; i < 6; i++) {
-			color += letters[Math.floor(Math.random() * 16)];
-		}
-
-		var complementColor = 0xffffff ^ color;
-		user.image = 'http://placehold.it/50/' + color + '/' + complementColor + '&text=' + user.username;
+		user.imageUrl = generatePlaceholderImageUrl(user.username);
 	}
 
 	Passport.findOne({

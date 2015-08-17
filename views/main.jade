@@ -7,7 +7,7 @@ block body
 				ul.chat
 					li.left.clear-fix(ng-repeat="message in messages")
 						span.chat-img.pull-left
-							img.img-circle.img-thumbnail.img-responsive(src="{{message.sender.image}}", alt="{{message.sender.username}}")
+							img.img-circle.img-thumbnail.img-responsive.avatar(src="{{message.sender.imageUrl}}", alt="{{message.sender.username}}")
 						.chat-body.clearfix
 							.header
 								strong.primary-font

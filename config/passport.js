@@ -1,78 +1,76 @@
 /**
  * Passport configuration
- *
- * This is the configuration for your Passport.js setup and where you
- * define the authentication strategies you want your application to employ.
- *
+ * 
+ * This is the configuration for your Passport.js setup and where you define the
+ * authentication strategies you want your application to employ.
+ * 
  * I have tested the service with all of the providers listed below - if you
  * come across a provider that for some reason doesn't work, feel free to open
  * an issue on GitHub.
- *
+ * 
  * Also, authentication scopes can be set through the `scope` property.
- *
+ * 
  * For more information on the available providers, check out:
  * http://passportjs.org/guide/providers/
  */
 
 module.exports.passport = {
-  local: {
-    strategy: require('passport-local').Strategy
-  },
+    local : {
+	    strategy : require('passport-local').Strategy
+    },
 
-  bearer: {
-    strategy: require('passport-http-bearer').Strategy
-  },
+    bearer : {
+	    strategy : require('passport-http-bearer').Strategy
+    },
 
-//  twitter: {
-//    name: 'Twitter',
-//    protocol: 'oauth',
-//    strategy: require('passport-twitter').Strategy,
-//    options: {
-//      consumerKey: 'your-consumer-key',
-//      consumerSecret: 'your-consumer-secret'
-//    }
-//  },
-//
-//  github: {
-//    name: 'GitHub',
-//    protocol: 'oauth2',
-//    strategy: require('passport-github').Strategy,
-//    options: {
-//      clientID: 'your-client-id',
-//      clientSecret: 'your-client-secret'
-//    }
-//  },
+    // twitter: {
+    // name: 'Twitter',
+    // protocol: 'oauth',
+    // strategy: require('passport-twitter').Strategy,
+    // options: {
+    // consumerKey: 'your-consumer-key',
+    // consumerSecret: 'your-consumer-secret'
+    // }
+    // },
+    //
+     github : {
+        name : 'GitHub',
+        protocol : 'oauth2',
+        strategy : require('passport-github').Strategy,
+        options : {
+            clientID : '6c4f0b6f14758699a0b1',
+            clientSecret : 'ba65264e3e1882dcae73754f0d96fc0d0b65807f'
+        }
+    },
 
-//  facebook: {
-//    name: 'Facebook',
-//    protocol: 'oauth2',
-//    strategy: require('passport-facebook').Strategy,
-//    options: {
-//      clientID: 'your-client-id',
-//      clientSecret: 'your-client-secret',
-//      scope: ['email'] /* email is necessary for login behavior */
-//    }
-//  },
+    facebook : {
+        name : 'Facebook',
+        protocol : 'oauth2',
+        strategy : require('passport-facebook').Strategy,
+        options : {
+            clientID : '485905004858134',
+            clientSecret : '42aa628df64300147b845b94e1f9fe99',
+            scope : [ 'email' ]
+        /* email is necessary for login behavior */
+        }
+    },
 
-  google: {
-    name: 'Google',
-    protocol: 'oauth2',
-    strategy: require('passport-google-oauth').OAuth2Strategy,
-    options: {
-      clientID: '319700997687.apps.googleusercontent.com',
-      clientSecret: '0bSGvKf7AuLX28BMClx9_9gM',
-      scope: ['profile',"email"]
+    google : {
+        name : 'Google',
+        protocol : 'oauth2',
+        strategy : require('passport-google-oauth').OAuth2Strategy,
+        options : {
+            clientID : '319700997687.apps.googleusercontent.com',
+            clientSecret : '0bSGvKf7AuLX28BMClx9_9gM',
+            scope : [ 'profile', "email" ]
+        }
     }
-  }/*,
-
-  cas: {
-    name: 'CAS',
-    protocol: 'cas',
-    strategy: require('passport-cas').Strategy,
-    options: {
-      ssoBaseURL: 'http://your-cas-url',
-      serverBaseURL: 'http://localhost:1337',
-      serviceURL: 'http://localhost:1337/auth/cas/callback'
-    }
-  }*/
+/*
+ * ,
+ * 
+ * cas: { name: 'CAS', protocol: 'cas', strategy:
+ * require('passport-cas').Strategy, options: { ssoBaseURL:
+ * 'http://your-cas-url', serverBaseURL: 'http://localhost:1337', serviceURL:
+ * 'http://localhost:1337/auth/cas/callback' } }
+ */
 };
