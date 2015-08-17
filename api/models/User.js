@@ -14,6 +14,9 @@ var User = {
         passports : {
             collection : 'Passport',
             via : 'user'
+        },
+        image : {
+	        type : 'string'
         }
     }
 };
