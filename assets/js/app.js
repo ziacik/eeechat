@@ -13,7 +13,7 @@ app.controller("MessageController", function($scope, $sails) {
 		$sails.get("/message", { createdAt : { '>' : today } }).then(function(resp) {
 			$scope.messages = resp.data;
 		}, function(resp) {
-			alert(resp.status + ' - ' + resp.body);
+			alert(resp.status + ' - ' + resp.body); //TODO
 		});
 
 		// Watching for updates
@@ -45,19 +45,18 @@ app.controller("MessageController", function($scope, $sails) {
 				$scope.editingId = null;
 				$scope.sending = false;
 			}).catch(function(err) {
-				alert(err);
+				alert(err); //TODO
 				$scope.sending = false;
 			});
 		} else {
 			$sails.post("/message", {
 				content : $scope.text
 			}).then(function(resp) {
-				resp.body.sender = { username : 'Sorry For Now' };
 				$scope.messages.push(resp.body);
 				$scope.text = "";
 				$scope.sending = false;
 			}).catch(function(data, status) {
-				alert(status);
+				alert(status); //TODO
 				$scope.sending = false;
 			});
 		}		
