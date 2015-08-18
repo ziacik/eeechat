@@ -1,10 +1,20 @@
-if errors
-	each error in errors
-		= error
+extends ../layout
 
-form(role="form", action="/auth/local/register", method="post")
-	input(type="text", name="username", placeholder="Username")
-	input(type="text", name="email", placeholder="Email")
-	input(type="password", name="password", placeholder="Password")
-	button(type="submit")
-		| Sign up
+block body
+	if errors
+		each error in errors
+			= error
+
+	.container
+		.row
+			.main
+				h3 Zaregistrujte sa	
+				form(role="form", action="/auth/local/register", method="post")
+					.form-group
+						input.form-control(type="text", name="username", placeholder="Meno")
+					.form-group
+						input.form-control(type="text", name="email", placeholder="E-mail")
+					.form-group
+						input.form-control(type="password", name="password", placeholder="Heslo")
+					button.btn.btn-primary(type="submit")
+						| Zaregistrovať

@@ -1,15 +1,39 @@
-if errors
-	each error in errors
-		= error
+extends ../layout
 
-form(role="form", action="/auth/local", method="post")
-	input(type="text", name="identifier", placeholder="Username or Email")
-	input(type="password", name="password", placeholder="Password")
-	button(type="submit")
-		| Sign in
-
-	h4 You can also use one of these...
-
-	each provider, code in providers
-		a(href="/auth/" + provider.slug, role="button")
-			= provider.name
+block body
+	if errors
+		each error in errors
+			= error
+	
+	.container
+		.row
+			.main
+				h3
+					| Prihláste sa, alebo
+					a(href="register")
+						| &nbsp;zaregistrujte
+				
+				.row
+					each provider, code in providers
+						if provider.name
+							.col-md-6.top-margin-10
+								a(class="btn btn-block btn-social btn-" + code, href="/auth/" + provider.slug, role="button")
+									i(class="fa fa-" + code)
+									= ' ' + provider.name
+							
+				.login-or
+					hr.hr-or
+					span.span-or alebo
+	
+				form(role="form", action="/auth/local", method="post")
+					.form-group
+						input.form-control(type="text", name="identifier", placeholder="Meno alebo e-mail")
+					.form-group
+						input.form-control(type="password", name="password", placeholder="Heslo")
+					.checkbox.pull-right
+						label
+							input(type="checkbox")
+							| Zapamätať
+						
+					button.btn.btn-primary(type="submit")
+						| Prihlásiť sa
