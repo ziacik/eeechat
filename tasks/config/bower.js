@@ -7,13 +7,17 @@
  *
  */
 
+var path = require('path');
+
 module.exports = function(grunt) {
 
 	grunt.config.set('bower', {
 		install: {
 			options: {
 				targetDir: './assets/vendor',
-				layout: 'byComponent',
+				layout: function(type, component, source) {
+					return path.dirname(source.replace('bower_components/', '').replace('/dist', ''));
+				},
 				install: true,
 				verbose: false,
 				cleanTargetDir: true,
