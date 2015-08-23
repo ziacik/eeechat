@@ -48,8 +48,8 @@ var Passport = {
     //
     // accessToken is used to authenticate API requests. it is generated when a 
     // passport (with protocol 'local') is created for a user. 
-    password    : { type: 'string', minLength: 8 },
-    accessToken : { type: 'string' },
+    password    : { type: 'string', minLength: 8, protected : true },
+    accessToken : { type: 'string', protected : true },
 
     // Provider fields: Provider, identifer and tokens
     //
@@ -63,8 +63,8 @@ var Passport = {
     // be issued by the provider. In the case of OAuth 2.0, an `accessToken`
     // and a `refreshToken` will be issued.
     provider   : { type: 'alphanumericdashed' },
-    identifier : { type: 'string' },
-    tokens     : { type: 'json' },
+    identifier : { type: 'string', protected : true },
+    tokens     : { type: 'json', protected : true },
 
     // Associations
     //
