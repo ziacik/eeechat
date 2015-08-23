@@ -13,5 +13,5 @@ function UserController($scope, userService) {
 	
 	$scope.getById = function(userId) {
 		return userService.getById(userId);
-	}
+	};
 }

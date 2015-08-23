@@ -87,7 +87,7 @@ passport.connect = function(req, query, profile, next) {
 		return next(new Error('No authentication provider was identified.'));
 	}
 
-	console.log(profile); // TODO remove
+	//console.log(profile); // TODO remove
 
 	// If the profile object contains a list of emails, grab the first one and
 	// add it to the user.
@@ -147,6 +147,14 @@ passport.connect = function(req, query, profile, next) {
 						return next(err);
 					}
 
+					if (req._sails.hooks.pubsub) {
+						if (req.isSocket) {
+							User.subscribe(req, user);
+							User.introduce(user);
+						}
+						User.publishCreate(user, !req.options.mirror && req);
+					}
+					
 					query.user = user.id;
 
 					Passport.create(query, function(err, passport) {
