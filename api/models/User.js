@@ -9,11 +9,13 @@ var User = {
         },
         email : {
             type : 'email',
-            unique : true
+            unique : true,
+            protected : true
         },
         passports : {
             collection : 'Passport',
-            via : 'user'
+            via : 'user',
+            protected : true
         },
         imageUrl : {
 	        type : 'string'
