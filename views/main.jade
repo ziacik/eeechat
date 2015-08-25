@@ -1,17 +1,17 @@
 extends ./layout
 
 block body
-	.container(ng-controller="UserController")
-		nav.navbar.navbar-default
-			.container-fluid
-				.navbar-header
-					a.navbar-brand(href='#') Eeechat
-				.navbar-collapse.collapse
-					ul.nav.navbar-nav
-						li(ng-repeat="user in users")
-							img.chat-img.img-circle.img-thumbnail.img-responsive.avatar(src="{{getById(user.id).imageUrl}}", alt="{{user.username}}")
+	nav.navbar.navbar-default.navbar-fixed-top
+		.container(ng-controller="UserController")
+			.navbar-header.pull-right
+				a.navbar-brand(href='#') Eeechat
+			#navbar
+				ul.nav.navbar-nav
+					li(ng-repeat="user in users")
+						img.chat-img.img-circle.img-thumbnail.img-responsive.avatar(src="{{getById(user.id).imageUrl}}", alt="{{user.username}}")
 					
 
+	.container(ng-controller="UserController")
 		.row(ng-controller="MessageController")
 			.col-md-6.col-md-offset-3
 				ul.chat
