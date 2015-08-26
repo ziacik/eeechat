@@ -16,7 +16,7 @@ module.exports = function(grunt) {
 			options: {
 				targetDir: './assets/vendor',
 				layout: function(type, component, source) {
-					return path.dirname(source.replace('bower_components/', '').replace('/dist', ''));
+					return path.dirname(source.replace(/bower_components[\\\/]/, '').replace(/[\\\/]dist/, ''));
 				},
 				install: true,
 				verbose: false,

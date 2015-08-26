@@ -15,7 +15,8 @@
   "exportsOverride": {
     "bootstrap": {
       "js": "dist/js/*.min.js",
-      "css": "dist/css/*.min.css",
+      "less": "less/*.less",
+      "less/mixins": "less/mixins/*.less",
       "fonts": "dist/fonts/*.*"
     }
   },
