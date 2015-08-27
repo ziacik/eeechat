@@ -5,13 +5,11 @@ module.controller('UserController', [ '$scope', 'userService', UserController]);
 function UserController($scope, userService) {
 	$scope.users = [];
 
-	userService.getConnected().then(function(users) {
-		$scope.users = users;
-	}).catch(function(err) {
-		alert(err);
-	});
-
 	$scope.getById = function(userId) {
 		return userService.getById(userId);
 	};
+	
+	$scope.$on('usersUpdated', function() {
+		$scope.users = userService.connectedUsers;
+	});
 }

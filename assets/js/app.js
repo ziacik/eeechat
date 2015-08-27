@@ -1,1 +1,1 @@
-angular.module('eeechat', ['userControllerModule', 'messageControllerModule']);
+angular.module('eeechat', ['chatServiceModule', 'chatControllerModule', 'userControllerModule', 'messageControllerModule']);

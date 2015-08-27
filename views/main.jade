@@ -1,41 +1,42 @@
 extends ./layout
 
 block body
-	nav.navbar.navbar-default.navbar-fixed-top
+	.chat(ng-controller="ChatController")
+		nav.navbar.navbar-default.navbar-fixed-top
+			.container(ng-controller="UserController")
+				.navbar-header
+					a.navbar-brand(href='#') Eeechat
+				#navbar.navbar-collapse.collapse
+					ul.nav.navbar-nav
+						li(ng-repeat="user in users")
+							img.chat-img.img-circle.img-thumbnail.img-responsive.avatar(src="{{getById(user.id).imageUrl}}", alt="{{user.username}}")
+	
+	
 		.container(ng-controller="UserController")
-			.navbar-header
-				a.navbar-brand(href='#') Eeechat
-			#navbar.navbar-collapse.collapse
-				ul.nav.navbar-nav
-					li(ng-repeat="user in users")
-						img.chat-img.img-circle.img-thumbnail.img-responsive.avatar(src="{{getById(user.id).imageUrl}}", alt="{{user.username}}")
-
-
-	.container(ng-controller="UserController")
-		.row(ng-controller="MessageController")
-			.col-md-6.col-md-offset-3
-				ul.chat
-					li.left.clear-fix(ng-repeat="message in messages")
-						span.chat-img.pull-left
-							img.img-circle.img-thumbnail.img-responsive.avatar(src="{{getById(message.sender).imageUrl}}", alt="{{getById(message.sender).username}}")
-						.chat-body.clearfix
-							.header
-								strong.primary-font
-									| {{getById(message.sender).username}}
-								small.pull-right.text-muted(style="padding-left:0.6em", ng-show="message.updatedAt !== message.createdAt")
-									span.glyphicon.glyphicon-time
-									| {{message.updatedAt | date : 'HH:mm'}}
-								small.pull-right.text-muted
-									span.glyphicon.glyphicon-time
-									| {{message.createdAt | date : 'HH:mm'}}
-								small.pull-right.text-muted(style="padding-right:0.6em")
-									a(href="#", ng-click="edit(message.id)")
-										span.glyphicon.glyphicon-edit
-							p(style="white-space: pre-wrap")
-								| {{message.content}}
-				.input-group
-					span(ng-show="disconnected") DISCONNECTED!
-					textarea.form-control.input-sm(type="text", placeholder="Type your message here...", ng-model="text" ng-disabled="sending")
-					span.input-group-btn
-						button.btn.btn-warning.btn-sm(ng-click="send()" ng-disabled="!text || sending")
-							| Send
+			.row(ng-controller="MessageController")
+				.col-md-6.col-md-offset-3
+					ul.chat
+						li.left.clear-fix(ng-repeat="message in messages")
+							span.chat-img.pull-left
+								img.img-circle.img-thumbnail.img-responsive.avatar(src="{{getById(message.sender).imageUrl}}", alt="{{getById(message.sender).username}}")
+							.chat-body.clearfix
+								.header
+									strong.primary-font
+										| {{getById(message.sender).username}}
+									small.pull-right.text-muted(style="padding-left:0.6em", ng-show="message.updatedAt !== message.createdAt")
+										span.glyphicon.glyphicon-time
+										| {{message.updatedAt | date : 'HH:mm'}}
+									small.pull-right.text-muted
+										span.glyphicon.glyphicon-time
+										| {{message.createdAt | date : 'HH:mm'}}
+									small.pull-right.text-muted(style="padding-right:0.6em")
+										a(href="#", ng-click="edit(message.id)")
+											span.glyphicon.glyphicon-edit
+								p(style="white-space: pre-wrap")
+									| {{message.content}}
+					.input-group
+						span(ng-hide="connected") DISCONNECTED!
+						textarea.form-control.input-sm(type="text", placeholder="Type your message here...", ng-model="text" ng-disabled="sending")
+						span.input-group-btn
+							button.btn.btn-warning.btn-sm(ng-click="send()" ng-disabled="!text || sending")
+								| Send

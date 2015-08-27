@@ -1,57 +1,35 @@
 var module = angular.module('userServiceModule', []);
 
-function UserService($sails, $q) {
+function UserService($sails, $rootScope) {
+	var self = this;
+	
 	this.allUsers;
 	this.connectedUsers;
+	this.modelUpdater;
+	this.modelUpdater2;
 
-	this.usersPromise = $sails.get('/users').then(function(res) {
-		return res.data;
-	});
-
-	var self = this;
-
-	var userHandler = $sails.on('user', function(item) {
-		if (item.verb === 'created') {
-			self.addOrLeaveAll(item.data);
-			self.addOrLeaveConnected(item.data);
-		}
-	});
-
-	this.getConnected = function() {
-		if (this.connectedUsers) {
-			var promise = $q.defer();
-			promise.resolve(self.connectedUsers);
-			return promise;
-		} else {
-			return this.usersPromise.then(function(users) {
-				self.allUsers = users;
-				self.connectedUsers = users; //TODO
-				return self.connectedUsers;
-			});
+	this.subscribe = function() {
+		if (this.modelUpdater) {
+			this.modelUpdater();
+			delete this.modelUpdater;
 		}
 
-		return promise;
+		if (this.modelUpdater2) {
+			this.modelUpdater2();
+			delete this.modelUpdater2;
+		}
+
+		$sails.get('/users').then(function(res) {
+			self.allUsers = res.data;
+			self.connectedUsers = res.data;
+			self.modelUpdater = $sails.$modelUpdater('user', self.allUsers);
+			self.modelUpdater2 = $sails.$modelUpdater('user', self.connectedUsers);
+			$rootScope.$broadcast("usersUpdated");			
+		}).catch(function(err) {
+			console.log(err);
+			$rootScope.$broadcast("userSubscribeError");			
+		})
 	};
-
-	this.addOrLeaveAll = function(user) {
-		for (var i = 0; i < this.allUsers.length; i++) {
-			if (this.allUsers[i].id === user.id) {
-				return;
-			}
-		}
-
-		this.allUsers.push(user);
-	}
-
-	this.addOrLeaveConnected = function(user) {
-		for (var i = 0; i < this.connectedUsers.length; i++) {
-			if (this.connectedUsers[i].id === user.id) {
-				return;
-			}
-		}
-
-		this.connectedUsers.push(user);
-	}
 
 	this.defaultUser = {
 		username : 'unknown',
@@ -78,13 +56,6 @@ function UserService($sails, $q) {
 	};
 }
 
-module.factory('userService', ['$sails', '$q', function($sails, $q) {
-
-	// Stop watching for updates
-	//TODO
-	/*$scope.$on('$destroy', function() {
-		$sails.off('user', userHandler);
-	})*/;
-
-	return new UserService($sails, $q);
+module.factory('userService', ['$sails', '$rootScope', function($sails, $rootScope) {
+	return new UserService($sails, $rootScope);
 }]);
