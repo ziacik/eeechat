@@ -1,6 +1,8 @@
 var module = angular.module('messageControllerModule', [ 'ngSails', 'userServiceModule' ]);
 
 module.controller('MessageController', [ '$scope', '$sails', function($scope, $sails) {
+	var self = this;
+
 	$scope.sending = false;
 	$scope.text = '';
 	$scope.messages = [];
@@ -14,9 +16,10 @@ module.controller('MessageController', [ '$scope', '$sails', function($scope, $s
 
 	$sails.on('connect', function() {
 		$scope.disconnected = false;
+		self.getAndSubscribe();
 	})
 
-	(function() {
+	this.getAndSubscribe = function() {
 		var today = new Date();
 		today.setHours(0, 0, 0, 0);
 
@@ -25,6 +28,10 @@ module.controller('MessageController', [ '$scope', '$sails', function($scope, $s
 		}, function(resp) {
 			alert(resp.status + ' - ' + resp.body); //TODO
 		});
+	};
+
+	(function() {
+		self.getAndSubscribe();
 
 		// Watching for updates
 		var messageHandler = $sails.on('message', function(item) {
