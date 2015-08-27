@@ -6,6 +6,16 @@ module.controller('MessageController', function($scope, $sails) {
 	$scope.messages = [];
 	$scope.editingId = null;
 
+	$scope.disconnected = false;
+
+	$sails.on('disconnect', function() {
+		$scope.disconnected = true;
+	});
+
+	$sails.on('connect', function() {
+		$scope.disconnected = false;
+	})
+
 	(function() {
 		var today = new Date();
 		today.setHours(0, 0, 0, 0);
@@ -32,10 +42,10 @@ module.controller('MessageController', function($scope, $sails) {
 		});
 
 	}());
-	
+
 	$scope.send = function() {
 		$scope.sending = true;
-		
+
 		if ($scope.editingId) {
 			$sails.put('/messages/' + $scope.editingId, {
 				content : $scope.text
@@ -59,19 +69,19 @@ module.controller('MessageController', function($scope, $sails) {
 				alert(err);
 				$scope.sending = false;
 			});
-		}		
+		}
 	};
-	
+
 	var findById = function(id) {
 		for (var i = 0; i < $scope.messages.length; i++) {
 			if ($scope.messages[i].id === id) {
 				return $scope.messages[i];
 			}
 		}
-		
+
 		throw new Error('Unable to find message by id ' + id);
 	}
-	
+
 	$scope.edit = function(id) {
 		id = +id;
 		$scope.text = findById(id).content;
