@@ -1,6 +1,6 @@
 var module = angular.module('messageControllerModule', [ 'ngSails', 'userServiceModule' ]);
 
-module.controller('MessageController', function($scope, $sails) {
+module.controller('MessageController', [ '$scope', '$sails', function($scope, $sails) {
 	$scope.sending = false;
 	$scope.text = '';
 	$scope.messages = [];
@@ -87,4 +87,4 @@ module.controller('MessageController', function($scope, $sails) {
 		$scope.text = findById(id).content;
 		$scope.editingId = id;
 	};
-});
+}] );
