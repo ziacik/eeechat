@@ -1,1 +1,0 @@
-io.sails.transports = ['polling'];
