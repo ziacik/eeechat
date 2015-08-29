@@ -9,7 +9,7 @@ block body
 				#navbar.navbar-collapse.collapse
 					ul.nav.navbar-nav
 						li(ng-repeat="user in users")
-							img.chat-img.img-circle.img-thumbnail.img-responsive.avatar(src="{{getById(user.id).imageUrl}}", alt="{{user.username}}")
+							img.chat-img.img-circle.img-thumbnail.img-responsive.avatar(ng-src="{{getById(user.id).imageUrl}}", alt="{{user.username}}")
 	
 	
 		.container(ng-controller="UserController")
@@ -18,7 +18,7 @@ block body
 					ul.chat
 						li.left.clear-fix(ng-repeat="message in messages")
 							span.chat-img.pull-left
-								img.img-circle.img-thumbnail.img-responsive.avatar(src="{{getById(message.sender).imageUrl}}", alt="{{getById(message.sender).username}}")
+								img.img-circle.img-thumbnail.img-responsive.avatar(ng-src="{{getById(message.sender).imageUrl}}", alt="{{getById(message.sender).username}}")
 							.chat-body.clearfix
 								.header
 									strong.primary-font
