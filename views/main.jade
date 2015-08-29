@@ -1,7 +1,7 @@
 extends ./layout
 
 block body
-	.chat(ng-controller="ChatController")
+	.chat(ng-controller="ChatController" ng-init="run()")
 		nav.navbar.navbar-default.navbar-fixed-top
 			.container(ng-controller="UserController")
 				.navbar-header
@@ -36,7 +36,7 @@ block body
 									| {{message.content}}
 					.input-group
 						span(ng-hide="connected") DISCONNECTED!
-						textarea.form-control.input-sm(type="text", placeholder="Type your message here...", ng-model="text" ng-disabled="sending")
+						textarea.form-control.input-sm(type="text", placeholder="Čo?", ng-model="text" ng-disabled="sending")
 						span.input-group-btn
-							button.btn.btn-warning.btn-sm(ng-click="send()" ng-disabled="!text || sending")
-								| Send
+							button.btn.btn-warning.btn-sm(ng-click="send()" ng-disabled="!text || sending || !connected")
+								| Poslať

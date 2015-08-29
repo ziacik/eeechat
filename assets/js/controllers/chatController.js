@@ -8,4 +8,8 @@ function ChatController($scope, chatService) {
 	$scope.$on('connectionUpdated', function() {
 		$scope.connected = chatService.connected;
 	});
+	
+	$scope.run = function() {
+		chatService.run();
+	}
 }
