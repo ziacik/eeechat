@@ -34,8 +34,9 @@ block body
 											span.glyphicon.glyphicon-edit
 								p(style="white-space: pre-wrap")
 									| {{message.content}}
+					.panel.panel-danger(ng-show="!connected")
+						.panel-heading Odpojený. Počkajte na obnovenie spojenia.
 					.input-group
-						span(ng-hide="connected") DISCONNECTED!
 						textarea.form-control.input-sm(type="text", placeholder="Čo?", ng-model="text" ng-disabled="sending")
 						span.input-group-btn
 							button.btn.btn-warning.btn-sm(ng-click="send()" ng-disabled="!text || sending || !connected")
