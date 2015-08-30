@@ -1,6 +1,6 @@
 var module = angular.module('messageControllerModule', [ 'messageServiceModule' ]);
 
-module.controller('MessageController', ['$scope', 'messageService', function($scope, messageService) {
+module.controller('MessageController', ['$scope', '$filter', 'messageService', function($scope, $filter, messageService) {
 	$scope.sending = false;
 	$scope.text = '';
 	$scope.messages = [];
@@ -27,7 +27,8 @@ module.controller('MessageController', ['$scope', 'messageService', function($sc
 
 	$scope.edit = function(id) {
 		id = +id;
-		//TODO $scope.text = findById(id).content;
+		var message = $filter('filter')($scope.messages, { id : id })[0];
+		$scope.text = message.content;
 		$scope.editingId = id;
 	};
 }] );

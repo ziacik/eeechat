@@ -9,7 +9,7 @@ function UserController($scope, userService) {
 		return userService.getById(userId);
 	};
 	
-	$scope.$on('usersUpdated', function() {
+	$scope.$on('connectedUsersUpdated', function() {
 		$scope.users = userService.connectedUsers;
 	});
 }

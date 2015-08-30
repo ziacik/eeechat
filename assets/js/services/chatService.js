@@ -2,12 +2,14 @@ var module = angular.module('chatServiceModule', ['ngSails', 'userServiceModule'
 
 function ChatService($sails, $rootScope, userService, messageService) {
 	var self = this;
-	this.connected = true;
+	this.connected = false;
 	
-	this.run = function() {
+	this.connect = function() {
+		self.connected = true;
 		userService.subscribe();
-		messageService.subscribe();
-	};
+		messageService.subscribe();	
+		$rootScope.$broadcast('connectionUpdated');
+	}
 	
 	$sails.on('disconnect', function() {
 		self.connected = false;
@@ -15,10 +17,9 @@ function ChatService($sails, $rootScope, userService, messageService) {
 	});
 
 	$sails.on('connect', function() {
-		userService.subscribe();
-		messageService.subscribe();
-		self.connected = true;
-		$rootScope.$broadcast('connectionUpdated');
+		if (!self.connected) {
+			self.connect();
+		}
 	})
 }
 

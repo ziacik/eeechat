@@ -9,7 +9,7 @@ function ChatController($scope, chatService) {
 		$scope.connected = chatService.connected;
 	});
 	
-	$scope.run = function() {
-		chatService.run();
+	$scope.connect = function() {
+		chatService.connect();
 	}
 }
