@@ -5,6 +5,44 @@ body
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
   display: none !important;
 }
+footer
+{
+	border-top: 4px solid #eeeeee;
+    position: fixed;
+    bottom: 0;
+    height: auto;
+    width: 100%;
+    background-color: #eeeeee;
+}
+#footerContainer
+{
+	display: table;
+	width: 100%;
+}
+#textArea
+{
+	display: table-cell;
+	width: 100%;
+}
+#sendArea
+{
+	padding-left: 1em;
+	display: table-cell;
+	vertical-align: middle;
+}
+#textArea textarea
+{
+    background-color: #eeeeee;
+	border: 0;
+	outline: 0;
+	height: 2.5em;
+	width: 100%;
+	resize: none;
+}
+#messaged
+{
+	margin-bottom: 4.5em;
+}
 .chat
 {
     list-style: none;

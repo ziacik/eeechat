@@ -11,34 +11,36 @@ block body
 						li(ng-repeat="user in users")
 							{{ user.state }}
 							img.chat-img.img-circle.img-thumbnail.img-responsive.avatar(ng-src="{{ user.imageUrl }}", alt="{{ user.username }}")
-	
-	
-		.container(ng-controller="MessageController")
-			.row
-				.col-md-6.col-md-offset-3
-					ul.chat(ng-cloak)
-						li.left.clear-fix(ng-repeat="message in messages")
-							span.chat-img.pull-left
-								img.img-circle.img-thumbnail.img-responsive.avatar(ng-src="{{ message.sender | userImage }}", alt="{{ message.sender | userName }}")
-							.chat-body.clearfix
-								.header
-									strong.primary-font
-										| {{ message.sender | userName }}
-									small.pull-right.text-muted(style="padding-left:0.6em", ng-show="message.updatedAt !== message.createdAt")
-										span.glyphicon.glyphicon-time
-										| {{message.updatedAt | date : 'HH:mm'}}
-									small.pull-right.text-muted
-										span.glyphicon.glyphicon-time
-										| {{message.createdAt | date : 'HH:mm'}}
-									small.pull-right.text-muted(style="padding-right:0.6em")
-										a(href="#", ng-click="edit(message.id)")
-											span.glyphicon.glyphicon-edit
-								p(style="white-space: pre-wrap")
-									| {{message.content}}
-					.panel.panel-danger(ng-show="!connected", ng-cloak)
-						.panel-heading Odpojený. Počkajte na obnovenie spojenia.
-					.input-group
-						textarea.form-control.input-sm(type="text", placeholder="Čo?", ng-model="text" ng-disabled="sending")
-						span.input-group-btn
-							button.btn.btn-warning.btn-sm(ng-click="send()" ng-disabled="!text || sending || !connected")
-								| Poslať
+
+		#messaged(ng-controller="MessageController")
+			.container
+				.row
+					.col-md-6.col-md-offset-3
+						ul.chat(ng-cloak)
+							li.left.clear-fix(ng-repeat="message in messages")
+								span.chat-img.pull-left
+									img.img-circle.img-thumbnail.img-responsive.avatar(ng-src="{{ message.sender | userImage }}", alt="{{ message.sender | userName }}")
+								.chat-body.clearfix
+									.header
+										strong.primary-font
+											| {{ message.sender | userName }}
+										small.pull-right.text-muted(style="padding-left:0.6em", ng-show="message.updatedAt !== message.createdAt")
+											span.glyphicon.glyphicon-time
+											| {{message.updatedAt | date : 'HH:mm'}}
+										small.pull-right.text-muted
+											span.glyphicon.glyphicon-time
+											| {{message.createdAt | date : 'HH:mm'}}
+										small.pull-right.text-muted(style="padding-right:0.6em")
+											a( ng-click="edit(message.id)")
+												span.glyphicon.glyphicon-edit
+									p(style="white-space: pre-wrap")
+										| {{message.content}}
+						.panel.panel-danger(ng-show="!connected", ng-cloak)
+							.panel-heading Odpojený. Počkajte na obnovenie spojenia.
+						a#bottom(style='display:block')
+			footer.footer
+				.container#footerContainer
+					#textArea
+						textarea.input-sm(type="text", placeholder="Čo?", ng-model="text" ng-disabled="sending")
+					#sendArea
+						button#sendButton.btn.btn-warning.btn-sm(ng-click="send()" ng-disabled="!text || sending || !connected") Poslať

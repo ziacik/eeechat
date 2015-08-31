@@ -1,19 +1,34 @@
 var module = angular.module('messageControllerModule', [ 'messageServiceModule' ]);
 
-module.controller('MessageController', ['$scope', '$filter', 'messageService', function($scope, $filter, messageService) {
+module.controller('MessageController', ['$scope', '$filter', '$location', '$anchorScroll', '$timeout', 'messageService', function($scope, $filter, $location, $anchorScroll, $timeout, messageService) {
+	var self = this;
+	
 	$scope.sending = false;
 	$scope.text = '';
 	$scope.messages = [];
 	$scope.editingId = null;
+	
+	this.scrollDown = function() {
+		$timeout(function() {
+			$location.hash('bottom');
+			$anchorScroll();
+		});
+	}
+	
+	$scope.$watch('messages.length', function() {
+		self.scrollDown();
+	})
 
 	$scope.$on('messagesUpdated', function() {
 		$scope.messages = messageService.messages;
+		self.scrollDown();
 	});
 	
 	$scope.$on('messageSent', function() {
 		$scope.text = '';
 		$scope.editingId = null;
-		$scope.sending = false;		
+		$scope.sending = false;
+	
 	})
 
 	$scope.$on('messageSendError', function() {
