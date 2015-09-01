@@ -21,6 +21,10 @@ module.exports.policies = {
     auth : {
 	    '*' : [ 'passport' ]
     },
+    
+    LegacyController : {
+	    '*' : true
+    },
 
     MessageController : {
 	    create : [ 'passport', 'sessionAuth', 'sender' ]

@@ -38,5 +38,8 @@ module.exports.routes = {
 	 * in your * `assets` directory) * *
 	 **************************************************************************/
 
-    '/' : 'AppController.main'
+    '/' : 'AppController.main',
+    
+    '/legacy/getuser.php' : 'LegacyController.getUser',
+    '/legacy/getrooms.php' : 'LegacyController.getRooms'
 };

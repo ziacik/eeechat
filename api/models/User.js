@@ -19,6 +19,16 @@ var User = {
         },
         imageUrl : {
 	        type : 'string'
+        },
+        legacySalt : {
+	        type : 'string'
+        },
+        legacyColor : {
+	        type : 'string'
+        },
+        legacyPassword : {
+	        type : 'string',
+	        protected : true
         }
     }
 };
