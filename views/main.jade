@@ -37,7 +37,7 @@ block body
 										| {{message.content}}
 						.panel.panel-danger(ng-show="!connected", ng-cloak)
 							.panel-heading Odpojený. Počkajte na obnovenie spojenia.
-						a#bottom(style='display:block')
+						a#bottom(style='display:block', in-view="setAutoScroll($inview)")
 			footer.footer
 				.container#footerContainer
 					#textArea

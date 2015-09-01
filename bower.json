@@ -10,7 +10,8 @@
     "bootstrap": "~3.3.5",
     "angular": "~1.4.3",
     "angular-sails": "~1.1.4",
-    "bootstrap-social": "~4.9.1"
+    "bootstrap-social": "~4.9.1",
+    "angular-inview": "~1.5.4"
   },
   "exportsOverride": {
     "bootstrap": {

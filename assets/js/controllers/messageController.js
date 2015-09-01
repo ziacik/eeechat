@@ -8,7 +8,17 @@ module.controller('MessageController', ['$scope', '$filter', '$location', '$anch
 	$scope.messages = [];
 	$scope.editingId = null;
 	
+	this.autoScroll = true;
+	
+	$scope.setAutoScroll = function(value) {
+		self.autoScroll = value;
+	}
+	
 	this.scrollDown = function() {
+		if (!self.autoScroll) {
+			return;
+		}
+
 		$timeout(function() {
 			$location.hash('bottom');
 			$anchorScroll();
