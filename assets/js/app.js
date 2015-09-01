@@ -1,1 +1,9 @@
-angular.module('eeechat', ['chatServiceModule', 'chatControllerModule', 'userControllerModule', 'messageControllerModule', 'userFiltersModule', 'angular-inview']);
+angular.module('eeechat', [
+	'chatServiceModule',
+	'chatControllerModule',
+	'userControllerModule',
+	'messageControllerModule',
+	'userFiltersModule',
+	'autoFocusModule',
+	'angular-inview'
+]);

@@ -23,7 +23,13 @@ module.controller('MessageController', ['$scope', '$filter', '$location', '$anch
 			$location.hash('bottom');
 			$anchorScroll();
 		});
-	}
+	};
+	
+	this.setFocus = function() {
+		$timeout(function() {
+			$scope.focus = true;
+		});
+	};
 	
 	$scope.$watch('messages.length', function() {
 		self.scrollDown();
@@ -38,11 +44,12 @@ module.controller('MessageController', ['$scope', '$filter', '$location', '$anch
 		$scope.text = '';
 		$scope.editingId = null;
 		$scope.sending = false;
-	
+		self.setFocus();
 	})
 
 	$scope.$on('messageSendError', function() {
 		$scope.sending = false;		
+		self.setFocus();
 	})
 
 	$scope.send = function() {

@@ -41,6 +41,6 @@ block body
 			footer.footer
 				.container#footerContainer
 					#textArea
-						textarea.input-sm(type="text", placeholder="Čo?", ng-model="text" ng-disabled="sending")
+						textarea.input-sm(type="text", placeholder="Čo?", ng-model="text" ng-disabled="sending", autofocus)
 					#sendArea
 						button#sendButton.btn.btn-warning.btn-sm(ng-click="send()" ng-disabled="!text || sending || !connected") Poslať
