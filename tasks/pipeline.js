@@ -33,7 +33,7 @@ var jsFilesToInject = [
   '/vendor/jquery/jquery.js',
   '/vendor/angular/angular.js',
   '/vendor/angular-sails/angular-sails.js',
-  '/vendor/js/bootstrap/bootstrap.min.js',
+  '/vendor/bootstrap/js/bootstrap.min.js',
   '/vendor/angular-inview/angular-inview.js',
 
   // All of the rest of your client-side js files

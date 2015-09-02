@@ -11,6 +11,15 @@ block body
 						li(ng-repeat="user in users")
 							{{ user.state }}
 							img.chat-img.img-circle.img-thumbnail.img-responsive.avatar(ng-src="{{ user.imageUrl }}", alt="{{ user.username }}")
+					ul.nav.navbar-nav.navbar-right
+						li.dropdown
+							a.dropdown-toggle(href='#', data-toggle='dropdown', role='button', aria-haspopup='true', aria-expanded='false')
+								i.glyphicon.glyphicon-menu-hamburger(aria-hidden='true')
+							ul.dropdown-menu
+								li
+									a(href='logout')
+										i.glyphicon.glyphicon-log-out.icon-indent
+										| Odhlásiť
 
 		#messaged(ng-controller="MessageController")
 			.container
