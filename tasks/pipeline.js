@@ -35,6 +35,7 @@ var jsFilesToInject = [
   '/vendor/angular-sails/angular-sails.js',
   '/vendor/bootstrap/js/bootstrap.min.js',
   '/vendor/angular-inview/angular-inview.js',
+  '/vendor/angular-elastic/elastic.js',
 
   // All of the rest of your client-side js files
   // will be injected here in no particular order.

@@ -5,5 +5,6 @@ angular.module('eeechat', [
 	'messageControllerModule',
 	'userFiltersModule',
 	'autoFocusModule',
-	'angular-inview'
+	'angular-inview',
+	'monospaced.elastic'
 ]);
