@@ -32,14 +32,20 @@ block body
 									.header
 										strong.primary-font
 											| {{ message.sender | userName }}
+										small(style="padding-left:0.6em", ng-show="message.state === 'sending'")
+											i.glyphicon.glyphicon-cog.gly-spin
+										small(style="padding-left:0.6em", ng-show="message.state === 'failed'")
+											i.glyphicon.glyphicon-exclamation-sign
+											a(href="#", ng-show="connected")
+												i.glyphicon.glyphicon-repeat
 										small.pull-right.text-muted(style="padding-left:0.6em", ng-show="message.updatedAt !== message.createdAt")
 											span.glyphicon.glyphicon-time
 											| {{message.updatedAt | date : 'HH:mm'}}
-										small.pull-right.text-muted
+										small.pull-right.text-muted(ng-show="!message.state")
 											span.glyphicon.glyphicon-time
 											| {{message.createdAt | date : 'HH:mm'}}
-										small.pull-right.text-muted(style="padding-right:0.6em")
-											a( ng-click="edit(message.id)")
+										small.pull-right.text-muted(style="padding-right:0.6em", ng-show="!message.state")
+											a(ng-click="edit(message.id)")
 												span.glyphicon.glyphicon-edit
 									p(style="white-space: pre-wrap")
 										| {{message.content}}
@@ -50,6 +56,6 @@ block body
 				.container#footerContainer
 					form(ng-submit="send()")
 						#textArea
-							textarea.msd-elastic.input-sm(type="text", placeholder="Čo?", ng-model="text", ng-disabled="sending", autofocus, ng-keyup="(($event.keyCode == 13 && $event.ctrlKey) || ($event.keyCode == 83 && $event.altKey)) && text && !sending && connected && send()")
+							textarea.msd-elastic.input-sm(type="text", placeholder="Čo?", ng-model="text", ng-disabled="!ready", autofocus, ng-keyup="(($event.keyCode == 13 && $event.ctrlKey) || ($event.keyCode == 83 && $event.altKey)) && text && !sending && connected && send()")
 						#sendArea
-							button#sendButton.btn.btn-warning.btn-sm(type="submit", ng-disabled="!text || sending || !connected") Poslať
+							button#sendButton.btn.btn-warning.btn-sm(type="submit", ng-disabled="(false && !connected) || !ready || !text") Poslať

@@ -3,12 +3,14 @@ var module = angular.module('messageControllerModule', [ 'messageServiceModule' 
 module.controller('MessageController', ['$scope', '$filter', '$location', '$anchorScroll', '$timeout', 'messageService', function($scope, $filter, $location, $anchorScroll, $timeout, messageService) {
 	var self = this;
 	
-	$scope.sending = false;
+	$scope.ready = false;
 	$scope.text = '';
 	$scope.messages = [];
 	$scope.editingId = null;
 	
 	this.autoScroll = true;
+	this.usersReady = false;
+	this.messagesReady = false;
 	
 	$scope.setAutoScroll = function(value) {
 		self.autoScroll = value;
@@ -30,6 +32,11 @@ module.controller('MessageController', ['$scope', '$filter', '$location', '$anch
 			$scope.focus = true;
 		});
 	};
+		
+	$scope.$on('connectedUsersUpdated', function() {
+		this.usersReady = true;
+		$scope.ready = this.usersReady && this.messagesReady;
+	});	
 	
 	$scope.$watch('messages.length', function() {
 		self.scrollDown();
@@ -38,23 +45,15 @@ module.controller('MessageController', ['$scope', '$filter', '$location', '$anch
 	$scope.$on('messagesUpdated', function() {
 		$scope.messages = messageService.messages;
 		self.scrollDown();
+		this.messagesReady = true;
+		$scope.ready = this.usersReady && this.messagesReady;		
 	});
 	
-	$scope.$on('messageSent', function() {
+	$scope.send = function() {
+		messageService.send($scope.editingId, $scope.text);
 		$scope.text = '';
 		$scope.editingId = null;
-		$scope.sending = false;
 		self.setFocus();
-	})
-
-	$scope.$on('messageSendError', function() {
-		$scope.sending = false;		
-		self.setFocus();
-	})
-
-	$scope.send = function() {
-		$scope.sending = true;
-		messageService.send($scope.editingId, $scope.text);
 	};
 
 	$scope.edit = function(id) {

@@ -7,7 +7,11 @@
 
 module.exports = {
 	connected : function(req, res) {
-		if (req.user && req.socket) {
+		if (!req.user) {
+			return res.forbidden();
+		}
+		
+		if (req.socket) {
 			var roomName = 'connectedUser' + req.user.id;
 			sails.sockets.join(req.socket, roomName);
 			
@@ -24,7 +28,20 @@ module.exports = {
 		
 		var connectedUserIds = connectedUserRooms.map(function(roomName) {
 			return parseInt(roomName.substr(13));
-		})
+		});
+		
+		/// First one will be current user id.
+		var currentUserIndex = connectedUserIds.indexOf(req.user.id);
+		
+		if (currentUserIndex < 0) {
+			/// Not connected? Should not happen.
+			return res.forbidden();
+		}
+		
+		if (currentUserIndex > 0) {
+			connectedUserIds.splice(currentUserIndex, 1);
+			connectedUserIds.unshift(req.user.id);
+		}
 		
 		return res.json(connectedUserIds);
 	}

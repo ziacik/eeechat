@@ -3,10 +3,13 @@ var module = angular.module('userServiceModule', []);
 function UserService($sails, $rootScope, $filter) {
 	var self = this;
 	
+	this.myUserId;
+	
 	this.allUsers;
 	this.connectedUsers;
+	
 	this.modelUpdater;
-	this.modelUpdater2;
+	this.modelUpdater2;	
 
 	this.subscribe = function() {
 		if (this.modelUpdater) {
@@ -39,6 +42,7 @@ function UserService($sails, $rootScope, $filter) {
 			self.modelUpdater = $sails.$modelUpdater('user', self.allUsers);			
 			return $sails.get('/users/connected')			
 		}).then(function(res) {
+			self.myUserId = res.data[0];
 			self.connectedUsers = res.data.map(function(userId) {
 				return self.getById(userId);
 			})
