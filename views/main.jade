@@ -9,8 +9,7 @@ block body
 				#navbar.navbar-collapse.collapse
 					ul.nav.navbar-nav(ng-cloak)
 						li(ng-repeat="user in users")
-							{{ user.state }}
-							img.chat-img.img-circle.img-thumbnail.img-responsive.avatar(ng-src="{{ user.imageUrl }}", alt="{{ user.username }}")
+							img.chat-img.img-circle.img-thumbnail.img-responsive.avatar(ng-src="{{ user.imageUrl }}", alt="{{ user.username }}", title="{{ user.username }}")
 					ul.nav.navbar-nav.navbar-right
 						li.dropdown
 							a.dropdown-toggle(href='#', data-toggle='dropdown', role='button', aria-haspopup='true', aria-expanded='false')
