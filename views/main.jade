@@ -58,4 +58,4 @@ block body
 						#textArea
 							textarea.msd-elastic.input-sm(type="text", placeholder="Čo?", ng-model="text", ng-disabled="!ready", autofocus, ng-keyup="(($event.keyCode == 13 && $event.ctrlKey) || ($event.keyCode == 83 && $event.altKey)) && text && !sending && connected && send()")
 						#sendArea
-							button#sendButton.btn.btn-warning.btn-sm(type="submit", ng-disabled="(false && !connected) || !ready || !text") Poslať
+							button#sendButton.btn.btn-warning.btn-sm(type="submit", ng-disabled="!connected || !ready || !text") Poslať
