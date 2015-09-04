@@ -18,12 +18,18 @@ function MessageService($sails, $rootScope, userService) {
 		$sails.get('/messages', { createdAt : { '>' : today } }).then(function(res) {
 			self.messages = res.data;
 			self.modelUpdater = $sails.$modelUpdater('message', self.messages);
-			$rootScope.$broadcast("messagesUpdated");			
+			$rootScope.$broadcast("messagesUpdated");
 		}).catch(function(err) {
 			console.log(err);
-			$rootScope.$broadcast("messageSubscribeError");			
+			$rootScope.$broadcast("messageSubscribeError");	
 		})
 	};
+	
+	$sails.on('message', function(info) {
+		if (info.verb === 'created') {
+			$rootScope.$broadcast("messageReceived", info.data);	
+		}
+	})
 	
 	this.findById = function(messageId) {
 		if (!this.messages) {

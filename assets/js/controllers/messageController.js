@@ -1,6 +1,6 @@
-var module = angular.module('messageControllerModule', [ 'messageServiceModule' ]);
+var module = angular.module('messageControllerModule', [ 'messageServiceModule', 'userServiceModule', 'notification' ]);
 
-module.controller('MessageController', ['$scope', '$filter', '$location', '$anchorScroll', '$timeout', 'messageService', function($scope, $filter, $location, $anchorScroll, $timeout, messageService) {
+module.controller('MessageController', ['$scope', '$filter', '$location', '$anchorScroll', '$timeout', '$notification', 'userService', 'messageService', function($scope, $filter, $location, $anchorScroll, $timeout, $notification, userService, messageService) {
 	var self = this;
 	
 	$scope.ready = false;
@@ -32,14 +32,25 @@ module.controller('MessageController', ['$scope', '$filter', '$location', '$anch
 			$scope.focus = true;
 		});
 	};
+	
+	this.notify = function(message) {
+		var sender = userService.getById(message.sender);
 		
+		$notification(sender.username, {
+			body : message.content,
+			delay : 3000,
+			icon : sender.imageUrl
+		});
+	};
+	
 	$scope.$on('connectedUsersUpdated', function() {
 		this.usersReady = true;
 		$scope.ready = this.usersReady && this.messagesReady;
 	});	
 	
-	$scope.$watch('messages.length', function() {
-		self.scrollDown();
+	$scope.$on('messageReceived', function(event, message) {
+		self.scrollDown();	
+		self.notify(message);
 	})
 
 	$scope.$on('messagesUpdated', function() {
@@ -54,6 +65,7 @@ module.controller('MessageController', ['$scope', '$filter', '$location', '$anch
 		$scope.text = '';
 		$scope.editingId = null;
 		self.setFocus();
+		self.scrollDown();	
 	};
 
 	$scope.edit = function(id) {
