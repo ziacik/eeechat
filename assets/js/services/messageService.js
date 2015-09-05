@@ -1,6 +1,6 @@
-var module = angular.module('messageServiceModule', ['userServiceModule']);
+var module = angular.module('messageServiceModule', ['userServiceModule', 'notificationServiceModule']);
 
-function MessageService($sails, $rootScope, userService) {
+function MessageService($sails, $rootScope, $timeout, $window, userService, notificationService) {
 	var self = this;
 	
 	this.messages;
@@ -11,7 +11,7 @@ function MessageService($sails, $rootScope, userService) {
 			this.modelUpdater();
 			delete this.modelUpdater;
 		}
-
+		
 		var today = new Date();
 		today.setHours(0, 0, 0, 0);
 		
@@ -27,10 +27,11 @@ function MessageService($sails, $rootScope, userService) {
 	
 	$sails.on('message', function(info) {
 		if (info.verb === 'created') {
-			$rootScope.$broadcast("messageReceived", info.data);	
+			$rootScope.$broadcast("messageReceived", info.data);
+			notificationService.notify(info.data);
 		}
-	})
-	
+	});
+
 	this.findById = function(messageId) {
 		if (!this.messages) {
 			return;
@@ -103,6 +104,6 @@ function MessageService($sails, $rootScope, userService) {
 	}
 }
 
-module.factory('messageService', ['$sails', '$rootScope', 'userService', function($sails, $rootScope, userService) {
-	return new MessageService($sails, $rootScope, userService);
+module.factory('messageService', ['$sails', '$rootScope', '$timeout', '$window', 'userService', 'notificationService', function($sails, $rootScope, $timeout, $window, userService, notificationService) {
+	return new MessageService($sails, $rootScope, $timeout, $window, userService, notificationService);
 }]);

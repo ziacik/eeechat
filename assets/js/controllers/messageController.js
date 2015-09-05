@@ -33,16 +33,6 @@ module.controller('MessageController', ['$scope', '$filter', '$location', '$anch
 		});
 	};
 	
-	this.notify = function(message) {
-		var sender = userService.getById(message.sender);
-		
-		$notification(sender.username, {
-			body : message.content,
-			delay : 3000,
-			icon : sender.imageUrl
-		});
-	};
-	
 	$scope.$on('connectedUsersUpdated', function() {
 		this.usersReady = true;
 		$scope.ready = this.usersReady && this.messagesReady;
@@ -50,7 +40,6 @@ module.controller('MessageController', ['$scope', '$filter', '$location', '$anch
 	
 	$scope.$on('messageReceived', function(event, message) {
 		self.scrollDown();	
-		self.notify(message);
 	})
 
 	$scope.$on('messagesUpdated', function() {

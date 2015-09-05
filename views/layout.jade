@@ -1,7 +1,7 @@
 doctype html
 html
   head
-    title= title
+    title(ng-bind="title") Eeechat
 
     // Viewport mobile tag for sensible mobile support
     meta(name="viewport",content="width=device-width, initial-scale=1, maximum-scale=1")
@@ -37,5 +37,6 @@ html
     script(src="/js/filters/userFilters.js")
     script(src="/js/services/chatService.js")
     script(src="/js/services/messageService.js")
+    script(src="/js/services/notificationService.js")
     script(src="/js/services/userService.js")
     // SCRIPTS END
