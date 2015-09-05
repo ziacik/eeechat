@@ -27,7 +27,7 @@ module.exports = {
 		});
 		
 		var connectedUserIds = connectedUserRooms.map(function(roomName) {
-			return parseInt(roomName.substr(13));
+			return roomName.substr(13);
 		});
 		
 		/// First one will be current user id.
