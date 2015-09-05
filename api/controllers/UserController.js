@@ -11,8 +11,11 @@ module.exports = {
 			return res.forbidden();
 		}
 		
+		var isNumericId = typeof req.user.id === 'number';
+		
 		if (req.socket) {
 			var roomName = 'connectedUser' + req.user.id;
+			console.log(roomName)
 			sails.sockets.join(req.socket, roomName);
 			
  			if (sails.sockets.subscribers(roomName).length == 1) {
@@ -27,7 +30,12 @@ module.exports = {
 		});
 		
 		var connectedUserIds = connectedUserRooms.map(function(roomName) {
-			return roomName.substr(13);
+			var idStr = roomName.substr(13);
+			if (isNumericId) {
+				return parseInt(idStr);
+			} else {
+				return idStr;
+			}
 		});
 		
 		/// First one will be current user id.
