@@ -37,6 +37,7 @@ var User = {
     
     beforeCreate : function(values, next) {
     	values.legacyId = Math.ceil(new Date() / 1000) - 1441574512;
+    	next();
     }
 };
 
