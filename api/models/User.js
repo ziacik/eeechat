@@ -21,8 +21,7 @@ var User = {
 	        type : 'string'
         },
         legacyId : {
-        	type : 'integer',
-        	autoIncrement : true
+        	type : 'integer'
         },
         legacySalt : {
 	        type : 'string'
@@ -34,6 +33,10 @@ var User = {
 	        type : 'string',
 	        protected : true
         }
+    },
+    
+    beforeCreate : function(values, next) {
+    	values.legacyId = Math.ceil(new Date() / 1000) - 1441574512;
     }
 };
 
