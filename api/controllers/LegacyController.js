@@ -1,8 +1,8 @@
 /**
  * LegacyController
- *
+ * 
  * @description :: Server-side logic for managing legacies
- * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
+ * @help :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
 module.exports = {
@@ -19,17 +19,48 @@ module.exports = {
 	},
 	
 	changeState : function(req, res) {
-		return res.view('legacy/changeState');
+		var userId = parseInt(req.param('myUserID'));
+		var isConnect = req.param('state') > 0;
+		
+		if (isConnect) {
+			LegacyConnection.findOne(userId).then(function(user) {
+				if (user) {
+					return res.view('legacy/changeState');
+				}
+				
+				return LegacyConnection.create({
+					user : userId,
+					lastAccess : new Date().toISOString()
+				}).then(function() {
+					User.message(userId, {
+						state : 'online'
+					});
+					
+					return res.view('legacy/changeState');
+				});
+			}).catch(function(err) {
+				return res.serverError(err);				
+			})
+		} else {
+			LegacyConnection.destroy(userId).then(function() {
+				User.message(userId, {
+					state : 'offline'
+				});
+				return res.view('legacy/changeState');				
+			}).catch(function(err) {
+				return res.serverError(err);				
+			})
+		}		
 	},
 	
 	getUsers : function(req, res) {
-		//TODO deduplicate by refactoring into service
-		var connectedUserRooms = sails.sockets.rooms().filter(function(roomName) {
-			return roomName.indexOf('connectedUser') === 0;
+		// TODO deduplicate by refactoring into service
+		var onlineUserRooms = sails.sockets.rooms().filter(function(roomName) {
+			return roomName.indexOf('onlineUser') === 0;
 		});
 		
-		var connectedUserIds = connectedUserRooms.map(function(roomName) {
-			var idStr = roomName.substr(13);
+		var onlineUsers = onlineUserRooms.map(function(roomName) {
+			var idStr = roomName.substr('onlineUser'.length);
 			var id;
 			if (isNaN(idStr)) {
 				return idStr;
@@ -38,18 +69,21 @@ module.exports = {
 			}			
 		});
 		
-		console.log(connectedUserIds);
-		
-		User.find().where({ id : connectedUserIds }).then(function(users) {
-			console.log('USERS', users)
-			return res.view('legacy/getUsers', { users : users });			
+		LegacyConnection.find().then(function(legacyConnections) {
+			var legacyUsers =  legacyConnections.map(function(legacyConnection) {
+				return legacyConnection.user;
+			});
+			
+			return User.find().where({ id : onlineUsers.concat(legacyUsers) });
+		}).then(function(users) {
+			return res.view('legacy/getUsers', { users : users });
 		}).catch (function(err) {
-			//TODO
-		})		
-	},	
+			console.log(err); 
+			return res.serverError(err);
+		})
+	},
 
 	getMessages : function(req, res) {
 		return res.view('legacy/getMessages', { messages : [] });
 	}
 };
-

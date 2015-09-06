@@ -6,7 +6,7 @@
  */
 
 module.exports = {
-	connected : function(req, res) {
+	online : function(req, res) {
 		if (!req.user) {
 			return res.forbidden();
 		}
@@ -14,7 +14,7 @@ module.exports = {
 		var isNumericId = typeof req.user.id === 'number';
 		
 		if (req.socket) {
-			var roomName = 'connectedUser' + req.user.id;
+			var roomName = 'onlineUser' + req.user.id;
 			sails.sockets.join(req.socket, roomName);
 			
  			if (sails.sockets.subscribers(roomName).length == 1) {
@@ -24,33 +24,44 @@ module.exports = {
  			}
 		}
 		
-		var connectedUserRooms = sails.sockets.rooms().filter(function(roomName) {
-			return roomName.indexOf('connectedUser') === 0;
+		var onlineUserRooms = sails.sockets.rooms().filter(function(roomName) {
+			return roomName.indexOf('onlineUser') === 0;
 		});
 		
-		var connectedUserIds = connectedUserRooms.map(function(roomName) {
-			var idStr = roomName.substr(13);
+		var onlineUsers = onlineUserRooms.map(function(roomName) {
+			var idStr = roomName.substr('onlineUser'.length);
 			if (isNumericId) {
 				return parseInt(idStr);
 			} else {
 				return idStr;
 			}
 		});
-		
-		/// First one will be current user id.
-		var currentUserIndex = connectedUserIds.indexOf(req.user.id);
-		
-		if (currentUserIndex < 0) {
-			/// Not connected? Should not happen.
-			return res.forbidden();
-		}
-		
-		if (currentUserIndex > 0) {
-			connectedUserIds.splice(currentUserIndex, 1);
-			connectedUserIds.unshift(req.user.id);
-		}
-		
-		return res.json(connectedUserIds);
+
+		LegacyConnection.find().then(function(legacyConnections) {
+			var legacyUsers =  legacyConnections.map(function(legacyConnection) {
+				return legacyConnection.user;
+			});
+			
+			onlineUsers = onlineUsers.concat(legacyUsers);
+			
+			/// First one will be current user id.
+			var currentUserIndex = onlineUsers.indexOf(req.user.id);
+			
+			if (currentUserIndex < 0) {
+				/// Not online? Should not happen.
+				return res.notFound();
+			}
+			
+			if (currentUserIndex > 0) {
+				onlineUsers.splice(currentUserIndex, 1);
+				onlineUsers.unshift(req.user.id);
+			}
+			
+			return res.json(onlineUsers);
+		}).catch(function(err) {
+			console.log(err);
+			return res.serverError(err);
+		})
 	}
 };
 

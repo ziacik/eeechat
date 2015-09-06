@@ -122,7 +122,7 @@ module.exports.sockets = {
 	***************************************************************************/
 	afterDisconnect: function(session, socket, cb) {
 		if (session && session.passport && session.passport.user) {
-			var roomName = 'connectedUser' + session.passport.user;
+			var roomName = 'onlineUser' + session.passport.user;
 			sails.sockets.leave(socket, roomName);
 			
 			var isNowOffline = sails.sockets.subscribers(roomName).length === 0;

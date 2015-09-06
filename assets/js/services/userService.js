@@ -40,7 +40,7 @@ function UserService($sails, $rootScope, $filter) {
 		return $sails.get('/users').then(function(res) {
 			self.allUsers = res.data;
 			self.modelUpdater = $sails.$modelUpdater('user', self.allUsers);			
-			return $sails.get('/users/connected')			
+			return $sails.get('/users/online')			
 		}).then(function(res) {
 			self.myUserId = res.data[0];
 			self.connectedUsers = res.data.map(function(userId) {
