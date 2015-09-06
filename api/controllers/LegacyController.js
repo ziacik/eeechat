@@ -19,38 +19,39 @@ module.exports = {
 	},
 	
 	changeState : function(req, res) {
-		var userId = parseInt(req.param('myUserID'));
-		var isConnect = req.param('state') > 0;
+		var legacyUserId = parseInt(req.param('myUserID'));
 		
-		if (isConnect) {
-			LegacyConnection.findOne(userId).then(function(user) {
-				if (user) {
-					return res.view('legacy/changeState');
-				}
-				
-				return LegacyConnection.create({
-					user : userId,
-					lastAccess : new Date().toISOString()
-				}).then(function() {
-					User.message(userId, {
-						state : 'online'
-					});
+		User.findOne({ legacyId : legacyUserId }).then(function(user) {
+			var isConnect = req.param('state') > 0;
+			
+			if (isConnect) {
+				return LegacyConnection.findOne({ user : user.id }).then(function(connection) {
+					if (connection) {
+						return res.view('legacy/changeState');
+					}
 					
-					return res.view('legacy/changeState');
+					return LegacyConnection.create({
+						user : user.id,
+						lastAccess : new Date().toISOString()
+					}).then(function() {
+						User.message(user.id, {
+							state : 'online'
+						});
+						
+						return res.view('legacy/changeState');
+					});
 				});
-			}).catch(function(err) {
-				return res.serverError(err);				
-			})
-		} else {
-			LegacyConnection.destroy(userId).then(function() {
-				User.message(userId, {
-					state : 'offline'
-				});
-				return res.view('legacy/changeState');				
-			}).catch(function(err) {
-				return res.serverError(err);				
-			})
-		}		
+			} else {
+				LegacyConnection.destroy(user.id).then(function() {
+					User.message(user.id, {
+						state : 'offline'
+					});
+					return res.view('legacy/changeState');				
+				})
+			}			
+		}).catch(function(err) {
+			return res.serverError(err);				
+		})		
 	},
 	
 	getUsers : function(req, res) {

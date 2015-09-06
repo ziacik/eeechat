@@ -20,6 +20,10 @@ var User = {
         imageUrl : {
 	        type : 'string'
         },
+        legacyId : {
+        	type : 'integer',
+        	autoIncrement : true
+        },
         legacySalt : {
 	        type : 'string'
         },
