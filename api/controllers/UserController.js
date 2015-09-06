@@ -15,7 +15,6 @@ module.exports = {
 		
 		if (req.socket) {
 			var roomName = 'connectedUser' + req.user.id;
-			console.log(roomName)
 			sails.sockets.join(req.socket, roomName);
 			
  			if (sails.sockets.subscribers(roomName).length == 1) {

@@ -13,10 +13,43 @@ module.exports = {
 			return res.error(err);
 		})
 	},
-	
+
 	getRooms : function(req, res) {
 		return res.view('legacy/getRooms');
-	}
+	},
+	
+	changeState : function(req, res) {
+		return res.view('legacy/changeState');
+	},
+	
+	getUsers : function(req, res) {
+		//TODO deduplicate by refactoring into service
+		var connectedUserRooms = sails.sockets.rooms().filter(function(roomName) {
+			return roomName.indexOf('connectedUser') === 0;
+		});
+		
+		var connectedUserIds = connectedUserRooms.map(function(roomName) {
+			var idStr = roomName.substr(13);
+			var id;
+			if (isNaN(idStr)) {
+				return idStr;
+			} else {
+				return parseInt(idStr);
+			}			
+		});
+		
+		console.log(connectedUserIds);
+		
+		User.find().where({ id : connectedUserIds }).then(function(users) {
+			console.log('USERS', users)
+			return res.view('legacy/getUsers', { users : users });			
+		}).catch (function(err) {
+			//TODO
+		})		
+	},	
 
+	getMessages : function(req, res) {
+		return res.view('legacy/getMessages', { messages : [] });
+	}
 };
 
