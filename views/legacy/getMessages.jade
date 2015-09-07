@@ -2,10 +2,9 @@ EeeDataSet(xmlns="http://tempuri.org/EeeDataSet.xsd")
 	for message in messages
 		Message
 			MessageID= message.legacyId
-			FromUserID= message.sender
-			ToUserID 0
+			FromUserID= message.sender.legacyId
 			Message= message.content
 			Time 12:00
 			Seen 1
-			Login kolik
+			Login= message.sender.username
 			Color 0

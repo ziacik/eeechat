@@ -85,6 +85,18 @@ module.exports = {
 	},
 
 	getMessages : function(req, res) {
-		return res.view('legacy/getMessages', { messages : [] });
+		var fromId = parseInt(req.param('fromID'));
+		
+		var today = new Date();
+		today.setHours(0, 0, 0, 0);
+		
+		Message.find({
+			createdAt : { '>' : today },
+			legacyId : { '>' : fromId }
+		})
+		.populateAll()
+		.then(function(messages) {
+			return res.view('legacy/getMessages', { messages : messages });			
+		})		
 	}
 };
