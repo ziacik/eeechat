@@ -19,6 +19,16 @@ module.exports = {
 		content : {
 			type : 'string',
 			required : true
-		}
-	}
+		},
+        legacyId : {
+        	type : 'integer',
+        	required : true,
+        	unique : true
+        }
+	},
+    
+	beforeValidate : function(values, next) {
+    	values.legacyId = legacyIdProvider.newMessageId();
+    	next();
+    }
 };
