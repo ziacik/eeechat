@@ -98,5 +98,9 @@ module.exports = {
 		.then(function(messages) {
 			return res.view('legacy/getMessages', { messages : messages });			
 		})		
+	},
+	
+	getUpdates : function(req, res) {
+		return res.view('legacy/getUpdates');
 	}
 };

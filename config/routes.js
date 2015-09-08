@@ -44,5 +44,6 @@ module.exports.routes = {
 	'/legacy/getrooms.php' : 'LegacyController.getRooms',
 	'/legacy/getusers.php' : 'LegacyController.getUsers',
 	'/legacy/getmessages.php' : 'LegacyController.getMessages',
-	'/legacy/changestate.php' : 'LegacyController.changeState'
+	'/legacy/changestate.php' : 'LegacyController.changeState',
+	'/legacy/getupdates.php' : 'LegacyController.getUpdates'
 };
