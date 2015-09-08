@@ -102,5 +102,22 @@ module.exports = {
 	
 	getUpdates : function(req, res) {
 		return res.view('legacy/getUpdates');
+	},
+	
+	addMessage : function(req, res) {
+		var content = req.param('message');
+		var legacySenderId = req.param('myUserID');
+		
+		User.findOne({ legacyId : legacySenderId }).then(function(user) {
+			return Message.create({
+				sender : user.id,
+				content : content
+			}).then(function(message) {
+				Message.publishCreate(message);
+				return res.view('legacy/addMessage');
+			});			
+		}).catch(function(err) {
+			return res.serverError(err);
+		})
 	}
 };

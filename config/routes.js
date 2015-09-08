@@ -45,5 +45,6 @@ module.exports.routes = {
 	'/legacy/getusers.php' : 'LegacyController.getUsers',
 	'/legacy/getmessages.php' : 'LegacyController.getMessages',
 	'/legacy/changestate.php' : 'LegacyController.changeState',
-	'/legacy/getupdates.php' : 'LegacyController.getUpdates'
+	'/legacy/getupdates.php' : 'LegacyController.getUpdates',
+	'/legacy/addmessage.php' : 'LegacyController.addMessage'
 };
