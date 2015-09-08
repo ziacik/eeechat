@@ -6,7 +6,7 @@ EeeDataSet(xmlns="http://tempuri.org/EeeDataSet.xsd")
 			ToUserID 0
 			RoomID 0
 			Message= message.content
-			Time= message.createdAt
+			Time= message.createdAt.toISOString()
 			Seen 1
 			Login= message.sender.username
 			Color 2
