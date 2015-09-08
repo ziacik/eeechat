@@ -9,7 +9,7 @@ function UserService($sails, $rootScope, $filter) {
 	this.connectedUsers;
 	
 	this.modelUpdater;
-	this.modelUpdater2;	
+	this.modelUpdater2;
 
 	this.subscribe = function() {
 		if (this.modelUpdater) {

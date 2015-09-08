@@ -131,6 +131,8 @@ module.exports.sockets = {
 				User.message(session.passport.user, {
 					state : 'offline'
 				}, socket);
+				
+ 				legacyUserStatusService.userDisconnect(session.passport.user);
 			}
 		}
 		return cb();

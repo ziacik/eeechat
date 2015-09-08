@@ -10,3 +10,15 @@ EeeDataSet(xmlns="http://tempuri.org/EeeDataSet.xsd")
 			Seen 1
 			Login= message.sender.username
 			Color 2
+	for statusChange in statusChanges
+		Message
+			MessageID= statusChange.legacyMessageId
+			FromUserID= statusChange.user.legacyId
+			ToUserID 0
+			RoomID 0
+			Message
+				| [STATE #{statusChange.user.username};#{statusChange.state};;Eeechat.net]
+			Time= statusChange.createdAt.toISOString()
+			Seen 1
+			Login= statusChange.user.username
+			Color 0

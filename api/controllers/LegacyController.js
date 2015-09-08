@@ -38,6 +38,8 @@ module.exports = {
 							state : 'online'
 						});
 						
+						legacyUserStatusService.userConnect(user.id);
+						
 						return res.view('legacy/changeState');
 					});
 				});
@@ -46,7 +48,10 @@ module.exports = {
 					User.message(user.id, {
 						state : 'offline'
 					});
-					return res.view('legacy/changeState');				
+					
+					legacyUserStatusService.userDisconnect(user.id);
+
+					return res.view('legacy/changeState');
 				})
 			}			
 		}).catch(function(err) {
@@ -96,8 +101,15 @@ module.exports = {
 		})
 		.populateAll()
 		.then(function(messages) {
-			return res.view('legacy/getMessages', { messages : messages });			
-		})		
+			return legacyUserStatusService.getStatusChanges(fromId).then(function(statusChanges) {
+				return res.view('legacy/getMessages', { 
+					messages : messages, 
+					statusChanges : statusChanges 
+				});
+			})
+		}).catch(function(err) {
+			return res.serverError(err);
+		})
 	},
 	
 	getUpdates : function(req, res) {

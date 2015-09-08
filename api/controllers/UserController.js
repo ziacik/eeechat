@@ -21,6 +21,8 @@ module.exports = {
  				User.message(req.user.id, {
  					state : 'online'
  				}, req.socket);
+ 				
+ 				legacyUserStatusService.userConnect(req.user.id);
  			}
 		}
 		
