@@ -23,7 +23,10 @@ var User = {
         legacyId : {
         	type : 'integer',
         	required : true,
-        	unique : true
+        	unique : true,
+        	defaultsTo : function() {
+        		return legacyIdProvider.newUserId();
+        	}
         },
         legacySalt : {
 	        type : 'string'
@@ -35,11 +38,6 @@ var User = {
 	        type : 'string',
 	        protected : true
         }
-    },
-    
-    beforeValidate : function(values, next) {
-    	values.legacyId = legacyIdProvider.newUserId();
-    	next();
     }
 };
 

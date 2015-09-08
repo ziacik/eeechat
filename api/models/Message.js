@@ -23,12 +23,10 @@ module.exports = {
         legacyId : {
         	type : 'integer',
         	required : true,
-        	unique : true
+        	unique : true,
+        	defaultsTo : function() {
+        		return legacyIdProvider.newMessageId();
+        	}
         }
-	},
-    
-	beforeValidate : function(values, next) {
-    	values.legacyId = legacyIdProvider.newMessageId();
-    	next();
-    }
+	}
 };
