@@ -92,7 +92,7 @@ module.exports = {
 		
 		Message.find({
 			createdAt : { '>' : today },
-			legacyId : { '>' : fromId }
+			legacyId : { '>=' : fromId }
 		})
 		.populateAll()
 		.then(function(messages) {
