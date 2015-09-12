@@ -6,7 +6,7 @@ form(novalidate, name='settingsForm', ng-submit='settingsForm.$valid && save()')
 	+check('showDesktopNotifications', 'Zobraziť desktop notifikácie', 'settings.showDesktopNotifications')
 	+check('showTitleNotifications', 'Zobraziť notifikácie v ráme', 'settings.showTitleNotifications')
 	+numberRequired('desktopNotificationInterval', 'Dĺžka zobrazenia desktop notifikácie (s)', 'settings.desktopNotificationInterval')
-	+numberRequired('titleNotificationInteval', 'Dĺžka zobrazenia notifikácie v ráme (s)', 'settings.titleNotificationInteval')
+	+numberRequired('titleNotificationInterval', 'Dĺžka zobrazenia notifikácie v ráme (s)', 'settings.titleNotificationInterval')
 
 	.pull-right
 		+submit('Uložiť')(ng-disabled='settingsForm.$invalid')

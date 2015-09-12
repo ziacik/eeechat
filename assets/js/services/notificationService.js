@@ -21,15 +21,19 @@ function NotificationService($timeout, $window, $notification, userService, sett
 			return;
 		}
 		
-		var sender = userService.getById(message.sender);
+		if (settingsService.settings.showDesktopNotifications) {
+			var sender = userService.getById(message.sender);
+			
+			$notification(sender.username, {
+				body : message.content,
+				delay : settingsService.settings.desktopNotificationInterval * 1000,
+				icon : settingsService.settings.showAvatars ? sender.imageUrl : null
+			});
+		}
 		
-		$notification(sender.username, {
-			body : message.content,
-			delay : settingsService.settings.desktopNotificationInterval * 1000,
-			icon : settingsService.settings.showAvatars ? sender.imageUrl : null
-		});
-		
-		this.startTitleNotifyBlink(message);
+		if (settingsService.settings.showTitleNotifications) {
+			this.startTitleNotifyBlink(message);
+		}
 	};
 	
 	
@@ -64,7 +68,7 @@ function NotificationService($timeout, $window, $notification, userService, sett
 		
 		this.titleNotification = $timeout(function() {
 			self.titleNotifyBlink(senderName, contentPart);
-		}, 1000);
+		}, settingsService.settings.titleNotificationInterval * 1000);
 	};
 	
 	return self;

@@ -1,12 +1,12 @@
 mixin menu()
 	li.dropdown
-		a.dropdown-toggle(href='#', data-toggle='dropdown', role='button', aria-haspopup='true', aria-expanded='false')
+		a.dropdown-toggle(href='', data-toggle='dropdown', role='button', aria-haspopup='true', aria-expanded='false')
 			i.glyphicon.glyphicon-menu-hamburger(aria-hidden='true')
 	
 		//- Menu items
 		ul.dropdown-menu
 			li
-				a(href, ng-dialog='settings/template', ng-dialog-controller='SettingsController')
+				a(href='', ng-dialog='settings/template', ng-dialog-controller='SettingsController')
 					i.glyphicon.glyphicon-check.icon-indent
 					| Nastavenia
 			li.divider(role='separator')
@@ -32,7 +32,7 @@ mixin messageList()
 					i.glyphicon.glyphicon-cog.gly-spin
 				small(style="padding-left:0.6em", ng-show="message.state === 'failed'")
 					i.glyphicon.glyphicon-exclamation-sign
-					a(href="#", ng-show="connected")
+					a(href="", ng-show="connected")
 						i.glyphicon.glyphicon-repeat
 				small.pull-right.text-muted(style="padding-left:0.6em", ng-show="message.updatedAt !== message.createdAt")
 					span.glyphicon.glyphicon-time
