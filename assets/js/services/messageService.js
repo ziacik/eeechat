@@ -102,8 +102,8 @@ function MessageService($sails, $rootScope, $timeout, $window, userService, noti
 			.catch(self.errorFunc(message));
 		}
 	}
+	
+	return self;
 }
 
-module.factory('messageService', ['$sails', '$rootScope', '$timeout', '$window', 'userService', 'notificationService', function($sails, $rootScope, $timeout, $window, userService, notificationService) {
-	return new MessageService($sails, $rootScope, $timeout, $window, userService, notificationService);
-}]);
+module.factory('messageService', ['$sails', '$rootScope', '$timeout', '$window', 'userService', 'notificationService', MessageService ]);

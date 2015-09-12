@@ -1,29 +1,15 @@
-var module = angular.module('chatServiceModule', ['ngSails', 'userServiceModule', 'messageServiceModule']);
+var module = angular.module('chatServiceModule', ['ngSails', 'userServiceModule', 'messageServiceModule', 'settingsServiceModule']);
 
-function ChatService($sails, $rootScope, userService, messageService) {
+function ChatService($sails, $rootScope, userService, messageService, settingsService) {
 	var self = this;
 	this.connected = false;	
 	
 	this.connect = function() {
 		self.connected = true;
-		self.prepareChat();
+		settingsService.load();
 		userService.subscribe();
 		messageService.subscribe();
 		$rootScope.$broadcast('connectionUpdated');
-	}
-	
-	this.prepareChat = function() {
-		$sails.get('/settings').then(function(res) {
-			self.settings = res.data;
-			$rootScope.$broadcast('chatReady');
-		}).catch(function(err) {
-			console.log(err);
-			alert('Chyba pri čítaní nastavení. Obnovte stránku.');
-		})
-	}
-	
-	this.saveSettings = function() {
-		return $sails.put('/settings', self.settings);
 	}
 	
 	$sails.on('disconnect', function() {
@@ -36,8 +22,8 @@ function ChatService($sails, $rootScope, userService, messageService) {
 			self.connect();
 		}
 	})
+	
+	return self;
 }
 
-module.factory('chatService', ['$sails', '$rootScope', 'userService', 'messageService', function($sails, $rootScope, userService, messageService) {
-	return new ChatService($sails, $rootScope, userService, messageService);
-}]);
+module.factory('chatService', ['$sails', '$rootScope', 'userService', 'messageService', 'settingsService', ChatService ]);

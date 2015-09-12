@@ -1,12 +1,12 @@
-var module = angular.module('settingsControllerModule', ['chatServiceModule']);
+var module = angular.module('settingsControllerModule', ['settingsServiceModule']);
 
-module.controller('SettingsController', [ '$scope', 'chatService', SettingsController]);
+module.controller('SettingsController', [ '$scope', 'settingsService', SettingsController]);
 
-function SettingsController($scope, chatService) {
-	$scope.settings = chatService.settings;
+function SettingsController($scope, settingsService) {
+	$scope.settings = settingsService.settings;
 	
 	$scope.save = function() {		
-		chatService.saveSettings().catch(function(err) {
+		settingsService.save().catch(function(err) {
 			alert('Chyba pri ukladaní nastavení.');
 		});
 		$scope.closeThisDialog();

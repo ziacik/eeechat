@@ -1,6 +1,6 @@
-var module = angular.module('notificationServiceModule', ['userServiceModule', 'notification']);
+var module = angular.module('notificationServiceModule', ['userServiceModule', 'settingsServiceModule', 'notification']);
 
-function NotificationService($timeout, $window, $notification, userService) {
+function NotificationService($timeout, $window, $notification, userService, settingsService) {
 	var self = this;
 
 	this.titleChanged = false;
@@ -25,8 +25,8 @@ function NotificationService($timeout, $window, $notification, userService) {
 		
 		$notification(sender.username, {
 			body : message.content,
-			delay : 3000,
-			icon : sender.imageUrl
+			delay : settingsService.settings.desktopNotificationInterval * 1000,
+			icon : settingsService.settings.showAvatars ? sender.imageUrl : null
 		});
 		
 		this.startTitleNotifyBlink(message);
@@ -66,8 +66,8 @@ function NotificationService($timeout, $window, $notification, userService) {
 			self.titleNotifyBlink(senderName, contentPart);
 		}, 1000);
 	};
+	
+	return self;
 }
 
-module.factory('notificationService', ['$timeout', '$window', '$notification', 'userService', function($timeout, $window, $notification, userService) {
-	return new NotificationService($timeout, $window, $notification, userService);
-}]);
+module.factory('notificationService', ['$timeout', '$window', '$notification', 'userService', 'settingsService', NotificationService ]);
