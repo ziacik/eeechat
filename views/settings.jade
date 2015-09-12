@@ -1,0 +1,11 @@
+include includes/inputs
+
+form.form-horizontal
+	+dropDown('sendkey', 'Odoslať pomocou', ['Enter', 'Ctrl+Enter', 'Alt+Enter', 'Alt+S', 'Ctrl+S', 'Shift+Enter'], 'settings.sendKey')
+	+check('showAvatars', 'Zobraziť avatary', 'settings.showAvatars')
+	+check('showDesktopNotifications', 'Zobraziť desktop notifikácie', 'settings.showDesktopNotifications')
+	+check('showTitleNotifications', 'Zobraziť notifikácie v ráme', 'settings.showTitleNotifications')
+	+number('desktopNotificationInterval', 'Dĺžka zobrazenia desktop notifikácie (s)', 'settings.desktopNotificationInterval')
+	+number('titleNotificationInteval', 'Dĺžka zobrazenia notifikácie v ráme (s)', 'settings.titleNotificationInteval')
+
+	+submit('Uložiť')(ng-click='save()')

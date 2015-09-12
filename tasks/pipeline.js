@@ -37,6 +37,7 @@ var jsFilesToInject = [
   '/vendor/angular-inview/angular-inview.js',
   '/vendor/angular-elastic/elastic.js',
   '/vendor/angular-notification/angular-notification.js',
+  '/vendor/ngDialog/js/ngDialog.js',
 
   // All of the rest of your client-side js files
   // will be injected here in no particular order.

@@ -3,6 +3,7 @@ angular.module('eeechat', [
 	'chatControllerModule',
 	'userControllerModule',
 	'messageControllerModule',
+	'settingsControllerModule',
 	'userFiltersModule',
 	'autoFocusModule',
 	'angular-inview',

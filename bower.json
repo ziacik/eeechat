@@ -13,7 +13,8 @@
     "angular-notification": "~1.1.1",
     "angular-sails": "~1.1.4",
     "bootstrap": "~3.3.5",
-    "bootstrap-social": "~4.9.1"
+    "bootstrap-social": "~4.9.1",
+    "ngDialog": "~0.5.1"
   },
   "exportsOverride": {
     "bootstrap": {

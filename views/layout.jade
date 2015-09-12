@@ -13,9 +13,12 @@ html
 		link(rel="stylesheet", href="/styles/importer.css")
 		link(rel="stylesheet", href="/vendor/bootstrap-social/bootstrap-social.css")
 		link(rel="stylesheet", href="/vendor/font-awesome/css/font-awesome.css")
+		link(rel="stylesheet", href="/vendor/ngDialog/css/ngDialog-theme-default.css")
+		link(rel="stylesheet", href="/vendor/ngDialog/css/ngDialog.css")
 		// STYLES END
 	
 		block styles
+		block scripts
 	
 	body(ng-app="eeechat")
 		block body
@@ -30,9 +33,11 @@ html
 		script(src="/vendor/angular-inview/angular-inview.js")
 		script(src="/vendor/angular-elastic/elastic.js")
 		script(src="/vendor/angular-notification/angular-notification.js")
+		script(src="/vendor/ngDialog/js/ngDialog.js")
 		script(src="/js/app.js")
 		script(src="/js/controllers/chatController.js")
 		script(src="/js/controllers/messageController.js")
+		script(src="/js/controllers/settingsController.js")
 		script(src="/js/controllers/userController.js")
 		script(src="/js/directives/autoFocus.js")
 		script(src="/js/filters/userFilters.js")

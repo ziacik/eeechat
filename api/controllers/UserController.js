@@ -59,7 +59,7 @@ module.exports = {
 				onlineUsers.unshift(req.user.id);
 			}
 			
-			return res.json(onlineUsers);
+			return res.ok(onlineUsers);
 		}).catch(function(err) {
 			console.log(err);
 			return res.serverError(err);

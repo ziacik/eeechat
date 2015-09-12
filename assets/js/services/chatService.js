@@ -2,13 +2,28 @@ var module = angular.module('chatServiceModule', ['ngSails', 'userServiceModule'
 
 function ChatService($sails, $rootScope, userService, messageService) {
 	var self = this;
-	this.connected = false;
+	this.connected = false;	
 	
 	this.connect = function() {
 		self.connected = true;
+		self.prepareChat();
 		userService.subscribe();
-		messageService.subscribe();	
+		messageService.subscribe();
 		$rootScope.$broadcast('connectionUpdated');
+	}
+	
+	this.prepareChat = function() {
+		$sails.get('/settings').then(function(res) {
+			self.settings = res.data;
+			$rootScope.$broadcast('chatReady');
+		}).catch(function(err) {
+			console.log(err);
+			alert('Chyba pri čítaní nastavení. Obnovte stránku.');
+		})
+	}
+	
+	this.saveSettings = function() {
+		return $sails.put('/settings', self.settings);
 	}
 	
 	$sails.on('disconnect', function() {

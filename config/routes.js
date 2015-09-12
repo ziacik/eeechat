@@ -39,6 +39,12 @@ module.exports.routes = {
 	 **************************************************************************/
 
 	'/' : 'AppController.main',
+	
+	'/settings/template' : {
+		view : 'settings'
+	},
+	
+	'PUT /settings' : 'SettingsController.save',
 
 	'/legacy/getuser.php' : 'LegacyController.getUser',
 	'/legacy/getrooms.php' : 'LegacyController.getRooms',

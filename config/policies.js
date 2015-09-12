@@ -28,5 +28,9 @@ module.exports.policies = {
 
     MessageController : {
 	    create : [ 'passport', 'sessionAuth', 'sender' ]
+    },
+    
+    SettingsController : {
+    	'*' : [ 'passport', 'sessionAuth', 'user' ]
     }
 };

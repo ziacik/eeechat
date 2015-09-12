@@ -1,0 +1,47 @@
+doctype html
+
+mixin label(forWhat, text)
+	.form-group
+		label.col-sm-5.control-label(for=forWhat)!= text
+		.col-sm-7
+			block
+		
+mixin offset()
+	.form-group
+		.col-sm-offset-5.col-sm-7
+			block
+
+mixin submit(text)
+	+offset()
+		button.btn.btn-warning(type='submit', title=text)&attributes(attributes)= text	
+
+mixin inputHidden(id, model)
+	input(type='hidden', name=id, id=id, ng-model=model)
+
+mixin inputRequired(type, id, text, model)
+	+label(id, text)
+		input.form-control(type=type, name=id, id=id, required, ng-model=model)
+
+mixin input(type, id, text, model)
+	+label(id, text)
+		input.form-control(type=type, name=id, id=id, ng-model=model)
+
+mixin inputWithPlaceholder(type, id, text, model)
+	+offset()
+		input.form-control(type=type, name=id, id=id, ng-model=model, placeholder=text)
+	
+mixin number(id, text, model)
+	+input('number', id, text, model)
+
+mixin check(id, text, model)
+	+offset()
+		.checkbox
+			label
+				input(type='checkbox', name=id, id=id, ng-model=model)
+				!= text
+
+mixin dropDown(id, text, options, model)
+	+label(id, text)
+		select.form-control(id=id, name=id, ng-model=model)
+			for option in options
+				option= option
