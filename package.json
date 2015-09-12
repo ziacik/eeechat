@@ -2,7 +2,6 @@
   "dependencies": {
     "bcryptjs": "^2.2.1",
     "connect-mongo": "^0.8.2",
-    "ejs": "~0.8.4",
     "grunt": "0.4.2",
     "grunt-contrib-clean": "~0.5.0",
     "grunt-contrib-coffee": "~0.10.1",
@@ -31,10 +30,10 @@
     "validator": "^4.0.3"
   },
   "name": "eeechat",
-  "private": true,
+  "private": false,
   "version": "0.0.0",
-  "description": "a Sails application",
-  "keywords": [],
+  "description": "Multiuser chat application",
+  "keywords": [ "chat" ],
   "scripts": {
     "debug": "node debug app.js",
     "start": "node app.js"
@@ -44,7 +43,7 @@
     "type": "git",
     "url": "git://github.com/ziacik/eeechat.git"
   },
-  "author": "ziacik",
+  "author": "František Žiačik <ziacik@gmail.com>",
   "license": "",
   "devDependencies": {
     "grunt-bower-task": "^0.4.0"
