@@ -46,7 +46,8 @@ module.exports = {
 		desktopNotificationInterval : {
 			type : 'integer',
 			required : true,
-			defaultsTo : 6
+			defaultsTo : 6,
+			min : 1
 		},
 		showTitleNotifications : {
 			type : 'boolean',
@@ -56,7 +57,8 @@ module.exports = {
 		titleNotificationInterval : {
 			type : 'integer',
 			required : true,
-			defaultsTo : 2
+			defaultsTo : 2,
+			min : 1
 		}
 	}
 };

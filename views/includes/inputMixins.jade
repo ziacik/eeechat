@@ -19,13 +19,13 @@ mixin inputRequired(type, id, text, model)
 	.form-group
 		+label(id, text)
 		+offset()
-			input.form-control(type=type, name=id, id=id, required, ng-model=model)
+			input.form-control(type=type, name=id, id=id, required, ng-model=model)&attributes(attributes)
 
 mixin input(type, id, text, model)
 	.form-group
 		+label(id, text)
 		+offset()
-			input.form-control(type=type, name=id, id=id, ng-model=model)
+			input.form-control(type=type, name=id, id=id, ng-model=model)&attributes(attributes)
 
 mixin inputWithPlaceholder(type, id, text, model)
 	.form-group
@@ -33,10 +33,10 @@ mixin inputWithPlaceholder(type, id, text, model)
 		input.form-control(type=type, name=id, id=id, ng-model=model, placeholder=text)
 	
 mixin number(id, text, model)
-	+input('number', id, text, model)
+	+input('number', id, text, model)(attributes=attributes)
 
 mixin numberRequired(id, text, model)
-	+inputRequired('number', id, text, model)
+	+inputRequired('number', id, text, model)&attributes(attributes)
 
 mixin check(id, text, model)
 	+offset()

@@ -15,8 +15,8 @@ include includes/inputMixins
 					+check('showAvatars', 'Zobraziť avatary', 'settings.showAvatars')
 					+check('showDesktopNotifications', 'Zobraziť desktop notifikácie', 'settings.showDesktopNotifications')
 					+check('showTitleNotifications', 'Zobraziť notifikácie v ráme', 'settings.showTitleNotifications')
-					+numberRequired('desktopNotificationInterval', 'Dĺžka zobrazenia desktop notifikácie (s)', 'settings.desktopNotificationInterval')
-					+numberRequired('titleNotificationInterval', 'Dĺžka zobrazenia notifikácie v ráme (s)', 'settings.titleNotificationInterval')
+					+numberRequired('desktopNotificationInterval', 'Dĺžka zobrazenia desktop notifikácie (s)', 'settings.desktopNotificationInterval')(min=1)
+					+numberRequired('titleNotificationInterval', 'Dĺžka zobrazenia notifikácie v ráme (s)', 'settings.titleNotificationInterval')(min=1)
 				
 			.modal-footer
-				+submit('OK')(ng-disabled='settingsForm.$invalid', ng-click='close()', data-dismiss='modal')
+				+submit('OK')(ng-disabled='settingsForm.$invalid', ng-click='close("OK")', data-dismiss='modal')

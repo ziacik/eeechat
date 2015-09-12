@@ -5,7 +5,7 @@ module.controller('SettingsController', [ '$scope', 'settingsService', 'close', 
 function SettingsController($scope, settingsService, close) {
 	var self = this;
 	
-	$scope.settings = settingsService.settings;
+	$scope.settings = angular.extend({}, settingsService.settings);
 	
 	$scope.save = function() {		
 		settingsService.save().catch(function(err) {
@@ -14,7 +14,10 @@ function SettingsController($scope, settingsService, close) {
 	}
 	
 	$scope.close = function(result) {
-		$scope.save();		
+		if (result === 'OK') {
+			angular.extend(settingsService.settings, $scope.settings);
+			$scope.save();
+		}
 		close(result, 500);
 	}
 }
