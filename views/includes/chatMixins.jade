@@ -17,7 +17,9 @@ mixin menu()
 
 mixin userList()
 	li(ng-repeat="user in users")
-		img.chat-img.img-circle.img-thumbnail.img-responsive.avatar(ng-src="{{ user.imageUrl }}", alt="{{ user.username }}", title="{{ user.username }}")
+		img.chat-img.img-circle.img-thumbnail.img-responsive.avatar(ng-src="{{ user.imageUrl }}", alt="{{ user.username }}", title="{{ user.username }}", ng-show="settings.showAvatars")
+		a(href="", ng-show="!settings.showAvatars")
+			{{ user.username }}
 
 mixin messageList()
 	li.left.clear-fix(ng-repeat="message in messages")
