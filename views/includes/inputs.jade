@@ -33,6 +33,9 @@ mixin inputWithPlaceholder(type, id, text, model)
 mixin number(id, text, model)
 	+input('number', id, text, model)
 
+mixin numberRequired(id, text, model)
+	+inputRequired('number', id, text, model)
+
 mixin check(id, text, model)
 	+offset()
 		.checkbox

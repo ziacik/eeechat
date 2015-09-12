@@ -159,3 +159,7 @@ footer
     transform: rotate(359deg);
   }
 }
+
+input.ng-invalid.ng-touched {
+    background-color: #FA787E;
+}

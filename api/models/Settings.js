@@ -18,26 +18,32 @@ module.exports = {
 		sendKey : {
 			type : 'string',
 			enum : [ 'Enter', 'Ctrl+Enter', 'Alt+Enter', 'Alt+S', 'Ctrl+S', 'Shift+Enter' ],
+			required : true,
 			defaultsTo : 'Enter'
 		},
 		showAvatars : {
 			type : 'boolean',
+			required : true,
 			defaultsTo : true
 		},
 		showDesktopNotifications : {
 			type : 'boolean',
+			required : true,
 			defaultsTo : true
 		},
 		desktopNotificationInterval : {
 			type : 'integer',
+			required : true,
 			defaultsTo : 6
 		},
 		showTitleNotifications : {
 			type : 'boolean',
+			required : true,
 			defaultsTo : true
 		},
 		titleNotificationInteval : {
 			type : 'integer',
+			required : true,
 			defaultsTo : 2
 		}
 	}

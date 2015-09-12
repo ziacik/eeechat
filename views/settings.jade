@@ -1,14 +1,14 @@
 include includes/inputs
 
-form
+form(novalidate, name='settingsForm', ng-submit='settingsForm.$valid && save()')
 	+dropDown('sendkey', 'Odoslať pomocou', ['Enter', 'Ctrl+Enter', 'Alt+Enter', 'Alt+S', 'Ctrl+S', 'Shift+Enter'], 'settings.sendKey')
 	+check('showAvatars', 'Zobraziť avatary', 'settings.showAvatars')
 	+check('showDesktopNotifications', 'Zobraziť desktop notifikácie', 'settings.showDesktopNotifications')
 	+check('showTitleNotifications', 'Zobraziť notifikácie v ráme', 'settings.showTitleNotifications')
-	+number('desktopNotificationInterval', 'Dĺžka zobrazenia desktop notifikácie (s)', 'settings.desktopNotificationInterval')
-	+number('titleNotificationInteval', 'Dĺžka zobrazenia notifikácie v ráme (s)', 'settings.titleNotificationInteval')
+	+numberRequired('desktopNotificationInterval', 'Dĺžka zobrazenia desktop notifikácie (s)', 'settings.desktopNotificationInterval')
+	+numberRequired('titleNotificationInteval', 'Dĺžka zobrazenia notifikácie v ráme (s)', 'settings.titleNotificationInteval')
 
 	.pull-right
-		+submit('Uložiť')(ng-click='save()')
+		+submit('Uložiť')(ng-disabled='settingsForm.$invalid')
 	
 	.clearfix
