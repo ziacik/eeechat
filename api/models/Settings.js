@@ -29,7 +29,7 @@ module.exports = {
 		},
 		sendKey : {
 			type : 'string',
-			enum : [ 'Enter', 'Ctrl+Enter', 'Alt+Enter', 'Alt+S', 'Ctrl+S', 'Shift+Enter' ],
+			enum : [ 'Enter', 'Ctrl+Enter', 'Alt+Enter', 'Shift+Enter', 'Alt+S', 'Ctrl+S' ],
 			required : true,
 			defaultsTo : 'Enter'
 		},

@@ -1,7 +1,7 @@
 include includes/inputMixins
 
 form(novalidate, name='settingsForm', ng-submit='settingsForm.$valid && save()')
-	+dropDown('sendkey', 'Odoslať pomocou', ['Enter', 'Ctrl+Enter', 'Alt+Enter', 'Alt+S', 'Ctrl+S', 'Shift+Enter'], 'settings.sendKey')
+	+dropDown('sendkey', 'Odoslať pomocou', ['Enter', 'Ctrl+Enter', 'Alt+Enter', 'Shift+Enter', 'Alt+S', 'Ctrl+S'], 'settings.sendKey')
 	+check('showAvatars', 'Zobraziť avatary', 'settings.showAvatars')
 	+check('showDesktopNotifications', 'Zobraziť desktop notifikácie', 'settings.showDesktopNotifications')
 	+check('showTitleNotifications', 'Zobraziť notifikácie v ráme', 'settings.showTitleNotifications')

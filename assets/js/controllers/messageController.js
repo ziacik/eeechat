@@ -1,6 +1,8 @@
-var module = angular.module('messageControllerModule', [ 'messageServiceModule', 'notification' ]);
+var module = angular.module('messageControllerModule', [ 'messageServiceModule', 'settingsServiceModule', 'notification' ]);
 
-module.controller('MessageController', ['$scope', '$filter', '$location', '$anchorScroll', '$timeout', '$notification', 'messageService', function($scope, $filter, $location, $anchorScroll, $timeout, $notification, messageService) {
+module.controller('MessageController', ['$scope', '$filter', '$location', '$anchorScroll', '$timeout', '$notification', 'settingsService', 'messageService', MessageController ]);
+
+function MessageController($scope, $filter, $location, $anchorScroll, $timeout, $notification, settingsService, messageService) {
 	var self = this;
 	
 	$scope.text = '';
@@ -39,6 +41,36 @@ module.controller('MessageController', ['$scope', '$filter', '$location', '$anch
 		self.scrollDown();
 	});
 	
+	$scope.sendIfKeyPressed = function($event) {
+		var pressed = false;
+		
+		switch (settingsService.settings.sendKey) {
+		case 'Enter':
+			pressed = $event.keyCode == 13 && !$event.ctrlKey && !$event.altKey && !$event.shiftKey;
+			break;
+		case 'Ctrl+Enter':
+			pressed = $event.keyCode == 13 && $event.ctrlKey && !$event.altKey && !$event.shiftKey;
+			break;
+		case 'Alt+Enter':
+			pressed = $event.keyCode == 13 && !$event.ctrlKey && $event.altKey && !$event.shiftKey;
+			break;
+		case 'Shift+Enter':
+			pressed = $event.keyCode == 13 && !$event.ctrlKey && !$event.altKey && $event.shiftKey;
+			break;
+		case 'Alt+S':
+			pressed = $event.keyCode == 83 && !$event.ctrlKey && $event.altKey && !$event.shiftKey;
+			break;
+		case 'Ctrl+S':
+			pressed = $event.keyCode == 83 && $event.ctrlKey && !$event.altKey && !$event.shiftKey;
+			break;		
+		}
+
+		if (pressed) {
+			$event.preventDefault();
+			$scope.send();
+		}
+	}
+	
 	$scope.send = function() {
 		messageService.send($scope.editingId, $scope.text);
 		$scope.text = '';
@@ -53,4 +85,4 @@ module.controller('MessageController', ['$scope', '$filter', '$location', '$anch
 		$scope.text = message.content;
 		$scope.editingId = id;
 	};
-}] );
+}
