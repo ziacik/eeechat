@@ -17,13 +17,13 @@ mixin menu()
 
 mixin userList()
 	li(ng-repeat="user in users")
-		img.chat-img.img-circle.img-thumbnail.img-responsive.avatar(ng-src="{{ user.imageUrl }}", alt="{{ user.username }}", title="{{ user.username }}", ng-show="settings.showAvatars")
+		img.chat-img.img-circle.img-thumbnail.avatar(ng-src="{{ user.imageUrl }}", alt="{{ user.username }}", title="{{ user.username }}", ng-show="settings.showAvatars")
 		a(href="", ng-show="!settings.showAvatars") {{ user.username }}
 
 mixin messageList()
 	li.left.clear-fix(ng-repeat="message in messages")
 		span.chat-img.pull-left(ng-show="settings.showAvatars")
-			img.img-circle.img-thumbnail.img-responsive.avatar(ng-src="{{ message.sender | userImage }}", alt="{{ message.sender | userName }}")
+			img.img-circle.img-thumbnail.avatar(ng-src="{{ message.sender | userImage }}", alt="{{ message.sender | userName }}")
 		.clearfix(ng-class="{ 'chat-body' : settings.showAvatars }")
 			.header
 				strong.primary-font

@@ -32,6 +32,12 @@ function MessageController($scope, $filter, $location, $anchorScroll, $timeout, 
 		});
 	};
 	
+	$scope.$watch('ready', function(ready) {
+		if (ready) {
+			self.setFocus();
+		}
+	});
+	
 	$scope.$on('messageReceived', function(event, message) {
 		self.scrollDown();	
 	})
