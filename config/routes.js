@@ -38,7 +38,7 @@ module.exports.routes = {
 	 * in your * `assets` directory) * *
 	 **************************************************************************/
 
-	'/' : 'AppController.main',
+	'/' : 'AppController.chat',
 	
 	'/settings/template' : {
 		view : 'settings'

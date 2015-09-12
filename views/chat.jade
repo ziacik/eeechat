@@ -1,0 +1,41 @@
+extends ./layout
+include includes/chatMixins
+
+block body
+	#main(ng-controller="ChatController", ng-init="connect()")
+
+		nav.navbar.navbar-default.navbar-fixed-top(ng-controller="UserController")
+
+			//- Top panel
+			
+			.container
+				.navbar-header
+					a.navbar-brand(href='#') Eeechat
+
+				#navbar.navbar-collapse.collapse
+
+					ul.nav.navbar-nav(ng-cloak)
+						+userList()
+
+					ul.nav.navbar-nav.navbar-right
+						+menu()						
+
+		//- Messages
+		
+		#messaged(ng-controller="MessageController")
+			.container
+				.row
+					.col-md-6.col-md-offset-3
+						ul.chat(ng-cloak)
+							+messageList()
+							
+						.panel.panel-danger(ng-show="!connected", ng-cloak)
+							.panel-heading Odpojený. Počkajte na obnovenie spojenia.
+							
+						a#bottom(style='display:block', in-view="setAutoScroll($inview)")
+
+			//- Bottom panel
+
+			footer.footer
+				.container#footerContainer
+					+sendForm()

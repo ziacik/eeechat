@@ -6,7 +6,7 @@
  */
 
 module.exports = {
-	main : function(req, res) {
-		return res.view('main');
+	chat : function(req, res) {
+		return res.view('chat');
 	}
 };
