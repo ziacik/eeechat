@@ -1,8 +1,8 @@
-var module = angular.module('chatControllerModule', ['chatServiceModule', 'ngDialog']);
+var module = angular.module('chatControllerModule', ['chatServiceModule', 'settingsServiceModule']);
 
-module.controller('ChatController', [ '$scope', 'ngDialog', 'chatService', ChatController]);
+module.controller('ChatController', [ '$scope', 'settingsService', 'chatService', ChatController]);
 
-function ChatController($scope, ngDialog, chatService) {
+function ChatController($scope, settingsService, chatService) {
 	var self = this;
 	$scope.connected = true;
 	$scope.ready = false;
@@ -14,6 +14,8 @@ function ChatController($scope, ngDialog, chatService) {
 	$scope.connect = function() {
 		chatService.connect();
 	};
+	
+	$scope.openSettings = settingsService.openSettings;
 
 	$scope.$on('connectionUpdated', function() {
 		$scope.connected = chatService.connected;

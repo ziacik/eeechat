@@ -1,6 +1,6 @@
-var module = angular.module('settingsServiceModule', ['ngSails']);
+var module = angular.module('settingsServiceModule', ['ngSails', 'angularModalService']);
 
-function SettingsService($sails, $rootScope) {
+function SettingsService($sails, $rootScope, modalService) {
 	var self = this;
 	
 	this.load = function() {
@@ -17,7 +17,18 @@ function SettingsService($sails, $rootScope) {
 		return $sails.put('/settings', self.settings);
 	}
 	
+	this.openSettings = function() {
+		modalService.showModal({
+			templateUrl : 'settings/template',
+			controller : 'SettingsController',
+		}).then(function(modal) {
+			modal.element.modal();
+		}).catch(function(err) {
+			console.log(err);
+		});
+	}
+	
 	return self;
 }
 
-module.factory('settingsService', ['$sails', '$rootScope', SettingsService]);
+module.factory('settingsService', ['$sails', '$rootScope', 'ModalService', SettingsService]);

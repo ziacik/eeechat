@@ -1,14 +1,22 @@
 include includes/inputMixins
 
-form(novalidate, name='settingsForm', ng-submit='settingsForm.$valid && save()')
-	+dropDown('sendkey', 'Odoslať pomocou', ['Enter', 'Ctrl+Enter', 'Alt+Enter', 'Shift+Enter', 'Alt+S', 'Ctrl+S'], 'settings.sendKey')
-	+check('showAvatars', 'Zobraziť avatary', 'settings.showAvatars')
-	+check('showDesktopNotifications', 'Zobraziť desktop notifikácie', 'settings.showDesktopNotifications')
-	+check('showTitleNotifications', 'Zobraziť notifikácie v ráme', 'settings.showTitleNotifications')
-	+numberRequired('desktopNotificationInterval', 'Dĺžka zobrazenia desktop notifikácie (s)', 'settings.desktopNotificationInterval')
-	+numberRequired('titleNotificationInterval', 'Dĺžka zobrazenia notifikácie v ráme (s)', 'settings.titleNotificationInterval')
-
-	.pull-right
-		+submit('Uložiť')(ng-disabled='settingsForm.$invalid')
-	
-	.clearfix
+.modal.fade
+	.modal-dialog
+		.modal-content
+			.modal-header
+				button.close(ng-click='close()', data-dismiss='modal', aria-hidden='true') &times;
+				h4.modal-title
+					i.glyphicon.glyphicon-check.icon-indent
+					| Nastavenia
+				
+			.modal-body
+				form(novalidate, name='settingsForm', ng-submit='settingsForm.$valid && save()')
+					+dropDown('sendkey', 'Odoslať pomocou', ['Enter', 'Ctrl+Enter', 'Alt+Enter', 'Shift+Enter', 'Alt+S', 'Ctrl+S'], 'settings.sendKey')
+					+check('showAvatars', 'Zobraziť avatary', 'settings.showAvatars')
+					+check('showDesktopNotifications', 'Zobraziť desktop notifikácie', 'settings.showDesktopNotifications')
+					+check('showTitleNotifications', 'Zobraziť notifikácie v ráme', 'settings.showTitleNotifications')
+					+numberRequired('desktopNotificationInterval', 'Dĺžka zobrazenia desktop notifikácie (s)', 'settings.desktopNotificationInterval')
+					+numberRequired('titleNotificationInterval', 'Dĺžka zobrazenia notifikácie v ráme (s)', 'settings.titleNotificationInterval')
+				
+			.modal-footer
+				+submit('OK')(ng-disabled='settingsForm.$invalid', ng-click='close()', data-dismiss='modal')

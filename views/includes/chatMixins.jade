@@ -6,7 +6,7 @@ mixin menu()
 		//- Menu items
 		ul.dropdown-menu
 			li
-				a(href='', ng-dialog='settings/template', ng-dialog-controller='SettingsController')
+				a(href='', ng-click='openSettings()')
 					i.glyphicon.glyphicon-check.icon-indent
 					| Nastavenia
 			li.divider(role='separator')

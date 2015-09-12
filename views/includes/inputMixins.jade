@@ -7,8 +7,10 @@ mixin offset()
 	block
 
 mixin submit(text)
-	+offset()
-		button.btn.btn-warning(type='submit', title=text)&attributes(attributes)= text	
+	button.btn.btn-primary(type='submit', title=text)&attributes(attributes)= text	
+
+mixin cancel(text)
+	button.btn.btn-warning(title=text)&attributes(attributes)= text	
 
 mixin inputHidden(id, model)
 	input(type='hidden', name=id, id=id, ng-model=model)
