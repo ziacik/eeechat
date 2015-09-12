@@ -1,15 +1,10 @@
 doctype html
 
 mixin label(forWhat, text)
-	.form-group
-		label.col-sm-5.control-label(for=forWhat)!= text
-		.col-sm-7
-			block
+	label.control-label(for=forWhat)!= text
 		
 mixin offset()
-	.form-group
-		.col-sm-offset-5.col-sm-7
-			block
+	block
 
 mixin submit(text)
 	+offset()
@@ -19,14 +14,19 @@ mixin inputHidden(id, model)
 	input(type='hidden', name=id, id=id, ng-model=model)
 
 mixin inputRequired(type, id, text, model)
-	+label(id, text)
-		input.form-control(type=type, name=id, id=id, required, ng-model=model)
+	.form-group
+		+label(id, text)
+		+offset()
+			input.form-control(type=type, name=id, id=id, required, ng-model=model)
 
 mixin input(type, id, text, model)
-	+label(id, text)
-		input.form-control(type=type, name=id, id=id, ng-model=model)
+	.form-group
+		+label(id, text)
+		+offset()
+			input.form-control(type=type, name=id, id=id, ng-model=model)
 
 mixin inputWithPlaceholder(type, id, text, model)
+	.form-group
 	+offset()
 		input.form-control(type=type, name=id, id=id, ng-model=model, placeholder=text)
 	
@@ -42,6 +42,7 @@ mixin check(id, text, model)
 
 mixin dropDown(id, text, options, model)
 	+label(id, text)
+	+offset()
 		select.form-control(id=id, name=id, ng-model=model)
 			for option in options
 				option= option
