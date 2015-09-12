@@ -9,17 +9,10 @@ module.exports = {
 	index : function(req, res) {
 		return Settings.findOne({ user : req.user.id }).then(function(settings) {
 			if (settings) {
+				settings.applyDefaults();
 				return res.ok(settings);
-			} else {
-				//TODO better way
-				return res.ok({
-					sendKey : 'Enter',
-					showAvatars : true,
-					showDesktopNotifications : true,
-					desktopNotificationInterval : 6,
-					showTitleNotifications : true,
-					titleNotificationInteval : 2					
-				});
+			} else {				
+				return res.ok(Settings.attributes.applyDefaults.bind({})());
 			}
 		}).catch(function(err) {
 			console.log(err);

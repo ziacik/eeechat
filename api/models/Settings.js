@@ -10,6 +10,18 @@ module.exports = {
 	autoPK : false,
 
 	attributes : {
+		applyDefaults : function() {
+			var self = this;
+			Object.getOwnPropertyNames(module.exports.attributes).forEach(function(attr) {
+				var defaultValue = module.exports.attributes[attr].defaultsTo;
+				
+				if (defaultValue && self[attr] == null) {
+					self[attr] = defaultValue;
+				}
+			});
+			return self;
+		},
+		
 		user : {
 			model : 'user',
 			required : true,
@@ -41,7 +53,7 @@ module.exports = {
 			required : true,
 			defaultsTo : true
 		},
-		titleNotificationInteval : {
+		titleNotificationInterval : {
 			type : 'integer',
 			required : true,
 			defaultsTo : 2
