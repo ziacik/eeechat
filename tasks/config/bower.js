@@ -8,6 +8,12 @@
  */
 
 var path = require('path');
+var localConfig;
+
+try {
+	localConfig = require('../../config/local');
+} catch(e) {
+}
 
 module.exports = function(grunt) {
 
@@ -18,6 +24,17 @@ module.exports = function(grunt) {
 				layout: function(type, component, source) {
 					var newSource = source.replace(/bower_components[\\\/]/, '').replace(/[\\\/]dist/, '');
 					newSource = newSource.replace(/bootstrap[\\\/]fonts/, '../fonts');
+					
+					var environment = localConfig ? localConfig.environment : null;
+					
+					if (!environment) {
+						environment = process.env.NODE_ENV || 'development';
+					}
+					
+					if (environment === 'production') {
+						newSource = newSource.replace(/font-awesome[\\\\\\/]fonts/, '../fonts');
+					}
+					
 					return path.dirname(newSource);					
 				},
 				install: true,
