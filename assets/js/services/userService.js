@@ -5,7 +5,7 @@ function UserService($sails, $rootScope, $filter) {
 	
 	this.myUserId;
 	
-	this.allUsers;
+	this.allUsers = [];
 	this.connectedUsers;
 	
 	this.modelUpdater;
@@ -38,11 +38,12 @@ function UserService($sails, $rootScope, $filter) {
 		});
 		
 		return $sails.get('/users').then(function(res) {
-			self.allUsers = res.data;
+			self.mergeAllUsers(res.data);
 			self.modelUpdater = $sails.$modelUpdater('user', self.allUsers);			
 			return $sails.get('/users/online')			
 		}).then(function(res) {
 			self.myUserId = res.data[0];
+			self.myself = self.getById(self.myUserId);
 			self.connectedUsers = res.data.map(function(userId) {
 				return self.getById(userId);
 			})
@@ -53,27 +54,40 @@ function UserService($sails, $rootScope, $filter) {
 		})
 	};
 
-	this.defaultUser = {
-		username : 'unknown',
-		imageUrl : 'http://placehold.it/50/faf/?text=+'
-	};
-	
 	this.stringToColor = function(str) {
 		for (var i = 0, hash = 0; i < str.length; hash = str.charCodeAt(i++) + ((hash << 5) - hash));
 		for (var i = 0, color = ""; i < 3; color += ("00" + ((hash >> i++ * 8) & 0xFF).toString(16)).slice(-2));
 		return color;
 	}
-
-	this.getById = function(userId) {
-		var userToReturn = this.defaultUser;
-
-		if (this.allUsers) {
-			for (var i = 0; i < this.allUsers.length; i++) {
-				if (this.allUsers[i].id === userId) {
-					userToReturn = this.allUsers[i];
-					break;
-				}
+	
+	this.mergeAllUsers = function(users) {
+		users.forEach(function(user) {
+			var existingUser = self.getById(user.id);
+			
+			if (existingUser) {
+				angular.extend(existingUser, user);
+			} else {
+				this.allUsers.push(user);
 			}
+		});
+	}
+
+	this.getById = function(userId, dontAddIfNotFound) {
+		var userToReturn;
+
+		for (var i = 0; i < this.allUsers.length; i++) {
+			if (this.allUsers[i].id === userId) {
+				userToReturn = this.allUsers[i];
+				break;
+			}
+		}
+		
+		if (!userToReturn && dontAddIfNotFound) {
+			return;
+		}
+		
+		if (!userToReturn) {
+			userToReturn = this.addDefaultUser(userId);
 		}
 
 		if (!userToReturn.imageUrl) {
@@ -82,6 +96,17 @@ function UserService($sails, $rootScope, $filter) {
 
 		return userToReturn;
 	};
+	
+	this.addDefaultUser = function(userId) {
+		var userToReturn = {
+			id : userId,
+			username : 'Neznámy',
+			imageUrl : 'http://placehold.it/50/faf/?text=+'
+		};
+		
+		this.allUsers.push(userToReturn);
+		return userToReturn;
+	}
 	
 	this.removeConnected = function(userId) {
 		if (this.connectedUsers) {
@@ -96,6 +121,14 @@ function UserService($sails, $rootScope, $filter) {
 	
 	this.isAlreadyConnected = function(userId) {
 		return !!$filter('filter')(this.connectedUsers, { id : userId }).length;
+	}
+	
+	this.updateMyName = function(newName) {
+		return $sails.put('/users/' + self.myUserId, {
+			username : newName
+		}).then(function(data) {
+			self.myself.username = newName;
+		})
 	}
 	
 	return this;

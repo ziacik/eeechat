@@ -11,6 +11,7 @@ include includes/inputMixins
 				
 			.modal-body
 				form(novalidate, name='settingsForm', ng-submit='settingsForm.$valid && save()')
+					+inputRequired(text, 'username', 'Meno', 'name')
 					+dropDown('sendkey', 'Odoslať pomocou', ['Enter', 'Ctrl+Enter', 'Alt+Enter', 'Shift+Enter', 'Alt+S', 'Ctrl+S'], 'settings.sendKey')
 					+check('showAvatars', 'Zobraziť avatary', 'settings.showAvatars')
 					+check('showDesktopNotifications', 'Zobraziť desktop notifikácie', 'settings.showDesktopNotifications')

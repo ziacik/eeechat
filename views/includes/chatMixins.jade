@@ -23,11 +23,11 @@ mixin userList()
 mixin messageList()
 	li.left.clear-fix(ng-repeat="message in messages")
 		span.chat-img.pull-left(ng-show="settings.showAvatars")
-			img.img-circle.img-thumbnail.avatar(ng-src="{{ message.sender | userImage }}", alt="{{ message.sender | userName }}")
+			img.img-circle.img-thumbnail.avatar(ng-src="{{ message.senderUser.imageUrl }}", alt="{{ message.senderUser.username }}")
 		.clearfix(ng-class="{ 'chat-body' : settings.showAvatars }")
 			.header
 				strong.primary-font
-					| {{ message.sender | userName }}
+					| {{ message.senderUser.username }}
 				small(style="padding-left:0.6em", ng-show="message.state === 'sending'")
 					i.glyphicon.glyphicon-cog.gly-spin
 				small(style="padding-left:0.6em", ng-show="message.state === 'failed'")
