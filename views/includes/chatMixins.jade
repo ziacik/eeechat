@@ -43,8 +43,7 @@ mixin messageList()
 				small.pull-right.text-muted(style="padding-right:0.6em", ng-show="!message.state")
 					a(ng-click="edit(message.id)")
 						span.glyphicon.glyphicon-edit
-			p(style="white-space: pre-wrap")
-				| {{message.content}}
+			p(style="white-space: pre-wrap", ng-bind-html="message.content | linky")
 
 mixin sendForm()
 	form(ng-submit="send()")
