@@ -18,7 +18,6 @@ function MessageService($sails, $rootScope, $timeout, $window, userService, noti
 		$sails.get('/messages', { createdAt : { '>' : today } }).then(function(res) {
 			self.messages = res.data;
 			self.messages.forEach(function(message) {
-				//TODO race condition?
 				message.senderUser = userService.getById(message.sender);
 			})
 			self.modelUpdater = $sails.$modelUpdater('message', self.messages);
@@ -52,6 +51,7 @@ function MessageService($sails, $rootScope, $timeout, $window, userService, noti
 	this.addSending = function(content) {
 		var newMessage = {
 			sender : userService.myUserId,
+			senderUser : userService.myself,
 			content : content,
 			state : 'sending'
 		};
