@@ -9,17 +9,11 @@ function UserService($sails, $rootScope, $filter) {
 	this.connectedUsers;
 	
 	this.modelUpdater;
-	this.modelUpdater2;
 
 	this.subscribe = function() {
 		if (this.modelUpdater) {
 			this.modelUpdater();
 			delete this.modelUpdater;
-		}
-
-		if (this.modelUpdater2) {
-			this.modelUpdater2();
-			delete this.modelUpdater2;
 		}
 		
 		$sails.on('user', function(message) {
