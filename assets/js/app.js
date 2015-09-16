@@ -11,5 +11,5 @@ var app = angular.module('eeechat', [
 ]);
 
 app.config(['$sailsProvider', function ($sailsProvider) {
-    $sailsProvider.config.transports = ['polling', 'websocket'];
+	$sailsProvider.config.transports = ['polling', 'websocket'];
 }]);
