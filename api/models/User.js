@@ -18,7 +18,10 @@ var User = {
             protected : true
         },
         imageUrl : {
-	        type : 'string'
+	        type : 'string',
+	        defaultsTo : function() {
+	        	return userImageService.generateAvatarUrl(this);
+	        }
         },
         legacyId : {
         	type : 'integer',
@@ -38,6 +41,16 @@ var User = {
 	        type : 'string',
 	        protected : true
         }
+    },
+    
+    afterCreate: function(user, next) {
+		userImageService.updateUserImage(user);
+    	next();
+    },
+    
+    afterUpdate: function(user, next) {
+		userImageService.updateUserImage(user);
+    	next();
     }
 };
 

@@ -26,18 +26,6 @@ var path = require('path'), url = require('url'), passport = require('passport')
 // Load authentication protocols
 passport.protocols = require('./protocols');
 
-var generatePlaceholderImageUrl = function(userName) {
-	var letters = '0123456789ABCDEF'.split('');
-	var color = '';
-
-	for (var i = 0; i < 6; i++) {
-		var index = Math.floor(Math.random() * 16);
-		color += letters[index];
-	}
-
-	return 'http://placehold.it/50/' + color + '/?text=+';	
-}
-
 /**
  * Connect a third-party profile to a local user
  * 
@@ -87,8 +75,6 @@ passport.connect = function(req, query, profile, next) {
 		return next(new Error('No authentication provider was identified.'));
 	}
 
-	//console.log(profile); // TODO remove
-
 	// If the profile object contains a list of emails, grab the first one and
 	// add it to the user.
 	if (profile.hasOwnProperty('emails')) {
@@ -116,9 +102,9 @@ passport.connect = function(req, query, profile, next) {
 	} else if (profile._json && profile._json.avatar_url) {
 		user.imageUrl = profile._json.avatar_url;
 	} else if (provider === 'facebook') {
-		user.imageUrl = '//graph.facebook.com/' + profile.id + '/picture';
+		user.imageUrl = 'http://graph.facebook.com/' + profile.id + '/picture';
 	} else {
-		user.imageUrl = generatePlaceholderImageUrl(user.username);
+		user.imageUrl = userImageService.generateAvatarUrl(user);
 	}
 
 	Passport.findOne({
@@ -146,7 +132,7 @@ passport.connect = function(req, query, profile, next) {
 
 						return next(err);
 					}
-
+					
 					if (req._sails.hooks.pubsub) {
 						if (req.isSocket) {
 							User.subscribe(req, user);
@@ -156,13 +142,14 @@ passport.connect = function(req, query, profile, next) {
 					}
 					
 					query.user = user.id;
-
+					
 					Passport.create(query, function(err, passport) {
 						// If a passport wasn't created, bail out
 						if (err) {
+							console.error(err);
 							return next(err);
 						}
-
+						
 						next(err, user);
 					});
 				});
