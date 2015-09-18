@@ -9,7 +9,7 @@ function SettingsController($scope, settingsService, userService, close) {
 	$scope.name = userService.myself.username;
 	
 	$scope.save = function() {		
-		settingsService.save().catch(function(err) {
+		settingsService.save().error(function(err) {
 			console.log(err);
 			alert('Chyba pri ukladaní nastavení.');
 		});

@@ -1,7 +1,9 @@
-var module = angular.module('chatServiceModule', ['ngSails', 'userServiceModule', 'messageServiceModule', 'settingsServiceModule']);
+var module = angular.module('chatServiceModule', ['sails.io', 'userServiceModule', 'messageServiceModule', 'settingsServiceModule']);
 
-function ChatService($sails, $rootScope, userService, messageService, settingsService) {
+function ChatService($sailsSocket, $rootScope, userService, messageService, settingsService) {
 	var self = this;
+
+	var $sails = $sailsSocket;
 	this.connected = false;	
 	
 	this.connect = function() {
@@ -12,12 +14,12 @@ function ChatService($sails, $rootScope, userService, messageService, settingsSe
 		$rootScope.$broadcast('connectionUpdated');
 	}
 	
-	$sails.on('disconnect', function() {
+	$sails.subscribe('disconnect', function() {
 		self.connected = false;
 		$rootScope.$broadcast('connectionUpdated');
 	});
 
-	$sails.on('connect', function() {
+	$sails.subscribe('connect', function() {
 		if (!self.connected) {
 			self.connect();
 		}
@@ -26,4 +28,4 @@ function ChatService($sails, $rootScope, userService, messageService, settingsSe
 	return self;
 }
 
-module.factory('chatService', ['$sails', '$rootScope', 'userService', 'messageService', 'settingsService', ChatService ]);
+module.factory('chatService', ['$sailsSocket', '$rootScope', 'userService', 'messageService', 'settingsService', ChatService ]);

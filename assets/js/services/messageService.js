@@ -1,7 +1,8 @@
 var module = angular.module('messageServiceModule', ['userServiceModule', 'notificationServiceModule']);
 
-function MessageService($sails, $rootScope, $timeout, $window, userService, notificationService) {
+function MessageService($sailsSocket, $rootScope, $timeout, $window, userService, notificationService) {
 	var self = this;
+	var $sails = $sailsSocket;
 	
 	this.messages;
 	this.modelUpdater;
@@ -20,7 +21,7 @@ function MessageService($sails, $rootScope, $timeout, $window, userService, noti
 			self.messages.forEach(function(message) {
 				message.senderUser = userService.getById(message.sender);
 			})
-			self.modelUpdater = $sails.$modelUpdater('message', self.messages);
+			//self.modelUpdater = $sails.$modelUpdater('message', self.messages);
 			$rootScope.$broadcast("messagesUpdated");
 		}).catch(function(err) {
 			console.log(err);
@@ -28,11 +29,29 @@ function MessageService($sails, $rootScope, $timeout, $window, userService, noti
 		})
 	};
 	
-	$sails.on('message', function(info) {
-		if (info.verb === 'created') {
-			info.data.senderUser = userService.getById(info.data.sender);
-			$rootScope.$broadcast("messageReceived", info.data);
-			notificationService.notify(info.data);
+	$sails.subscribe('message', function(message) {
+		switch (message.verb) {
+		case "created":
+			self.messages.push(message.data);
+			message.data.senderUser = userService.getById(message.data.sender);
+			$rootScope.$broadcast("messageReceived", message.data);
+			notificationService.notify(message.data);
+			break;
+
+		case "updated":
+			var obj = self.findById(message.id);
+
+			if (!obj && !message.previous) return;
+
+			if (!obj) {
+				// sails has given us the previous record, create it in our model
+				obj = message.previous;
+				self.messages.push(obj);
+			}
+
+			// update the model item
+			angular.extend(obj, message.data);
+			break;
 		}
 	});
 
@@ -111,4 +130,4 @@ function MessageService($sails, $rootScope, $timeout, $window, userService, noti
 	return self;
 }
 
-module.factory('messageService', ['$sails', '$rootScope', '$timeout', '$window', 'userService', 'notificationService', MessageService ]);
+module.factory('messageService', ['$sailsSocket', '$rootScope', '$timeout', '$window', 'userService', 'notificationService', MessageService ]);

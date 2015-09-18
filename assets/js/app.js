@@ -9,7 +9,3 @@ var app = angular.module('eeechat', [
 	'monospaced.elastic',
 	'ngSanitize'
 ]);
-
-app.config(['$sailsProvider', function ($sailsProvider) {
-	$sailsProvider.config.transports = ['polling', 'websocket'];
-}]);

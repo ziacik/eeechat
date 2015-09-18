@@ -1,8 +1,9 @@
 var module = angular.module('userServiceModule', []);
 
-function UserService($sails, $rootScope, $filter) {
+function UserService($sailsSocket, $rootScope, $filter) {
 	var self = this;
-	
+	var $sails = $sailsSocket;
+
 	this.myUserId;
 	
 	this.allUsers = [];
@@ -16,8 +17,9 @@ function UserService($sails, $rootScope, $filter) {
 			delete this.modelUpdater;
 		}
 		
-		$sails.on('user', function(message) {
-			if (message.verb === 'messaged') {
+		$sails.subscribe('user', function(message) {
+			switch (message.verb) {
+			case "messaged":
 				if (message.data.state === 'online') {
 					if (!self.isAlreadyConnected(message.id)) {
 						self.connectedUsers.push(self.getById(message.id));
@@ -27,13 +29,34 @@ function UserService($sails, $rootScope, $filter) {
 				} else {
 					console.log('Unknown state ' + message.data.state);
 				}
-				$rootScope.$broadcast('connectedUsersUpdated');	
+				$rootScope.$broadcast('connectedUsersUpdated');
+				break;
+				
+			case "created":
+				self.allUsers.push(message.data);
+				break;
+
+			case "updated":
+				var obj = self.getById(message.id, true);
+
+				if (!obj && !message.previous) return;
+
+				if (!obj) {
+					// sails has given us the previous record, create it in our model
+					obj = message.previous;
+					self.allUsers.push(obj);
+				}
+
+				// update the model item
+				angular.extend(obj, message.data);
+				break;
 			}
+			
 		});
 		
 		return $sails.get('/users').then(function(res) {
 			self.mergeAllUsers(res.data);
-			self.modelUpdater = $sails.$modelUpdater('user', self.allUsers);			
+			//self.modelUpdater = $sails.$modelUpdater('user', self.allUsers);			
 			return $sails.get('/users/online')			
 		}).then(function(res) {
 			self.myUserId = res.data[0];
@@ -128,4 +151,4 @@ function UserService($sails, $rootScope, $filter) {
 	return this;
 }
 
-module.factory('userService', [ '$sails', '$rootScope', '$filter', UserService ]);
+module.factory('userService', [ '$sailsSocket', '$rootScope', '$filter', UserService ]);

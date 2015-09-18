@@ -1,8 +1,9 @@
-var module = angular.module('settingsServiceModule', ['ngSails', 'angularModalService']);
+var module = angular.module('settingsServiceModule', ['sails.io', 'angularModalService']);
 
-function SettingsService($sails, $rootScope, modalService) {
+function SettingsService($sailsSocket, $rootScope, modalService) {
 	var self = this;
-	
+	var $sails = $sailsSocket;
+
 	this.load = function() {
 		$sails.get('/settings').then(function(res) {
 			self.settings = res.data;
@@ -13,8 +14,8 @@ function SettingsService($sails, $rootScope, modalService) {
 		})
 	}
 	
-	this.save = function() {
-		return $sails.put('/settings', self.settings);
+	this.save = function() {		
+		return $sailsSocket.put('/settings', self.settings);
 	}
 	
 	this.openSettings = function() {
@@ -31,4 +32,4 @@ function SettingsService($sails, $rootScope, modalService) {
 	return self;
 }
 
-module.factory('settingsService', ['$sails', '$rootScope', 'ModalService', SettingsService]);
+module.factory('settingsService', ['$sailsSocket', '$rootScope', 'ModalService', SettingsService]);

@@ -33,7 +33,7 @@ var jsFilesToInject = [
   '/vendor/jquery/jquery.js',
   '/vendor/angular/angular.js',
   '/vendor/angular-sanitize/angular-sanitize.js',
-  '/vendor/angular-sails/angular-sails.js',
+  '/vendor/angularSails/ngsails.io.js',
   '/vendor/bootstrap/js/bootstrap.min.js',
   '/vendor/angular-inview/angular-inview.js',
   '/vendor/angular-elastic/elastic.js',
