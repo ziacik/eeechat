@@ -62,8 +62,20 @@ module.exports = {
 			return res.ok(onlineUsers);
 		}).catch(function(err) {
 			console.log(err);
-			return res.serverError(err);
-		})
+			return res.negotiate(err);
+		}).done();
+	},
+	
+	fixAvatars : function(req, res) {
+		User.find().then(function(users) {
+			users.forEach(function(user) {
+				userImageService.updateUserImage(user);
+			});
+			return res.ok();
+		}).catch(function(err) {
+			console.log(err);
+			return res.negotiate(err);
+		}).done();
 	}
 };
 
