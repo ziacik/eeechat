@@ -16,7 +16,7 @@ module.exports = {
 			}
 		}).catch(function(err) {
 			console.log(err);
-			return res.serverError(err);
+			return res.negotiate(err);
 		})
 	},
 	
@@ -30,7 +30,7 @@ module.exports = {
 		}).then(function(user) {
 			return res.ok(user);
 		}).catch(function(err) {
-			return res.serverError(err);
+			return res.negotiate(err);
 		})
 	}
 };

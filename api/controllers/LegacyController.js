@@ -55,7 +55,7 @@ module.exports = {
 				})
 			}			
 		}).catch(function(err) {
-			return res.serverError(err);				
+			return res.negotiate(err);				
 		})		
 	},
 	
@@ -85,7 +85,7 @@ module.exports = {
 			return res.view('legacy/getUsers', { users : users });
 		}).catch (function(err) {
 			console.log(err); 
-			return res.serverError(err);
+			return res.negotiate(err);
 		})
 	},
 
@@ -108,7 +108,7 @@ module.exports = {
 				});
 			})
 		}).catch(function(err) {
-			return res.serverError(err);
+			return res.negotiate(err);
 		})
 	},
 	
@@ -129,7 +129,7 @@ module.exports = {
 				return res.view('legacy/addMessage');
 			});			
 		}).catch(function(err) {
-			return res.serverError(err);
+			return res.negotiate(err);
 		})
 	}
 };
