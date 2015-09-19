@@ -1,0 +1,13 @@
+{
+	"Error.Passport.Password.Invalid": "Heslo musí mať najmenej 8 znakov.",
+	"Error.Passport.Password.Wrong": "Nesprávne meno alebo heslo.",
+	"Error.Passport.Password.NotSet": "Nie je nastavené heslo. Prihláste sa pôvodným účtom a nastavte heslo cez menu.",
+	"Error.Passport.Username.NotFound": "Nesprávne meno alebo heslo.",
+	"Error.Passport.User.Exists": "Toto meno je už použité.",
+	"Error.Passport.Email.NotFound": "Nesprávne meno alebo heslo.",
+	"Error.Passport.Email.Missing": "Zadajte e-mail.",
+	"Error.Passport.Email.Exists": "E-mail už existuje. Prihláste sa pôvodným účtom a pripojte nový účet cez menu.",
+	"Error.Passport.Username.Missing": "Zadajte meno.",
+	"Error.Passport.Password.Missing": "Zadajte heslo.",
+	"Error.Passport.Generic": "Všeobecná chyba."
+}

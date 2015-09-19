@@ -1,10 +1,6 @@
 extends ../layout
 
 block body
-	if errors
-		each error in errors
-			= error
-	
 	.container
 		.row
 			.main
@@ -12,7 +8,7 @@ block body
 					| Prihláste sa, alebo
 					a(href="register")
 						| &nbsp;zaregistrujte
-				
+
 				.row
 					each provider, code in providers
 						if provider.name
@@ -30,10 +26,20 @@ block body
 						input.form-control(type="text", name="identifier", placeholder="Meno alebo e-mail")
 					.form-group
 						input.form-control(type="password", name="password", placeholder="Heslo")
+					
+					if errors
+						each error in errors					
+							.alert.alert-danger.alert-dismissible(role="alert")
+								button.close(type="button", aria-label="Close", data-dismiss="alert")
+									span(aria-hidden="true") &times;
+								= __(error)
+					
 					.checkbox.pull-right
 						label
 							input(type="checkbox")
 							| Zapamätať
-						
+
 					button.btn.btn-primary(type="submit")
 						| Prihlásiť sa
+						
+						

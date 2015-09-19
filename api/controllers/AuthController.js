@@ -139,10 +139,9 @@ var AuthController = {
 		    var flashError = req.flash('error')[0];
 
 		    if (err && !flashError) {
-			    console.log(err);
+			    console.error(err);
 			    req.flash('error', 'Error.Passport.Generic');
 		    } else if (flashError) {
-			    console.log(flashError);
 			    req.flash('error', flashError);
 		    }
 		    req.flash('form', req.body);

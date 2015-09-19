@@ -51,7 +51,11 @@ exports.register = function(req, res, next) {
 		if (err) {
 			if (err.code === 'E_VALIDATION') {
 				if (err.invalidAttributes.email) {
-					req.flash('error', 'Error.Passport.Email.Exists');
+					if (err.invalidAttributes.email.length && err.invalidAttributes.email[0].rule === 'unique') {
+						req.flash('error', 'Error.Passport.Email.Exists');
+					} else {
+						req.flash('error', 'Error.Passport.Email.Invalid');
+					}
 				} else {
 					req.flash('error', 'Error.Passport.User.Exists');
 				}
