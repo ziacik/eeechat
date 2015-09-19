@@ -6,7 +6,7 @@
  * the basics of Passport.js to work.
  */
 var AuthController = {
-    /**
+	/**
 	 * Render the login page
 	 * 
 	 * The login form itself is just a simple HTML form:
@@ -30,29 +30,29 @@ var AuthController = {
 	 * @param {Object}
 	 *            res
 	 */
-    login : function(req, res) {
-	    var strategies = sails.config.passport, providers = {};
+	login : function(req, res) {
+		var strategies = sails.config.passport, providers = {};
 
-	    // Get a list of available providers for use in your templates.
-	    Object.keys(strategies).forEach(function(key) {
-		    if (key === 'local') {
-			    return;
-		    }
+		// Get a list of available providers for use in your templates.
+		Object.keys(strategies).forEach(function(key) {
+			if (key === 'local') {
+				return;
+			}
 
-		    providers[key] = {
-		        name : strategies[key].name,
-		        slug : key
-		    };
-	    });
+			providers[key] = {
+				name : strategies[key].name,
+				slug : key
+			};
+		});
 
-	    // Render the `auth/login.ext` view
-	    res.view({
-	        providers : providers,
-	        errors : req.flash('error')
-	    });
-    },
+		// Render the `auth/login.ext` view
+		res.view({
+			providers : providers,
+			errors : req.flash('error')
+		});
+	},
 
-    /**
+	/**
 	 * Log out a user and return them to the homepage
 	 * 
 	 * Passport exposes a logout() function on req (also aliased as logOut())
@@ -68,16 +68,16 @@ var AuthController = {
 	 * @param {Object}
 	 *            res
 	 */
-    logout : function(req, res) {
-	    req.logout();
+	logout : function(req, res) {
+		req.logout();
 
-	    // mark the user as logged out for auth purposes
-	    req.session.authenticated = false;
+		// mark the user as logged out for auth purposes
+		req.session.authenticated = false;
 
-	    res.redirect('/');
-    },
+		res.redirect('/');
+	},
 
-    /**
+	/**
 	 * Render the registration page
 	 * 
 	 * Just like the login form, the registration form is just simple HTML:
@@ -92,13 +92,13 @@ var AuthController = {
 	 * @param {Object}
 	 *            res
 	 */
-    register : function(req, res) {
-	    res.view({
-		    errors : req.flash('error')
-	    });
-    },
+	register : function(req, res) {
+		res.view({
+			errors : req.flash('error')
+		});
+	},
 
-    /**
+	/**
 	 * Create a third-party authentication endpoint
 	 * 
 	 * @param {Object}
@@ -106,11 +106,11 @@ var AuthController = {
 	 * @param {Object}
 	 *            res
 	 */
-    provider : function(req, res) {
-	    passport.endpoint(req, res);
-    },
+	provider : function(req, res) {
+		passport.endpoint(req, res);
+	},
 
-    /**
+	/**
 	 * Create a authentication callback endpoint
 	 * 
 	 * This endpoint handles everything related to creating and verifying Pass-
@@ -128,64 +128,74 @@ var AuthController = {
 	 * @param {Object}
 	 *            res
 	 */
-    callback : function(req, res) {
-	    function tryAgain(err) {
+	callback : function(req, res) {
+		function tryAgain(err) {
 
-		    // Only certain error messages are returned via req.flash('error',
+			// Only certain error messages are returned via req.flash('error',
 			// someError)
-		    // because we shouldn't expose internal authorization errors to the
+			// because we shouldn't expose internal authorization errors to the
 			// user.
-		    // We do return a generic error and the original request body.
-		    var flashError = req.flash('error')[0];
+			// We do return a generic error and the original request body.
+			var flashError = req.flash('error')[0];
 
-		    if (err && !flashError) {
-			    console.error(err);
-			    req.flash('error', 'Error.Passport.Generic');
-		    } else if (flashError) {
-			    req.flash('error', flashError);
-		    }
-		    req.flash('form', req.body);
+			if (err && !flashError) {
+				console.error(err);
+				req.flash('error', 'Error.Passport.Generic');
+			} else if (flashError) {
+				req.flash('error', flashError);
+			}
+			req.flash('form', req.body);
 
-		    // If an error was thrown, redirect the user to the
-		    // login, register or disconnect action initiator view.
-		    // These views should take care of rendering the error messages.
-		    var action = req.param('action');
+			// If an error was thrown, redirect the user to the
+			// login, register or disconnect action initiator view.
+			// These views should take care of rendering the error messages.
+			var action = req.param('action');
 
-		    switch (action) {
-		    case 'register':
-			    res.redirect('/register');
-			    break;
-		    case 'disconnect':
-			    res.redirect('back');
-			    break;
-		    default:
-			    res.redirect('/login');
-		    }
-	    }
+			switch (action) {
+			case 'connect':
+				res.redirect('/connect');
+				break;
+			case 'register':
+				res.redirect('/register');
+				break;
+			case 'disconnect':
+				res.redirect('back');
+				break;
+			default:
+				res.redirect('/login');
+			}
+		}
 
-	    passport.callback(req, res, function(err, user, challenges, statuses) {
-		    if (err || !user) {
-			    return tryAgain(err);
-		    }
+		passport.callback(req, res, function(err, user, challenges, statuses) {
+			if (err || !user) {
+				return tryAgain(err);
+			}
 
-		    req.login(user, function(err) {
-			    if (err) {
-				    return tryAgain(err);
-			    }
+			req.login(user, function(err) {
+				if (err) {
+					return tryAgain(err);
+				}
 
-			    // Mark the session as authenticated to work with default Sails
+				// Mark the session as authenticated to work with default Sails
 				// sessionAuth.js policy
-			    req.session.authenticated = true
+				req.session.authenticated = true
 
-			    // Upon successful login, send the user to the homepage were
+				// Upon successful login, send the user to the homepage were
 				// req.user
-			    // will be available.
-			    res.redirect('/');
-		    });
-	    });
-    },
+				// will be available.
+				res.redirect('/');
+			});
+		});
+	},
 
-    /**
+	connect : function(req, res) {
+		res.view({
+			user : req.user,
+			errors : req.flash('error')
+		});
+	},
+
+	/**
 	 * Disconnect a passport from a user
 	 * 
 	 * @param {Object}
@@ -193,9 +203,9 @@ var AuthController = {
 	 * @param {Object}
 	 *            res
 	 */
-    disconnect : function(req, res) {
-	    passport.disconnect(req, res);
-    }
+	disconnect : function(req, res) {
+		passport.disconnect(req, res);
+	}
 };
 
 module.exports = AuthController;
