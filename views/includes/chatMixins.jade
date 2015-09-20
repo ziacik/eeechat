@@ -5,6 +5,21 @@ mixin menu()
 	
 		//- Menu items
 		ul.dropdown-menu
+			li.dropdown-header Účet
+			if isPasswordNotSet
+				li
+					a(href='/connect')
+						i.glyphicon.glyphicon-check.icon-indent
+						| Nastaviť heslo
+					
+			each provider, code in disconnectedProviders
+				if provider.name
+					li
+						a(href="/auth/" + provider.slug)
+							i(class="icon-width icon-indent fa fa-" + code)
+							= 'Pripojiť ' + provider.name
+		
+			li.divider(role='separator')
 			li
 				a(href='', ng-click='openSettings()')
 					i.glyphicon.glyphicon-check.icon-indent

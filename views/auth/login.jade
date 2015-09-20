@@ -1,4 +1,5 @@
 extends ../layout
+include ../includes/commonMixins
 
 block body
 	.container
@@ -26,13 +27,8 @@ block body
 						input.form-control(type="text", name="identifier", placeholder="Meno alebo e-mail")
 					.form-group
 						input.form-control(type="password", name="password", placeholder="Heslo")
-					
-					if errors
-						each error in errors					
-							.alert.alert-danger.alert-dismissible(role="alert")
-								button.close(type="button", aria-label="Close", data-dismiss="alert")
-									span(aria-hidden="true") &times;
-								= __(error)
+
+					+errors()
 					
 					.checkbox.pull-right
 						label

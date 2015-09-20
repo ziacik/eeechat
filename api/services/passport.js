@@ -1,5 +1,6 @@
 var path = require('path'), url = require('url'), passport = require('passport');
 
+
 /**
  * Passport Service
  * 
@@ -23,7 +24,7 @@ var path = require('path'), url = require('url'), passport = require('passport')
  * User model free of bloat.
  */
 
-// Load authentication protocols
+//Load authentication protocols
 passport.protocols = require('./protocols');
 
 /**
@@ -108,8 +109,8 @@ passport.connect = function(req, query, profile, next) {
 	}
 
 	Passport.findOne({
-	    provider : provider,
-	    identifier : query.identifier.toString()
+		provider : provider,
+		identifier : query.identifier.toString()
 	}, function(err, passport) {
 		if (err) {
 			return next(err);
@@ -132,7 +133,7 @@ passport.connect = function(req, query, profile, next) {
 
 						return next(err);
 					}
-					
+
 					if (req._sails.hooks.pubsub) {
 						if (req.isSocket) {
 							User.subscribe(req, user);
@@ -140,15 +141,15 @@ passport.connect = function(req, query, profile, next) {
 						}
 						User.publishCreate(user, !req.options.mirror && req);
 					}
-					
+
 					query.user = user.id;
-					
+
 					Passport.create(query, function(err, passport) {
 						// If a passport wasn't created, bail out
 						if (err) {
 							return next(err);
 						}
-						
+
 						next(err, user);
 					});
 				});
@@ -189,6 +190,10 @@ passport.connect = function(req, query, profile, next) {
 
 					next(err, req.user);
 				});
+			}
+			else if (passport.user !== req.user.id) {
+				req.flash('error', 'Error.Passport.Account.Exists');
+				next(null, req.user);
 			}
 			// Scenario: The user is a nutjob or spammed the back-button.
 			// Action: Simply pass along the already established session.
@@ -396,5 +401,50 @@ passport.serializeUser(function(user, next) {
 passport.deserializeUser(function(id, next) {
 	User.findOne(id, next);
 });
+
+passport.getAllProviders = function() {
+	var strategies = sails.config.passport;
+	var providers = {};
+
+	Object.keys(strategies).forEach(function(key) {
+		if (key === 'local') {
+			providers[key] = {
+				name : key,
+				slug : key
+			}
+		} else if (strategies[key].name) {
+			providers[key] = {
+				name : strategies[key].name,
+				slug : key
+			};			
+		}
+	});
+
+	return providers;
+}
+
+passport.getNonLocalProviders = function() {
+	var providers = passport.getAllProviders();
+	delete providers.local;
+	return providers;
+}
+
+passport.getDisconnectedProviders = function(req) {
+	var providers = passport.getAllProviders();
+
+	return Passport.find({ user : req.user.id }).then(function(passports) {
+		passports.forEach(function(passport) {
+			if (passport.provider) {
+				delete providers[passport.provider];
+			}
+
+			if (passport.protocol) {
+				delete providers[passport.protocol];
+			}
+		})
+
+		return providers;
+	});	
+}
 
 module.exports = passport;

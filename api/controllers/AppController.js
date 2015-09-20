@@ -7,6 +7,21 @@
 
 module.exports = {
 	chat : function(req, res) {
-		return res.view('chat');
+		passport.getDisconnectedProviders(req).then(function(providers) {
+			var isPasswordNotSet = !!providers.local;
+			delete providers.local;
+			
+			return res.view('chat', {
+				errors : req.flash('error'),
+				isPasswordNotSet : isPasswordNotSet,
+				disconnectedProviders : providers
+			});			
+		}).catch(function(err) {
+			console.error(err);
+			return res.view('chat', {
+				errors : req.flash('error'),
+				disconnectedProviders : []
+			});			
+		}).done();		
 	}
 };
