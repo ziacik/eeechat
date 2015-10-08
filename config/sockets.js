@@ -38,13 +38,13 @@ module.exports.sockets = {
 	* via port 6379																														*
 	*																																					*
 	***************************************************************************/
-	// adapter: 'memory',
+	 adapter: 'memory',
 
 	//
 	// -OR-
 	//
 
-	 adapter: 'socket.io-redis',
+	 // adapter: 'socket.io-redis',
 	// host: '127.0.0.1',
 	// port: 6379,
 	 db: 'eeechat',
