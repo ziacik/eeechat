@@ -35,10 +35,10 @@
     "socket.io-redis": "^0.1.4",
     "validator": "^4.0.3"
   },
-  "name": "eeechat",
+  "name": "anycomment",
   "private": false,
   "version": "0.1.0",
-  "description": "Multiuser chat application",
+  "description": "Comment anything",
   "keywords": [
     "chat"
   ],
@@ -49,7 +49,7 @@
   "main": "app.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/ziacik/eeechat.git"
+    "url": "git://github.com/ziacik/anycomment.git"
   },
   "author": "František Žiačik <ziacik@gmail.com>",
   "license": "MIT"
