@@ -122,18 +122,20 @@ module.exports.sockets = {
 	***************************************************************************/
 	afterDisconnect: function(session, socket, cb) {
 		if (session && session.passport && session.passport.user) {
-			var roomName = 'onlineUser' + session.passport.user;
-			sails.sockets.leave(socket, roomName);
+			/*var roomNames = sails.sockets.socketRooms(socket);
 			
-			var isNowOffline = sails.sockets.subscribers(roomName).length === 0;
-
-			if (isNowOffline) {
-				User.message(session.passport.user, {
-					state : 'offline'
+			roomNames.forEach(function(roomName) {
+				sails.sockets.leave(socket, roomName);
+				sails.sockets.broadcast(roomName, 'user', {
+					id : session.passport.user,
+					verb : 'messaged',
+					data : {
+						state : 'offline'
+					}
 				}, socket);
-				
- 				legacyUserStatusService.userDisconnect(session.passport.user);
-			}
+			});*/
+			
+			legacyUserStatusService.userDisconnect(session.passport.user);
 		}
 		return cb();
 	},

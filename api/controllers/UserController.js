@@ -5,40 +5,51 @@
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
-module.exports = {
+var socketUsers = {};
+
+module.exports = {		
+	join : function(req, res) {
+		var namespace = req.param('namespace');
+		var room = req.param('room');		
+		var roomName = namespace + '/' + room;
+		
+		var mySocketId = sails.sockets.id(req.socket);
+		socketUsers[mySocketId] = req.user.id; //TODO check
+		
+		var data = {
+			id : req.user.id,
+			verb : 'messaged',
+			data : {
+				state : 'online'				
+			}
+		};
+		
+		sails.sockets.join(req.socket, roomName);		
+		sails.sockets.broadcast(roomName, 'user', data, req.socket);
+
+		legacyUserStatusService.userConnect(req.user.id);
+
+		return res.ok();
+	},
+	
 	online : function(req, res) {
 		if (!req.user) {
 			return res.forbidden();
 		}
 		
-		var isNumericId = typeof req.user.id === 'number';
+		var namespace = req.param('namespace');
+		var room = req.param('room');
 		
-		if (req.socket) {
-			var roomName = 'onlineUser' + req.user.id;
-			sails.sockets.join(req.socket, roomName);
-			
- 			if (sails.sockets.subscribers(roomName).length == 1) {
- 				User.message(req.user.id, {
- 					state : 'online'
- 				}, req.socket);
- 				
- 				legacyUserStatusService.userConnect(req.user.id);
- 			}
-		}
+		var subscriberIds = sails.sockets.subscribers(namespace + '/' + room);
 		
-		var onlineUserRooms = sails.sockets.rooms().filter(function(roomName) {
-			return roomName.indexOf('onlineUser') === 0;
-		});
-		
-		var onlineUsers = onlineUserRooms.map(function(roomName) {
-			var idStr = roomName.substr('onlineUser'.length);
-			if (isNumericId) {
-				return parseInt(idStr);
-			} else {
-				return idStr;
+		var onlineUsers = subscriberIds.reduce(function(result, current) {
+			var user = socketUsers[current];
+			if (result.indexOf(user) < 0) {
+				result.push(user);
 			}
-		});
-
+			return result;
+		}, []);
+		
 		LegacyConnection.find().then(function(legacyConnections) {
 			var legacyUsers =  legacyConnections.map(function(legacyConnection) {
 				return legacyConnection.user;

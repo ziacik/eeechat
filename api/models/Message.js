@@ -9,6 +9,12 @@ module.exports = {
 	schema : true,
 	
 	attributes : {
+		namespace : {
+			type : 'string'
+		},
+		room : {
+			type : 'string'
+		},
 		sender : {
 			model : 'user',
 			required : true

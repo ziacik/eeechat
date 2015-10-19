@@ -40,12 +40,15 @@ module.exports.routes = {
 	 **************************************************************************/
 
 	'/' : 'AppController.chat',
+	'/chat/join' : 'UserController.join',
 	
 	'/settings/template' : {
 		view : 'settings'
 	},
 	
 	'PUT /settings' : 'SettingsController.save',
+	
+	'/users/online' : 'UserController.online',
 
 	'/legacy/getuser.php' : 'LegacyController.getUser',
 	'/legacy/getrooms.php' : 'LegacyController.getRooms',
