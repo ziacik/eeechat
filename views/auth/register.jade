@@ -5,7 +5,7 @@ block body
 		.row
 			.main
 				h3 Zaregistrujte sa	
-				form(role="form", action="/auth/local/register", method="post")
+				form(role="form", action="/auth/local/register#{roomQuery}", method="post")
 					.form-group
 						input.form-control(type="text", name="username", placeholder="Meno")
 					.form-group

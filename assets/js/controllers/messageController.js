@@ -23,6 +23,7 @@ function MessageController($scope, $filter, $location, $anchorScroll, $timeout, 
 		$timeout(function() {
 			$location.hash('bottom');
 			$anchorScroll();
+			$location.hash('');
 		});
 	};
 	

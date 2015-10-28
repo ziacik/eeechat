@@ -11,6 +11,10 @@ var app = angular.module('eeechat', [
 	'ngSanitize'
 ]);
 
-app.config(['$sailsProvider', function ($sailsProvider) {
+app.config(['$sailsProvider', function($sailsProvider) {
 	$sailsProvider.config.transports = ['polling', 'websocket'];
 }]);
+
+app.config(['$locationProvider', function($locationProvider) {
+	$locationProvider.html5Mode(true);
+}])

@@ -221,13 +221,15 @@ passport.endpoint = function(req, res) {
 	// If a provider doesn't exist for this endpoint, send the user back to the
 	// login page
 	if (!strategies.hasOwnProperty(provider)) {
-		return res.redirect('/login');
+		return res.redirect('/login' + locationService.getRoomQuery(req));
 	}
 
 	// Attach scope if it has been set in the config
 	if (strategies[provider].hasOwnProperty('scope')) {
 		options.scope = strategies[provider].scope;
-	}
+	}	
+	
+	options.state =  locationService.getRoom(req);
 
 	// Redirect the user to the provider for authentication. When complete,
 	// the provider will redirect the user back to the application at
@@ -335,7 +337,7 @@ passport.loadStrategies = function() {
 			if (!callback) {
 				callback = 'auth/' + key + '/callback';
 			}
-
+			
 			Strategy = strategies[key].strategy;
 
 			var baseUrl = sails.getBaseurl();

@@ -14,7 +14,8 @@ module.exports = {
 			return res.view('chat', {
 				errors : req.flash('error'),
 				isPasswordNotSet : isPasswordNotSet,
-				disconnectedProviders : providers
+				disconnectedProviders : providers,
+				roomQuery : locationService.getRoomQuery(req)
 			});			
 		}).catch(function(err) {
 			console.error(err);

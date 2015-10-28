@@ -1,8 +1,8 @@
 /**
  * UserController
- *
+ * 
  * @description :: Server-side logic for managing users
- * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
+ * @help :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
 var socketUsers = {};
@@ -14,13 +14,13 @@ module.exports = {
 		var roomName = namespace + '/' + room;
 		
 		var mySocketId = sails.sockets.id(req.socket);
-		socketUsers[mySocketId] = req.user.id; //TODO check
+		socketUsers[mySocketId] = req.user.id; // TODO check
 		
 		var data = {
 			id : req.user.id,
 			verb : 'messaged',
 			data : {
-				state : 'online'				
+				state : 'online'
 			}
 		};
 		
@@ -57,11 +57,11 @@ module.exports = {
 			
 			onlineUsers = onlineUsers.concat(legacyUsers);
 			
-			/// First one will be current user id.
+			// / First one will be current user id.
 			var currentUserIndex = onlineUsers.indexOf(req.user.id);
 			
 			if (currentUserIndex < 0) {
-				/// Not online? Should not happen.
+				// / Not online? Should not happen.
 				return res.notFound();
 			}
 			

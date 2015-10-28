@@ -19,7 +19,7 @@ module.exports = function(req, res, next) {
 	// User is not allowed
 
 	if (res.redirect) {
-		return res.redirect('/login');	
+		return res.redirect('/login' + locationService.getRoomQuery(req));	
 	} else {
 		return res.forbidden();
 	}
