@@ -1,5 +1,5 @@
 var app = angular.module('eeechat', [
-	'roomServiceModule',
+	'appServiceModule',
 	'chatServiceModule',	
 	'chatControllerModule',
 	'userControllerModule',

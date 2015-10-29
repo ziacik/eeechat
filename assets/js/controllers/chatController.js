@@ -11,8 +11,8 @@ function ChatController($scope, settingsService, chatService) {
 	self.usersReady = false;
 	self.messagesReady = false;
 	
-	$scope.connect = function() {
-		chatService.connect();
+	$scope.init = function() {
+		chatService.init();
 	};
 	
 	$scope.openSettings = settingsService.openSettings;
@@ -20,7 +20,11 @@ function ChatController($scope, settingsService, chatService) {
 	$scope.$on('connectionUpdated', function() {
 		$scope.connected = chatService.connected;
 	});
-	
+
+	$scope.$on('appSettingsLoaded', function(event, appSettings) {
+		$scope.appSettings = appSettings;
+	});
+
 	$scope.$on('settingsLoaded', function(event, settings) {
 		self.settingsReady = true;
 		$scope.settings = settings;

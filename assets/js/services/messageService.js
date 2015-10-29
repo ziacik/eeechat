@@ -1,6 +1,6 @@
-var module = angular.module('messageServiceModule', ['userServiceModule', 'notificationServiceModule', 'roomServiceModule']);
+var module = angular.module('messageServiceModule', ['userServiceModule', 'notificationServiceModule', 'appServiceModule']);
 
-function MessageService($sails, $rootScope, $timeout, $window, userService, notificationService, roomService) {
+function MessageService($sails, $rootScope, $timeout, $window, userService, notificationService, appService) {
 	var self = this;
 	
 	this.messageMode = 'all';
@@ -18,8 +18,8 @@ function MessageService($sails, $rootScope, $timeout, $window, userService, noti
 		today.setHours(0, 0, 0, 0);
 		
 		var query = {
-			namespace : roomService.namespace,
-			room : roomService.room
+			app : appService.appId,
+			room : appService.room
 		};
 		
 		if (this.messageMode !== 'all') {
@@ -112,8 +112,8 @@ function MessageService($sails, $rootScope, $timeout, $window, userService, noti
 			var message = self.addSending(content);
 			
 			$sails.post('/messages', {
-				namespace : roomService.namespace,
-				room : roomService.room,				
+				app : appService.appId,
+				room : appService.room,				
 				content : content
 			})
 			.then(self.successFunc(message))
@@ -124,4 +124,4 @@ function MessageService($sails, $rootScope, $timeout, $window, userService, noti
 	return self;
 }
 
-module.factory('messageService', ['$sails', '$rootScope', '$timeout', '$window', 'userService', 'notificationService', 'roomService', MessageService ]);
+module.factory('messageService', ['$sails', '$rootScope', '$timeout', '$window', 'userService', 'notificationService', 'appService', MessageService ]);

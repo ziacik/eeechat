@@ -9,9 +9,9 @@ var socketUsers = {};
 
 module.exports = {		
 	join : function(req, res) {
-		var namespace = req.param('namespace');
+		var appId = req.param('appId');
 		var room = req.param('room');		
-		var roomName = namespace + '/' + room;
+		var roomName = appId + '/' + room;
 		
 		var mySocketId = sails.sockets.id(req.socket);
 		socketUsers[mySocketId] = req.user.id; // TODO check
@@ -37,10 +37,10 @@ module.exports = {
 			return res.forbidden();
 		}
 		
-		var namespace = req.param('namespace');
+		var appId = req.param('appId');
 		var room = req.param('room');
 		
-		var subscriberIds = sails.sockets.subscribers(namespace + '/' + room);
+		var subscriberIds = sails.sockets.subscribers(appId + '/' + room);
 		
 		var onlineUsers = subscriberIds.reduce(function(result, current) {
 			var user = socketUsers[current];

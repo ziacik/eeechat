@@ -9,8 +9,9 @@ module.exports = {
 	schema : true,
 	
 	attributes : {
-		namespace : {
-			type : 'string'
+		app : {
+			model : 'application',
+			required : true
 		},
 		room : {
 			type : 'string'

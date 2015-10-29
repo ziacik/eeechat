@@ -1,8 +1,13 @@
-var module = angular.module('chatServiceModule', ['ngSails', 'userServiceModule', 'messageServiceModule', 'settingsServiceModule', 'roomServiceModule']);
+var module = angular.module('chatServiceModule', ['ngSails', 'appServiceModule', 'userServiceModule', 'messageServiceModule', 'settingsServiceModule', 'appServiceModule']);
 
-function ChatService($sails, $rootScope, userService, messageService, settingsService, roomService) {
+function ChatService($sails, $rootScope, appService, userService, messageService, settingsService, appService) {
 	var self = this;
-	this.connected = false;	
+	this.connected = false;
+	
+	this.init = function() {
+		appService.load().then(self.connect);
+		self.bindEvents();
+	}
 	
 	this.connect = function() {
 		self.join();
@@ -13,8 +18,8 @@ function ChatService($sails, $rootScope, userService, messageService, settingsSe
 	
 	this.join = function() {
 		var query = {
-			namespace : roomService.namespace,
-			room : roomService.room
+			app : appService.appId,
+			room : appService.room
 		};
 		
 		$sails.get('/chat/join', query).then(function() {
@@ -25,18 +30,20 @@ function ChatService($sails, $rootScope, userService, messageService, settingsSe
 		})
 	}
 	
-	$sails.on('disconnect', function() {
-		self.connected = false;
-		$rootScope.$broadcast('connectionUpdated');
-	});
-
-	$sails.on('connect', function() {
-		if (!self.connected) {
-			self.connect();
-		}
-	})
+	this.bindEvents = function() {
+		$sails.on('disconnect', function() {
+			self.connected = false;
+			$rootScope.$broadcast('connectionUpdated');
+		});
+	
+		$sails.on('connect', function() {
+			if (!self.connected) {
+				self.connect();
+			}
+		})
+	}
 	
 	return self;
 }
 
-module.factory('chatService', ['$sails', '$rootScope', 'userService', 'messageService', 'settingsService', 'roomService', ChatService ]);
+module.factory('chatService', ['$sails', '$rootScope', 'appService', 'userService', 'messageService', 'settingsService', 'appService', ChatService ]);

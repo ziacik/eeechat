@@ -11,7 +11,7 @@ module.exports = {
 	create : function(req, res) {
 		var data = actionUtil.parseValues(req);
 		Message.create(data).then(function(message) {
-			var roomName = message.namespace + '/' + message.room;
+			var roomName = message.app + '/' + message.room;
 			
 			sails.sockets.broadcast(roomName, 'message', {
 				verb : 'created',

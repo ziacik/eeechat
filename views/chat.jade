@@ -3,7 +3,7 @@ include includes/commonMixins
 include includes/chatMixins
 
 block body
-	#main(ng-controller="ChatController", ng-init="connect()")
+	#main(ng-controller="ChatController", ng-init="init()")
 
 		nav.navbar.navbar-default.navbar-fixed-top(ng-controller="UserController")
 
@@ -11,7 +11,7 @@ block body
 			
 			.container
 				.navbar-header
-					a.navbar-brand(href='#') Eeechat
+					a.navbar-brand(href='#') {{ appSettings.name }}
 
 				#navbar.navbar-collapse.collapse
 

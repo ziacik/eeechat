@@ -1,6 +1,6 @@
-var module = angular.module('userServiceModule', [ 'roomServiceModule' ]);
+var module = angular.module('userServiceModule', [ 'appServiceModule' ]);
 
-function UserService($sails, $rootScope, $filter, roomService) {
+function UserService($sails, $rootScope, $filter, appService) {
 	var self = this;
 	
 	this.myUserId;
@@ -35,8 +35,8 @@ function UserService($sails, $rootScope, $filter, roomService) {
 			self.mergeAllUsers(res.data);
 			self.modelUpdater = $sails.$modelUpdater('user', self.allUsers);			
 			return $sails.get('/users/online', {
-				namespace : roomService.namespace,
-				room : roomService.room
+				app : appService.appId,
+				room : appService.room
 			})			
 		}).then(function(res) {
 			self.myUserId = res.data[0];
@@ -131,4 +131,4 @@ function UserService($sails, $rootScope, $filter, roomService) {
 	return this;
 }
 
-module.factory('userService', [ '$sails', '$rootScope', '$filter', 'roomService', UserService ]);
+module.factory('userService', [ '$sails', '$rootScope', '$filter', 'appService', UserService ]);
