@@ -39,8 +39,9 @@ module.exports = {
 		
 		var appId = req.param('appId');
 		var room = req.param('room');
+		var roomName = appId + '/' + room;
 		
-		var subscriberIds = sails.sockets.subscribers(appId + '/' + room);
+		var subscriberIds = sails.sockets.subscribers(roomName);
 		
 		var onlineUsers = subscriberIds.reduce(function(result, current) {
 			var user = socketUsers[current];

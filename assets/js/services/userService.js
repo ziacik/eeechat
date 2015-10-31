@@ -35,7 +35,7 @@ function UserService($sails, $rootScope, $filter, appService) {
 			self.mergeAllUsers(res.data);
 			self.modelUpdater = $sails.$modelUpdater('user', self.allUsers);			
 			return $sails.get('/users/online', {
-				app : appService.appId,
+				appId : appService.appId,
 				room : appService.room
 			})			
 		}).then(function(res) {

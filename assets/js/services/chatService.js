@@ -37,7 +37,7 @@ function ChatService($sails, $rootScope, appService, userService, messageService
 		});
 	
 		$sails.on('connect', function() {
-			if (!self.connected) {
+			if (!self.connected && appService.loaded) {
 				self.connect();
 			}
 		})
