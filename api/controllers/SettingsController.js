@@ -12,7 +12,7 @@ module.exports = {
 				settings.applyDefaults();
 				return res.ok(settings);
 			} else {				
-				return res.ok(Settings.attributes.applyDefaults.bind({})());
+				return res.ok(Settings.attributes.applyDefaults.bind({ user : req.user.id })());
 			}
 		}).catch(function(err) {
 			console.log(err);

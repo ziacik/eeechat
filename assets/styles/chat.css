@@ -30,6 +30,12 @@ footer
 	display: table-cell;
 	vertical-align: middle;
 }
+#sendArea2
+{
+	padding-left: 1em;
+	display: table-cell;
+	vertical-align: middle;
+}
 #textArea textarea
 {
     background-color: #eeeeee;

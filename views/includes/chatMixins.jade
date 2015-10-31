@@ -55,8 +55,8 @@ mixin messageList()
 				small.pull-right.text-muted(ng-show="!message.state")
 					span.glyphicon.glyphicon-time
 					| {{message.createdAt | date : 'HH:mm'}}
-				small.pull-right.text-muted(style="padding-right:0.6em", ng-show="!message.state")
-					a(ng-click="edit(message.id)")
+				small.pull-right.text-muted(style="padding-right:0.6em", ng-show="!message.state && message.senderUser.id === settings.user")
+					a(ng-click="edit(message.id)", href="")
 						span.glyphicon.glyphicon-edit
 			p(ng-bind-html="message.content | linky:'_blank'")
 
@@ -65,4 +65,6 @@ mixin sendForm()
 		#textArea
 			textarea.msd-elastic.input-sm(type="text", placeholder="Čo?", ng-model="text", ng-disabled="!ready", autofocus, ng-keydown="text && !sending && connected && sendIfKeyPressed($event)")
 		#sendArea
-			button#sendButton.btn.btn-warning.btn-sm(type="submit", ng-disabled="!connected || !ready || !text") Poslať
+			button#sendButton.btn.btn-warning.btn-sm(type="submit", ng-disabled="!connected || !ready || !text") {{ editingId ? "Zmeniť" : "Poslať" }}
+		#sendArea2(ng-show="editingId")
+			button#cancelButton.btn.btn-default.btn-sm(type="reset", ng-click="cancelEdit()") Zrušiť

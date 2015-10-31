@@ -91,5 +91,11 @@ function MessageController($scope, $filter, $location, $anchorScroll, $timeout, 
 		var message = $filter('filter')($scope.messages, { id : id })[0];
 		$scope.text = message.content;
 		$scope.editingId = id;
+		self.setFocus();
 	};
+	
+	$scope.cancelEdit = function() {
+		$scope.text = '';
+		$scope.editingId = null;		
+	}
 }
