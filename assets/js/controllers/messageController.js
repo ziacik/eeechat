@@ -1,20 +1,20 @@
 var module = angular.module('messageControllerModule', [ 'messageServiceModule', 'settingsServiceModule', 'notification' ]);
 
-module.controller('MessageController', ['$scope', '$filter', '$location', '$anchorScroll', '$timeout', '$notification', 'settingsService', 'messageService', MessageController ]);
+module.controller('MessageController', [ '$scope', '$filter', '$location', '$anchorScroll', '$timeout', '$notification', 'settingsService', 'messageService', MessageController ]);
 
 function MessageController($scope, $filter, $location, $anchorScroll, $timeout, $notification, settingsService, messageService) {
 	var self = this;
-	
+
 	$scope.text = '';
 	$scope.messages = [];
 	$scope.editingId = null;
-	
+
 	this.autoScroll = true;
-	
+
 	$scope.setAutoScroll = function(value) {
 		self.autoScroll = value;
 	}
-	
+
 	this.scrollDown = function() {
 		if (!self.autoScroll) {
 			return;
@@ -26,31 +26,31 @@ function MessageController($scope, $filter, $location, $anchorScroll, $timeout, 
 			$location.hash('');
 		});
 	};
-	
+
 	this.setFocus = function() {
 		$timeout(function() {
 			$scope.focus = true;
 		});
 	};
-	
+
 	$scope.$watch('ready', function(ready) {
 		if (ready) {
 			self.setFocus();
 		}
 	});
-	
+
 	$scope.$on('messageReceived', function(event, message) {
-		self.scrollDown();	
+		self.scrollDown();
 	})
 
 	$scope.$on('messagesUpdated', function() {
 		$scope.messages = messageService.messages;
 		self.scrollDown();
 	});
-	
+
 	$scope.sendIfKeyPressed = function($event) {
 		var pressed = false;
-		
+
 		switch (settingsService.settings.sendKey) {
 		case 'Enter':
 			pressed = $event.keyCode == 13 && !$event.ctrlKey && !$event.altKey && !$event.shiftKey;
@@ -69,7 +69,7 @@ function MessageController($scope, $filter, $location, $anchorScroll, $timeout, 
 			break;
 		case 'Ctrl+S':
 			pressed = $event.keyCode == 83 && $event.ctrlKey && !$event.altKey && !$event.shiftKey;
-			break;		
+			break;
 		}
 
 		if (pressed) {
@@ -77,25 +77,26 @@ function MessageController($scope, $filter, $location, $anchorScroll, $timeout, 
 			$scope.send();
 		}
 	}
-	
+
 	$scope.send = function() {
 		messageService.send($scope.editingId, $scope.text);
 		$scope.text = '';
 		$scope.editingId = null;
 		self.setFocus();
-		self.scrollDown();	
+		self.scrollDown();
 	};
 
 	$scope.edit = function(id) {
-		id = +id;
-		var message = $filter('filter')($scope.messages, { id : id })[0];
+		var message = $filter('filter')($scope.messages, {
+			id : id
+		})[0];
 		$scope.text = message.content;
 		$scope.editingId = id;
 		self.setFocus();
 	};
-	
+
 	$scope.cancelEdit = function() {
 		$scope.text = '';
-		$scope.editingId = null;		
+		$scope.editingId = null;
 	}
 }
