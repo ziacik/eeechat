@@ -1,19 +1,20 @@
-var module = angular.module('settingsServiceModule', ['ngSails', 'angularModalService']);
+var module = angular.module('settingsServiceModule', ['ngSails', 'angularModalService', 'notificationServiceModule', 'appServiceModule']);
 
-function SettingsService($sails, $rootScope, modalService) {
+function SettingsService($sails, $rootScope, modalService, notificationService, appService) {
 	var self = this;
 	
 	this.load = function() {
 		$sails.get('/settings').then(function(res) {
 			self.settings = res.data;
+			notificationService.settings = self.settings;
 			$rootScope.$broadcast('settingsLoaded', self.settings);
 		}).catch(function(err) {
-			console.log(err);
-			alert('Chyba pri čítaní nastavení. Obnovte stránku.');
+			appService.checkError(err);
 		})
 	}
 	
 	this.save = function() {
+		notificationService.settings = self.settings;
 		return $sails.put('/settings', self.settings);
 	}
 	
@@ -31,4 +32,4 @@ function SettingsService($sails, $rootScope, modalService) {
 	return self;
 }
 
-module.factory('settingsService', ['$sails', '$rootScope', 'ModalService', SettingsService]);
+module.factory('settingsService', ['$sails', '$rootScope', 'ModalService', 'notificationService', 'appService', SettingsService]);

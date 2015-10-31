@@ -1,11 +1,21 @@
-var module = angular.module('appServiceModule', []);
+var module = angular.module('appServiceModule', ['notificationServiceModule']);
 
-function AppService($sails, $rootScope, $location) {
+function AppService($sails, $rootScope, $location, $window, notificationService) {
 	var self = this;
 	
 	this.appConfiguration = {};
 	this.appId = $location.search().appId;
 	this.room = $location.search().room || 'global';
+	
+	this.checkError = function(err) {
+		if (err.statusCode === 403) {
+			notificationService.systemNotify('Automatické odhlásenie. Prihláste sa znova.');
+			$window.location.reload();
+		} else {
+			console.error(err);
+			notificationService.systemNotify('Nemožno sa zúčastniť diskusie. Skúste obnoviť stránku.');
+		}
+	}
 	
 	this.load = function() {
 		if (self.appId == null) {
@@ -14,16 +24,14 @@ function AppService($sails, $rootScope, $location) {
 				self.appId = self.appConfiguration.id; 
 				$rootScope.$broadcast('appConfigurationLoaded', self.appConfiguration);
 			}).catch(function(err) {
-				console.error(err);
-				alert('Chyba pri čítaní nastavení. Obnovte stránku.');
+				self.checkError(err);
 			})
 		} else {
 			return $sails.get('/applications/' + self.appId).then(function(res) {
 				self.appConfiguration = res.data;
 				$rootScope.$broadcast('appConfigurationLoaded', self.appConfiguration);
 			}).catch(function(err) {
-				console.error(err);
-				alert('Chyba pri čítaní nastavení. Obnovte stránku.');
+				self.checkError(err);
 			})			
 		}
 	}
@@ -31,4 +39,4 @@ function AppService($sails, $rootScope, $location) {
 	return this;
 }
 
-module.factory('appService', ['$sails', '$rootScope', '$location', AppService ]);
+module.factory('appService', ['$sails', '$rootScope', '$location', '$window', 'notificationService', AppService ]);

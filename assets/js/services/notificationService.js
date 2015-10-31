@@ -1,11 +1,19 @@
-var module = angular.module('notificationServiceModule', ['userServiceModule', 'settingsServiceModule', 'notification']);
+var module = angular.module('notificationServiceModule', ['notification']);
 
-function NotificationService($timeout, $window, $notification, userService, settingsService) {
+function NotificationService($timeout, $window, $notification) {
 	var self = this;
 
 	this.titleChanged = false;
 	this.titleNotification;
 	this.isFocused = true;
+	
+	this.settings = {
+		showAvatars : true,
+		showDesktopNotifications : true,
+		showTitleNotifications : true,
+		desktopNotificationInterval : 6,
+		titleNotificationInterval : 2
+	};
 
 	angular.element($window).bind('focus', function () {
 		self.stopTitleNotifyBlink();
@@ -15,23 +23,45 @@ function NotificationService($timeout, $window, $notification, userService, sett
 	angular.element($window).bind('blur', function () {
 		self.isFocused = false;
 	});	
+	
+	this.systemNotify = function(info) {
+		if (self.settings.showDesktopNotifications) {
+			console.log({
+				body : info,
+				delay : self.settings.desktopNotificationInterval * 1000,
+				icon : 'images/app32.png'
+			})
+			$notification('Upozornenie', {
+				body : info,
+				delay : self.settings.desktopNotificationInterval * 1000,
+				icon : 'images/app32.png'
+			});
+		}
+
+		if (this.isFocused) {
+			return;
+		}
+				
+		if (self.settings.showTitleNotifications) {
+			this.stopTitleNotifyBlink();
+			this.titleNotifyBlink('Upozornenie', info);
+		}		
+	}
 
 	this.notify = function(message) {
 		if (this.isFocused) {
 			return;
 		}
 		
-		if (settingsService.settings.showDesktopNotifications) {
-			var sender = userService.getById(message.sender);
-			
-			$notification(sender.username, {
+		if (self.settings.showDesktopNotifications) {
+			$notification(message.senderUser.username, {
 				body : message.content,
-				delay : settingsService.settings.desktopNotificationInterval * 1000,
-				icon : settingsService.settings.showAvatars ? sender.imageUrl : null
+				delay : self.settings.desktopNotificationInterval * 1000,
+				icon : self.settings.showAvatars ? message.senderUser.imageUrl : null
 			});
 		}
 		
-		if (settingsService.settings.showTitleNotifications) {
+		if (self.settings.showTitleNotifications) {
 			this.startTitleNotifyBlink(message);
 		}
 	};
@@ -51,10 +81,7 @@ function NotificationService($timeout, $window, $notification, userService, sett
 	
 	this.startTitleNotifyBlink = function(message) {
 		this.stopTitleNotifyBlink();
-
-		var sender = userService.getById(message.sender);
-
-		this.titleNotifyBlink(sender.username, message.content.substr(0, 20) + '...');
+		this.titleNotifyBlink(message.senderUser.username, message.content.substr(0, 20) + '...');
 	}
 	
 	this.titleNotifyBlink = function(senderName, contentPart) {		
@@ -68,10 +95,10 @@ function NotificationService($timeout, $window, $notification, userService, sett
 		
 		this.titleNotification = $timeout(function() {
 			self.titleNotifyBlink(senderName, contentPart);
-		}, settingsService.settings.titleNotificationInterval * 1000);
+		}, self.settings.titleNotificationInterval * 1000);
 	};
 	
 	return self;
 }
 
-module.factory('notificationService', ['$timeout', '$window', '$notification', 'userService', 'settingsService', NotificationService ]);
+module.factory('notificationService', ['$timeout', '$window', '$notification', NotificationService ]);

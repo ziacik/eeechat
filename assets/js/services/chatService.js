@@ -1,6 +1,6 @@
-var module = angular.module('chatServiceModule', ['ngSails', 'appServiceModule', 'userServiceModule', 'messageServiceModule', 'settingsServiceModule', 'appServiceModule']);
+var module = angular.module('chatServiceModule', ['ngSails', 'appServiceModule', 'userServiceModule', 'messageServiceModule', 'settingsServiceModule', 'appServiceModule', 'notificationServiceModule']);
 
-function ChatService($sails, $rootScope, appService, userService, messageService, settingsService, appService) {
+function ChatService($sails, $rootScope, appService, userService, messageService, settingsService, appService, notificationService) {
 	var self = this;
 	this.connected = false;
 	
@@ -26,7 +26,7 @@ function ChatService($sails, $rootScope, appService, userService, messageService
 			self.connected = true;
 			$rootScope.$broadcast('connectionUpdated');
 		}).catch(function(err) {
-			alert('Nemožno sa zúčastniť chatu pre chybu. Skúste obnoviť neskôr.') //TODO alert
+			appService.checkError(err);
 		})
 	}
 	
@@ -46,4 +46,4 @@ function ChatService($sails, $rootScope, appService, userService, messageService
 	return self;
 }
 
-module.factory('chatService', ['$sails', '$rootScope', 'appService', 'userService', 'messageService', 'settingsService', 'appService', ChatService ]);
+module.factory('chatService', ['$sails', '$rootScope', 'appService', 'userService', 'messageService', 'settingsService', 'appService', 'notificationService', ChatService ]);
