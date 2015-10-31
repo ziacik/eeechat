@@ -18,7 +18,7 @@ function ChatService($sails, $rootScope, appService, userService, messageService
 	
 	this.join = function() {
 		var query = {
-			app : appService.appId,
+			appId : appService.appId,
 			room : appService.room
 		};
 		
