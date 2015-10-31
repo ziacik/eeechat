@@ -3,8 +3,6 @@ var module = angular.module('messageServiceModule', ['userServiceModule', 'notif
 function MessageService($sails, $rootScope, $timeout, $window, userService, notificationService, appService) {
 	var self = this;
 	
-	this.messageMode = 'all';
-		
 	this.messages;
 	this.modelUpdater;
 	
@@ -22,7 +20,7 @@ function MessageService($sails, $rootScope, $timeout, $window, userService, noti
 			room : appService.room
 		};
 		
-		if (this.messageMode !== 'all') {
+		if (appService.appConfiguration.initialGetMode === 'today') {
 			query.createdAt = { '>' : today };
 		}
 		

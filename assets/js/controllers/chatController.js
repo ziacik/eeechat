@@ -21,8 +21,8 @@ function ChatController($scope, settingsService, chatService) {
 		$scope.connected = chatService.connected;
 	});
 
-	$scope.$on('appSettingsLoaded', function(event, appSettings) {
-		$scope.appSettings = appSettings;
+	$scope.$on('appConfigurationLoaded', function(event, appConfiguration) {
+		$scope.appConfiguration = appConfiguration;
 	});
 
 	$scope.$on('settingsLoaded', function(event, settings) {
