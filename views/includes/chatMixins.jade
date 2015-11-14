@@ -8,14 +8,14 @@ mixin menu()
 			li.dropdown-header Účet
 			if isPasswordNotSet
 				li
-					a(href='connect#{roomQuery}', target='_self')
+					a(href='connect#{locationQuery}', target='_self')
 						i.icon-width.icon-indent.fa.fa-key
 						| Nastaviť heslo
 					
 			each provider, code in disconnectedProviders
 				if provider.name
 					li
-						a(href="/auth/" + provider.slug + roomQuery, target='_self')
+						a(href="/auth/" + provider.slug + locationQuery, target='_self')
 							i(class="icon-width icon-indent fa fa-" + code)
 							= 'Pripojiť ' + provider.name
 		
@@ -26,7 +26,7 @@ mixin menu()
 					| Nastavenia
 			li.divider(role='separator')
 			li
-				a(href='logout#{roomQuery}', target='_self')
+				a(href='logout#{locationQuery}', target='_self')
 					i.glyphicon.glyphicon-log-out.icon-indent
 					| Odhlásiť
 

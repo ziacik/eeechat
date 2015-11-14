@@ -34,7 +34,7 @@ var AuthController = {
 		// Render the `auth/login.ext` view
 		res.view({
 			providers : passport.getNonLocalProviders(),
-			roomQuery :  locationService.getRoomQuery(req),
+			locationQuery :  locationService.getLocationQuery(req),
 			errors : req.flash('error')
 		});
 	},
@@ -61,7 +61,7 @@ var AuthController = {
 		// mark the user as logged out for auth purposes
 		req.session.authenticated = false;
 
-		res.redirect('/' + locationService.getRoomQuery(req));
+		res.redirect('/' + locationService.getLocationQuery(req));
 	},
 
 	/**
@@ -81,7 +81,7 @@ var AuthController = {
 	 */
 	register : function(req, res) {
 		res.view({
-			roomQuery :  locationService.getRoomQuery(req),
+			locationQuery :  locationService.getLocationQuery(req),
 			errors : req.flash('error')
 		});
 	},
@@ -141,16 +141,16 @@ var AuthController = {
 
 			switch (action) {
 			case 'connect':
-				res.redirect('/connect' + locationService.getRoomQuery(req));
+				res.redirect('/connect' + locationService.getLocationQuery(req));
 				break;
 			case 'register':
-				res.redirect('/register' + locationService.getRoomQuery(req));
+				res.redirect('/register' + locationService.getLocationQuery(req));
 				break;
 			case 'disconnect':
 				res.redirect('back');
 				break;
 			default:
-				res.redirect('/login' + locationService.getRoomQuery(req));
+				res.redirect('/login' + locationService.getLocationQuery(req));
 			}
 		}
 
@@ -171,7 +171,7 @@ var AuthController = {
 				// Upon successful login, send the user to the homepage were
 				// req.user
 				// will be available.
-				res.redirect('/' + locationService.getRoomQuery(req));
+				res.redirect('/' + locationService.getLocationQuery(req));
 			});
 		});
 	},
@@ -179,7 +179,7 @@ var AuthController = {
 	connect : function(req, res) {
 		res.view({
 			user : req.user,
-			roomQuery :  locationService.getRoomQuery(req),
+			locationQuery :  locationService.getLocationQuery(req),
 			errors : req.flash('error')
 		});
 	},

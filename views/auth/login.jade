@@ -7,14 +7,14 @@ block body
 			.main
 				h3
 					| Prihláste sa, alebo
-					a(href="register#{roomQuery}")
+					a(href="register#{locationQuery}")
 						| &nbsp;zaregistrujte
 
 				.row
 					each provider, code in providers
 						if provider.name
 							.col-md-6.top-margin-10
-								a(class="btn btn-block btn-social btn-" + code, href="/auth/" + provider.slug + roomQuery, role="button")
+								a(class="btn btn-block btn-social btn-" + code, href="/auth/" + provider.slug + locationQuery, role="button")
 									i(class="fa fa-" + code)
 									= ' ' + provider.name
 							
@@ -22,7 +22,7 @@ block body
 					hr.hr-or
 					span.span-or alebo
 	
-				form(role="form", action="/auth/local#{roomQuery}", method="post")
+				form(role="form", action="/auth/local#{locationQuery}", method="post")
 					.form-group
 						input.form-control(type="text", name="identifier", placeholder="Meno alebo e-mail")
 					.form-group

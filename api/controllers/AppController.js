@@ -15,7 +15,7 @@ module.exports = {
 				errors : req.flash('error'),
 				isPasswordNotSet : isPasswordNotSet,
 				disconnectedProviders : providers,
-				roomQuery : locationService.getRoomQuery(req)
+				locationQuery : locationService.getLocationQuery(req)
 			});			
 		}).catch(function(err) {
 			console.error(err);

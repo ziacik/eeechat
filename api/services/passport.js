@@ -221,7 +221,7 @@ passport.endpoint = function(req, res) {
 	// If a provider doesn't exist for this endpoint, send the user back to the
 	// login page
 	if (!strategies.hasOwnProperty(provider)) {
-		return res.redirect('/login' + locationService.getRoomQuery(req));
+		return res.redirect('/login' + locationService.getLocationQuery(req));
 	}
 
 	// Attach scope if it has been set in the config
@@ -229,7 +229,7 @@ passport.endpoint = function(req, res) {
 		options.scope = strategies[provider].scope;
 	}	
 	
-	options.state =  locationService.getRoom(req);
+	options.state =  JSON.stringify({ r : locationService.getRoom(req), a : locationService.getAppId(req) });
 
 	// Redirect the user to the provider for authentication. When complete,
 	// the provider will redirect the user back to the application at

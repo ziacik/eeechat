@@ -6,7 +6,7 @@ block body
 		.row
 			.main
 				h3 Nastavte heslo	
-				form(role="form", action="/auth/local/connect#{roomQuery}", method="post")
+				form(role="form", action="/auth/local/connect#{locationQuery}", method="post")
 					.form-group
 						input.form-control(type="text", name="username", placeholder="Meno", value="#{ user.username }", disabled="disabled")
 					.form-group
