@@ -10,5 +10,6 @@
 	"Error.Passport.Account.Exists": "Tento účet je už pripojený k inému účtu. Prihláste sa najskôr pomocou neho a odpojte ho.",
 	"Error.Passport.Username.Missing": "Zadajte meno.",
 	"Error.Passport.Password.Missing": "Zadajte heslo.",
-	"Error.Passport.Generic": "Všeobecná chyba."
+	"Error.Passport.Generic": "Všeobecná chyba.",
+	"Error.Passport.Email.Invalid": "Nesprávny e-mail."
 }
