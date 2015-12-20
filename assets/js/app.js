@@ -1,20 +1,20 @@
 var app = angular.module('eeechat', [
 	'appServiceModule',
-	'chatServiceModule',	
+	'chatServiceModule',
 	'chatControllerModule',
 	'userControllerModule',
 	'messageControllerModule',
 	'settingsControllerModule',
 	'autoFocusModule',
+	'embedLinkyModule',
 	'angular-inview',
-	'monospaced.elastic',
-	'ngSanitize'
+	'monospaced.elastic'
 ]);
 
-app.config(['$sailsProvider', function($sailsProvider) {
-	$sailsProvider.config.transports = ['polling', 'websocket'];
-}]);
+app.config([ '$sailsProvider', function($sailsProvider) {
+	$sailsProvider.config.transports = [ 'polling', 'websocket' ];
+} ]);
 
-app.config(['$locationProvider', function($locationProvider) {
+app.config([ '$locationProvider', function($locationProvider) {
 	$locationProvider.html5Mode(true);
-}])
+} ]);

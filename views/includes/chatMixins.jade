@@ -58,7 +58,7 @@ mixin messageList()
 				small.pull-right.text-muted(style="padding-right:0.6em", ng-show="!message.state && message.senderUser.id === settings.user")
 					a(ng-click="edit(message.id)", href="")
 						span.glyphicon.glyphicon-edit
-			p(ng-bind-html="message.content | linky:'_blank'")
+			p(ng-bind-html="message.content | embedLinky")
 
 mixin sendForm()
 	form(ng-submit="send()")
