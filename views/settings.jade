@@ -14,6 +14,7 @@ include includes/inputMixins
 					+inputRequired(text, 'username', 'Meno', 'name')
 					+dropDown('sendkey', 'Odoslať pomocou', ['Enter', 'Ctrl+Enter', 'Alt+Enter', 'Shift+Enter', 'Alt+S', 'Ctrl+S'], 'settings.sendKey')
 					+check('showAvatars', 'Zobraziť avatary', 'settings.showAvatars')
+					+check('embedLinks', 'Zobraziť odkazy ako obsah', 'settings.embedLinks')
 					+check('showDesktopNotifications', 'Zobraziť desktop notifikácie', 'settings.showDesktopNotifications')
 					+check('showTitleNotifications', 'Zobraziť notifikácie v ráme', 'settings.showTitleNotifications')
 					+numberRequired('desktopNotificationInterval', 'Dĺžka zobrazenia desktop notifikácie (s)', 'settings.desktopNotificationInterval')(min=1, ng-disabled='!settings.showDesktopNotifications')

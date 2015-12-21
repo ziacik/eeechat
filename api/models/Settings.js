@@ -38,6 +38,11 @@ module.exports = {
 			required : true,
 			defaultsTo : true
 		},
+		embedLinks : {
+			type : 'boolean',
+			required : true,
+			defaultsTo : true
+		},
 		showDesktopNotifications : {
 			type : 'boolean',
 			required : true,
