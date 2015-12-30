@@ -6,6 +6,9 @@
  */
 
 var actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
+var gcm = require('node-gcm');
+var sender = new gcm.Sender('AIzaSyAs36AYb4sGD5CTYtnBPUDhU5VBXcb2swI');
+var registrationIds = ['fuiylHj6bUw:APA91bGj7pcBPOBsBXXJ7wcXFp9hqZCABoVYxzkR51i3dWlPJgcs1D6MjU18H2Xli9gVBD-iyEnZDymmMLB5yshX3ZaAU0mnKFCOEeYb-qmOEItzfz-7uGlwVtcgy4UWP2nmTkdvFUjC'];
 
 function coerceMessageId(id) {
 	try {
@@ -36,6 +39,19 @@ module.exports = {
 				verb : 'created',
 				data : message
 			}, req.socket);
+			
+			var pushMessage = new gcm.Message();
+
+			pushMessage.addData('title', 'EeeChat'); //TODO user
+			pushMessage.addData('message', message.content);
+			pushMessage.addData('ledColor', [200,0,0,200]);
+			
+			//TODO refactor
+			sender.send(pushMessage, { registrationTokens: registrationIds }, function (err, response) {
+				if(err) console.error(err);
+				//else    console.log(response);
+			});
+
 			
 			return res.created(message);
 		}).catch(function(err) {
