@@ -60,6 +60,10 @@ var AuthController = {
 
 		// mark the user as logged out for auth purposes
 		req.session.authenticated = false;
+		
+		var user = null; //FIXME get from session
+		
+		pushService.logout(req, user);
 
 		res.redirect('/' + locationService.getLocationQuery(req));
 	},
@@ -167,6 +171,8 @@ var AuthController = {
 				// Mark the session as authenticated to work with default Sails
 				// sessionAuth.js policy
 				req.session.authenticated = true
+
+				pushService.login(req, user.id);
 
 				// Upon successful login, send the user to the homepage were
 				// req.user

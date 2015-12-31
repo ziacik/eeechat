@@ -229,7 +229,7 @@ passport.endpoint = function(req, res) {
 		options.scope = strategies[provider].scope;
 	}	
 	
-	options.state =  JSON.stringify({ r : locationService.getRoom(req), a : locationService.getAppId(req) });
+	options.state =  JSON.stringify({ r : locationService.getRoom(req), a : locationService.getAppId(req), p : locationService.getPushId(req) });
 
 	// Redirect the user to the provider for authentication. When complete,
 	// the provider will redirect the user back to the application at

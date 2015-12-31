@@ -15,7 +15,7 @@ module.exports.bootstrap = function(cb) {
 	// with the bootstrap! (otherwise your server will never lift, since it's
 	// waiting on the bootstrap)
 	
-	legacyIdProvider.initialize().then(function() {
+	legacyIdProvider.initialize().then(locationService.initialize).then(function() {
 		cb();
 	}).catch(function(err) {
 		throw err;
