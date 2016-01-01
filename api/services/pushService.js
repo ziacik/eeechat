@@ -44,7 +44,7 @@ service.logout = function(req, userId) {
 
 service.push = function(message) {
 	Subscription.find().where({
-		platform : 'android',
+		platform : 'Android',
 		app : message.app,
 		room : message.room,
 		user : { '!' : message.sender }
