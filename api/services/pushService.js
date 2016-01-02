@@ -34,7 +34,7 @@ service.login = function(req, userId) {
 	}); //TODO handle errors
 };
 
-service.logout = function(req, userId) {
+service.logout = function(req) {
 	var pushId = locationService.getPushId(req);
 	
 	if (!pushId) {
@@ -52,7 +52,7 @@ service.logout = function(req, userId) {
 		app : appId,
 		room : room,
 		platform : platform,
-		user : userId,
+		user : req.user.id,
 		identifier : identifier
 	}).catch(function(err) {
 		console.log(err);

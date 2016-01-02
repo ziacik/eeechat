@@ -56,15 +56,13 @@ var AuthController = {
 	 *            res
 	 */
 	logout : function(req, res) {
+		pushService.logout(req);
+	
 		req.logout();
 
 		// mark the user as logged out for auth purposes
 		req.session.authenticated = false;
 		
-		var user = null; //FIXME get from session
-		
-		pushService.logout(req, user);
-
 		res.redirect('/' + locationService.getLocationQuery(req));
 	},
 
