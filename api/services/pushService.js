@@ -21,13 +21,15 @@ service.login = function(req, userId) {
 	var room = locationService.getRoom(req) || 'global';
 	var appId = locationService.getAppId(req) || locationService.globalAppId;
 	
-	Subscription.create({
+	var data = {
 		app : appId,
 		room : room,
 		platform : platform,
 		user : userId,
 		identifier : identifier
-	}).catch(function(err) {
+	};
+	
+	Subscription.findOrCreate(data, data).catch(function(err) {
 		console.log(err);
 	}); //TODO handle errors
 };
@@ -39,7 +41,22 @@ service.logout = function(req, userId) {
 		return;
 	}
 	
-	//TODO delete subscription
+	var separatorIdx = pushId.indexOf(';');
+	var platform = pushId.substr(0, separatorIdx);
+	var identifier = pushId.substr(separatorIdx + 1);
+	
+	var room = locationService.getRoom(req) || 'global';
+	var appId = locationService.getAppId(req) || locationService.globalAppId;
+	
+	Subscription.destroy({
+		app : appId,
+		room : room,
+		platform : platform,
+		user : userId,
+		identifier : identifier
+	}).catch(function(err) {
+		console.log(err);
+	}); //TODO handle errors
 };
 
 service.push = function(message) {
