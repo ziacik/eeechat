@@ -57,13 +57,12 @@ var AuthController = {
 	 */
 	logout : function(req, res) {
 		pushService.logout(req);
-	
 		req.logout();
 
 		// mark the user as logged out for auth purposes
 		req.session.authenticated = false;
 		
-		res.redirect('/' + locationService.getLocationQuery(req));
+		res.redirect('/login' + locationService.getLocationQuery(req));
 	},
 
 	/**

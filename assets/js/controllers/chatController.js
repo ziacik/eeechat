@@ -15,6 +15,10 @@ function ChatController($scope, settingsService, chatService) {
 		chatService.init();
 	};
 	
+	$scope.logout = function(locationQuery) {
+		chatService.disconnect(locationQuery);
+	};
+	
 	$scope.openSettings = settingsService.openSettings;
 
 	$scope.$on('connectionUpdated', function() {

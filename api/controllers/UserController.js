@@ -5,28 +5,9 @@
  * @help :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
-var socketUsers = {};
-
 module.exports = {		
 	join : function(req, res) {
-		var appId = req.param('appId');
-		var room = req.param('room');		
-		var roomName = appId + '/' + room;
-		
-		var mySocketId = sails.sockets.id(req.socket);
-		socketUsers[mySocketId] = req.user.id; // TODO check
-		
-		var data = {
-			id : req.user.id,
-			verb : 'messaged',
-			data : {
-				state : 'online'
-			}
-		};
-		
-		sails.sockets.join(req.socket, roomName);		
-		sails.sockets.broadcast(roomName, 'user', data, req.socket);
-
+		socketService.connect(req);
 		legacyUserStatusService.userConnect(req.user.id);
 
 		return res.ok();
@@ -36,20 +17,8 @@ module.exports = {
 		if (!req.user) {
 			return res.forbidden();
 		}
-		
-		var appId = req.param('appId');
-		var room = req.param('room');
-		var roomName = appId + '/' + room;
-		
-		var subscriberIds = sails.sockets.subscribers(roomName);
-		
-		var onlineUsers = subscriberIds.reduce(function(result, current) {
-			var user = socketUsers[current];
-			if (result.indexOf(user) < 0) {
-				result.push(user);
-			}
-			return result;
-		}, []);
+
+		var onlineUsers = socketService.getOnlineUsers(req);				
 		
 		LegacyConnection.find().then(function(legacyConnections) {
 			var legacyUsers =  legacyConnections.map(function(legacyConnection) {

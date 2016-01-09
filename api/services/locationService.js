@@ -46,7 +46,7 @@ service.getLocationQuery = function(req) {
 	
 	if (room) {
 		query += query ? '&' : '?';
-		query = 'room=' + encodeURIComponent(room);
+		query += 'room=' + encodeURIComponent(room);
 	}
 	
 	if (appId) {

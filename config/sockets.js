@@ -122,19 +122,7 @@ module.exports.sockets = {
 	***************************************************************************/
 	afterDisconnect: function(session, socket, cb) {
 		if (session && session.passport && session.passport.user) {
-			var roomNames = sails.sockets.socketRooms(socket);
-			
-			roomNames.forEach(function(roomName) {
-				sails.sockets.leave(socket, roomName);
-				sails.sockets.broadcast(roomName, 'user', {
-					id : session.passport.user,
-					verb : 'messaged',
-					data : {
-						state : 'offline'
-					}
-				}, socket);
-			});
-			
+			socketService.disconnect(session, socket);
 			legacyUserStatusService.userDisconnect(session.passport.user);
 		}
 		return cb();

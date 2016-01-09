@@ -7,6 +7,11 @@ function AppService($sails, $rootScope, $location, $window, notificationService)
 	this.appId = $location.search().appId;
 	this.room = $location.search().room || 'global';
 	
+	this.disconnect = function(locationQuery) {
+		$sails.disconnect();
+		$window.location.href = '/logout' + (locationQuery || "");
+	};	
+
 	this.checkError = function(err) {
 		if (err.statusCode === 403) {
 			notificationService.systemNotify('Automatické odhlásenie. Prihláste sa znova.');
@@ -15,7 +20,7 @@ function AppService($sails, $rootScope, $location, $window, notificationService)
 			console.error(err);
 			notificationService.systemNotify('Nemožno sa zúčastniť diskusie. Skúste obnoviť stránku.');
 		}
-	}
+	};
 	
 	this.load = function() {
 		if (self.appId == null) {

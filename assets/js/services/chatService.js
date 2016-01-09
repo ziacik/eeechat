@@ -7,14 +7,18 @@ function ChatService($sails, $rootScope, appService, userService, messageService
 	this.init = function() {
 		appService.load().then(self.connect);
 		self.bindEvents();
-	}
+	};
 	
 	this.connect = function() {
 		self.join();
 		settingsService.load();
 		userService.subscribe();
 		messageService.subscribe();
-	}
+	};
+	
+	this.disconnect = function(locationQuery) {
+		appService.disconnect(locationQuery);
+	};
 	
 	this.join = function() {
 		var query = {
@@ -27,7 +31,7 @@ function ChatService($sails, $rootScope, appService, userService, messageService
 			$rootScope.$broadcast('connectionUpdated');
 		}).catch(function(err) {
 			appService.checkError(err);
-		})
+		});
 	}
 	
 	this.bindEvents = function() {
@@ -40,8 +44,8 @@ function ChatService($sails, $rootScope, appService, userService, messageService
 			if (!self.connected && appService.loaded) {
 				self.connect();
 			}
-		})
-	}
+		});
+	};
 	
 	return self;
 }

@@ -26,7 +26,7 @@ mixin menu()
 					| Nastavenia
 			li.divider(role='separator')
 			li
-				a(href='logout#{locationQuery}', target='_self')
+				a(href='', ng-click='logout("#{locationQuery}")')
 					i.glyphicon.glyphicon-log-out.icon-indent
 					| Odhlásiť
 
