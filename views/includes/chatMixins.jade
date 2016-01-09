@@ -61,7 +61,7 @@ mixin messageList()
 			p(ng-bind-html="message.content | embedLinky")
 
 mixin sendForm()
-	form(ng-submit="send()")
+	form(ng-submit="send()", ng-cloak)
 		#textArea
 			textarea.msd-elastic.input-sm(type="text", placeholder="Čo?", ng-model="text", ng-disabled="!ready", autofocus, ng-keydown="text && !sending && connected && sendIfKeyPressed($event)")
 		#sendArea
