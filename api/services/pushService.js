@@ -21,6 +21,12 @@ service.login = function(req, userId) {
 	var room = locationService.getRoom(req) || 'global';
 	var appId = locationService.getAppId(req) || locationService.globalAppId;
 	
+	var query = {
+		app : appId,
+		platform : platform,
+		identifier : identifier
+	};
+	
 	var data = {
 		app : appId,
 		room : room,
@@ -28,8 +34,12 @@ service.login = function(req, userId) {
 		user : userId,
 		identifier : identifier
 	};
-	
-	Subscription.findOrCreate(data, data).catch(function(err) {
+		
+	Subscription.findOrCreate(query, data).then(function subscriptionFindOrCreate(record) {
+		if (record.user !== data.user || record.room !== data.room) {
+			return Subscription.update(query, data);
+		}
+	}).catch(function(err) {
 		console.log(err);
 	}); //TODO handle errors
 };
@@ -50,9 +60,7 @@ service.logout = function(req) {
 	
 	Subscription.destroy({
 		app : appId,
-		room : room,
 		platform : platform,
-		user : req.user.id,
 		identifier : identifier
 	}).catch(function(err) {
 		console.log(err);
@@ -67,7 +75,6 @@ service.push = function(message) {
 		user : { '!' : message.sender }
 	}).then(function(subscriptions) {
 		if (!subscriptions.length) {
-			console.log('No subscribers.');
 			return;
 		}
 	
@@ -88,10 +95,32 @@ service.push = function(message) {
 				if (err) {
 					console.error(err);
 				}
-				//TODO handle InvalidRegistration
+				cleanupAndroidSubscriptions(message.app, 'Android', tokens, response);
 			});
 		});
 	}).done();
+};
+
+var cleanupAndroidSubscriptions = function(appId, platform, identifiers, response) {
+	if (!response.results || !response.results.length) {
+		return;
+	}
+
+	var toDelete = identifiers.filter(function(identifier, index) {
+		return response.results[index].error === 'InvalidRegistration';
+	});
+	
+	if (!toDelete.length) {
+		return;
+	}
+	
+	Subscription.destroy({
+		app : appId,
+		platform : platform,
+		identifier : toDelete
+	}).catch(function(err) {
+		console.error(err);
+	}); //TODO handle errors
 };
 
 module.exports = service;
