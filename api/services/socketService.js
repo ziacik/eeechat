@@ -11,6 +11,7 @@ service.connect = function(req) {
 	var appRoom = appId + '/' + room;
 	
 	service.socketUsers[socketId] = req.user.id;
+	service.socketRooms[socketId] = appRoom;
 
 	var data = {
 		id : req.user.id,
@@ -22,33 +23,32 @@ service.connect = function(req) {
 	
 	sails.sockets.join(socket, appRoom);
 	sails.sockets.broadcast(appRoom, 'user', data, socket);
-
-	var rooms = service.socketRooms[socketId];
-	
-	if (!rooms) {
-		service.socketRooms[socket.id] = [appRoom];
-	} else if (rooms.indexOf(appRoom) < 0) {
-		rooms.push(appRoom);
-	}
 };
 
 service.disconnect = function(session, socket) {
 	var socketId = sails.sockets.id(socket);
-	var appRooms = service.socketRooms[socketId];
+	var appRoom = service.socketRooms[socketId];
 	
-	if (!appRooms) {
+	if (!appRoom) {
 		return;
 	}
-			
-	appRooms.forEach(function(appRoom) {
+	
+	var subscribers = sails.sockets.subscribers(appRoom);
+	var myId = session.passport.user;
+
+	var isMyselfOnline = subscribers.some(function(subscriber) {
+		return myId === service.socketUsers[subscriber];
+	});
+	
+	if (!isMyselfOnline) {
 		sails.sockets.broadcast(appRoom, 'user', {
-			id : session.passport.user,
+			id : myId,
 			verb : 'messaged',
 			data : {
 				state : 'offline'
 			}
 		}, socket);
-	});	
+	}
 	
 	delete service.socketRooms[socketId];
 };
