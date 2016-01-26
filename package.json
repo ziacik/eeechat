@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "apn": "^1.7.5",
     "bcryptjs": "^2.2.1",
     "connect-mongo": "^0.8.2",
     "connect-redis": "1.4.5",
