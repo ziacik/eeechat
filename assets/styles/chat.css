@@ -19,18 +19,54 @@ footer
 	display: table;
 	width: 100%;
 }
+#sendForm button 
+{
+	background:none !important;
+	border:none;
+	box-shadow:none;
+}
 #textArea
 {
 	display: table-cell;
 	width: 100%;
 }
-#sendArea
+#imageUploadButton
+{
+	padding-left: 0.5em;
+	display: table-cell;
+	vertical-align: middle;
+}
+#fileUploadButton
+{
+	padding-left: 0.5em;
+	display: table-cell;
+	vertical-align: middle;
+}
+#uploadsArea {
+	padding-bottom: 0.5em;
+	padding-left: 10px;
+}
+#uploadsArea span {
+	margin-right: 0.5em;
+	padding: 0.5em;
+}
+#uploadsArea a {
+	margin-right: 0.3em;
+	color: White;	
+}
+#uploadsArea button {
+	padding-left: 0.3em;
+	padding-right: 0.3em;
+	padding-top: 0em;
+	padding-bottom: 0em;
+}
+#sendButton
 {
 	padding-left: 1em;
 	display: table-cell;
 	vertical-align: middle;
 }
-#sendArea2
+#cancelButton
 {
 	padding-left: 1em;
 	display: table-cell;

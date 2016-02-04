@@ -61,10 +61,22 @@ mixin messageList()
 			p(ng-bind-html="message.content | embedLinky")
 
 mixin sendForm()
-	form(ng-submit="send()", ng-cloak)
+	form#sendForm(ng-submit="send()", ng-cloak)
 		#textArea
 			textarea.msd-elastic.input-sm(type="text", placeholder="Čo?", ng-model="text", ng-disabled="!ready", autofocus, ng-keydown="text && !sending && connected && sendIfKeyPressed($event)")
-		#sendArea
-			button#sendButton.btn.btn-warning.btn-sm(type="submit", ng-disabled="!connected || !ready || !text") {{ editingId ? "Zmeniť" : "Poslať" }}
-		#sendArea2(ng-show="editingId")
-			button#cancelButton.btn.btn-default.btn-sm(type="reset", ng-click="cancelEdit()") Zrušiť
+		#imageUploadButton
+			button.btn.btn-sm(type="button", ngf-select="upload($files)", ngf-multiple="true", ng-disabled="!connected || !ready")
+				span.glyphicon.glyphicon-camera
+		#fileUploadButton
+			button#imageUploadButton.btn.btn-sm(type="button", ngf-select="upload($files)", ngf-multiple="true", ng-disabled="!connected || !ready")
+				span.glyphicon.glyphicon-paperclip
+		#sendButton
+			button.btn.btn-sm(type="submit", ng-disabled="!connected || !ready || !text")
+				span.glyphicon.glyphicon-send
+		#cancelButton(ng-show="editingId")
+			button.btn.btn-default.btn-sm(type="reset", ng-click="cancelEdit()")
+				span.glyphicon.glyphicon-remove
+		#uploadsArea(ng-show="uploadedItems.length")
+			span.label.label-primary(ng-repeat="item in uploadedItems")
+				a(ng-href="upload?id={{ item.fd }}", target="_blank") {{ item.filename }}
+				button.btn.btn-sm(type="button") &#10006;

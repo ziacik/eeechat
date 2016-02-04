@@ -40,6 +40,10 @@ var jsFilesToInject = [
   '/vendor/angular-embedly/angular-embedly.js',
   '/vendor/angular-notification/angular-notification.js',
   '/vendor/angular-modal-service/dst/angular-modal-service.js',
+  '/vendor/angular-modal-service/dst/angular-modal-service.js',
+  '/vendor/angular-modal-service/dst/angular-modal-service.js',
+  '/vendor/ng-file-upload/ng-file-upload-shim.js',
+  '/vendor/ng-file-upload/ng-file-upload.js',
   
   // All of the rest of your client-side js files
   // will be injected here in no particular order.

@@ -8,7 +8,8 @@ var app = angular.module('eeechat', [
 	'autoFocusModule',
 	'embedLinkyModule',
 	'angular-inview',
-	'monospaced.elastic'
+	'monospaced.elastic',
+	'ngFileUpload'
 ]);
 
 app.config([ '$sailsProvider', function($sailsProvider) {

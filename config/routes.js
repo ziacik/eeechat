@@ -49,6 +49,9 @@ module.exports.routes = {
 	'PUT /settings' : 'SettingsController.save',
 	
 	'/users/online' : 'UserController.online',
+	
+	'POST /upload' : 'UploadController.upload',
+	'GET /upload' : 'UploadController.serve',
 
 	'/legacy/getuser.php' : 'LegacyController.getUser',
 	'/legacy/getrooms.php' : 'LegacyController.getRooms',

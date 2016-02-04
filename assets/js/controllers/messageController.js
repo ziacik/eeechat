@@ -1,13 +1,14 @@
 var module = angular.module('messageControllerModule', [ 'messageServiceModule', 'settingsServiceModule', 'notification' ]);
 
-module.controller('MessageController', [ '$scope', '$filter', '$location', '$anchorScroll', '$timeout', '$notification', 'settingsService', 'messageService', MessageController ]);
+module.controller('MessageController', [ '$scope', '$filter', '$location', '$anchorScroll', '$timeout', '$notification', 'Upload', 'settingsService', 'messageService', MessageController ]);
 
-function MessageController($scope, $filter, $location, $anchorScroll, $timeout, $notification, settingsService, messageService) {
+function MessageController($scope, $filter, $location, $anchorScroll, $timeout, $notification, Upload, settingsService, messageService) {
 	var self = this;
 
 	$scope.text = '';
 	$scope.messages = [];
 	$scope.editingId = null;
+	$scope.uploadedItems = [];
 
 	this.autoScroll = true;
 
@@ -79,7 +80,14 @@ function MessageController($scope, $filter, $location, $anchorScroll, $timeout, 
 	}
 
 	$scope.send = function() {
-		messageService.send($scope.editingId, $scope.text);
+		var outgoingText = $scope.text;
+		
+		if ($scope.uploadedItems.length) {
+			outgoingText += '\r\n\r\n' + 'http://localhost:1337/' + $scope.uploadedItems[0].fd;
+			$scope.uploadedItems = [];
+		}
+	
+		messageService.send($scope.editingId, outgoingText);
 		$scope.text = '';
 		$scope.editingId = null;
 		self.setFocus();
@@ -98,5 +106,38 @@ function MessageController($scope, $filter, $location, $anchorScroll, $timeout, 
 	$scope.cancelEdit = function() {
 		$scope.text = '';
 		$scope.editingId = null;
-	}
+	};
+	
+	$scope.upload = function (files) {
+		if (files && files.length) {
+			for (var i = 0; i < files.length; i++) {
+			  var file = files[i];
+			  if (!file.$error) {
+				Upload.upload({
+					url: 'upload',
+					data: {
+					  username: $scope.username,
+					  file: file  
+					}
+				}).then(function (resp) {
+					$timeout(function() {
+						resp.data.forEach(function(item) {
+							$scope.uploadedItems.push(item);
+						});
+						$scope.log = 'file: ' +
+						resp.config.data.file.name +
+						', Response: ' + JSON.stringify(resp.data) +
+						'\n' + $scope.log;
+					});
+				}, null, function (evt) {
+					var progressPercentage = parseInt(100.0 *
+							evt.loaded / evt.total);
+					$scope.log = 'progress: ' + progressPercentage + 
+						'% ' + evt.config.data.file.name + '\n' + 
+					  $scope.log;
+				});
+			  }
+			}
+		}
+	};
 }
