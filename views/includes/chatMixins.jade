@@ -62,6 +62,10 @@ mixin messageList()
 
 mixin sendForm()
 	form#sendForm(ng-submit="send()", ng-cloak)
+		#uploadsArea(ng-show="uploadedItems.length")
+			span.label.label-primary(ng-repeat="item in uploadedItems")
+				a(ng-href="upload?id={{ item.id }}", target="_blank") {{ item.name }}
+				button.btn.btn-sm(type="button") &#10006;	
 		#textArea
 			textarea.msd-elastic.input-sm(type="text", placeholder="Čo?", ng-model="text", ng-disabled="!ready", autofocus, ng-keydown="text && !sending && connected && sendIfKeyPressed($event)")
 		#imageUploadButton
@@ -76,7 +80,3 @@ mixin sendForm()
 		#cancelButton(ng-show="editingId")
 			button.btn.btn-default.btn-sm(type="reset", ng-click="cancelEdit()")
 				span.glyphicon.glyphicon-remove
-		#uploadsArea(ng-show="uploadedItems.length")
-			span.label.label-primary(ng-repeat="item in uploadedItems")
-				a(ng-href="upload?id={{ item.fd }}", target="_blank") {{ item.filename }}
-				button.btn.btn-sm(type="button") &#10006;

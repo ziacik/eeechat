@@ -7,14 +7,27 @@
 
 module.exports = {
 	upload : function(req, res) {
-		req.file('file').upload({
-			dirname: './assets/uploads'
-		},function (err, uploadedFiles) {
+		req.file('file').upload({},function (err, uploadedFiles) {
 			if (err) {
 				return res.negotiate(err);
 			}
 			
-			return res.json(uploadedFiles);
+			async.mapSeries(uploadedFiles, function(uploadedFile, callback) {
+				Upload.create(uploadedFile).then(function(upload) {
+					callback(null, {
+						id : upload.id,
+						name : upload.filename
+					});
+				}).catch(function(err) {
+					callback(err);
+				}).done();
+			}, function(err, uploadIds) {
+				if (err) {
+					return res.negotiate(err);
+				} else {
+					return res.json(uploadIds);
+				}
+			});
 		});
 	},
 	
@@ -22,9 +35,13 @@ module.exports = {
 		var SkipperDisk = require('skipper-disk');
 		var fileAdapter = SkipperDisk();
 		var fileId = req.param('id');
-
-		fileAdapter.read(fileId).on('error', function (err) {
-			return res.serverError(err);
-		}).pipe(res);
+		
+		Upload.findOne(fileId).then(function(upload) {
+			fileAdapter.read(upload.fd).on('error', function (err) {
+				return res.serverError(err);
+			}).pipe(res);		
+		}).catch(function(err) {
+			return res.negotiate(err);
+		}).done();
 	}
 };
