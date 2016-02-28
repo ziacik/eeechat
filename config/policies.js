@@ -21,6 +21,11 @@ module.exports.policies = {
     auth : {
 	    '*' : [ 'passport' ]
     },
+
+	//TODO review if this is OK
+    UploadController : {
+	    serve : true
+    },
     
     LegacyController : {
 	    '*' : true
