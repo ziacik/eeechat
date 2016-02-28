@@ -62,21 +62,19 @@ mixin messageList()
 
 mixin sendForm()
 	form#sendForm(ng-submit="send()", ng-cloak)
-		#uploadsArea(ng-show="uploadedItems.length")
-			span.label.label-primary(ng-repeat="item in uploadedItems")
+		#uploadsArea(ng-show="uploadItems.length", ng-controller="UploadController")
+			span.label.label-primary(ng-repeat="item in uploadItems")
 				a(ng-href="upload?id={{ item.id }}", target="_blank") {{ item.name }}
-				button.btn.btn-sm(type="button") &#10006;	
+				button.btn.btn-sm.transparent(type="button", ng-click="removeUpload(item.id)") &#10006;	
 		#textArea
 			textarea.msd-elastic.input-sm(type="text", placeholder="Čo?", ng-model="text", ng-disabled="!ready", autofocus, ng-keydown="text && !sending && connected && sendIfKeyPressed($event)")
-		#imageUploadButton
-			button.btn.btn-sm(type="button", ngf-select="upload($files)", ngf-multiple="true", ng-disabled="!connected || !ready")
+		#imageUploadButton(ng-controller="UploadController")
+			button.btn.btn-sm.transparent(type="button", ngf-select="upload($files)", multiple, ngf-multiple="true", ngf-max-size="15000000", ng-disabled="!connected || !ready", ngf-capture="'camera'", ngf-accept="'image/*'", ngf-fix-orientation="true")
 				span.glyphicon.glyphicon-camera
-		#fileUploadButton
-			button#imageUploadButton.btn.btn-sm(type="button", ngf-select="upload($files)", ngf-multiple="true", ng-disabled="!connected || !ready")
+		#fileUploadButton(ng-controller="UploadController")
+			button.btn.btn-sm.transparent(type="button", ngf-select="upload($files)", ngf-multiple="true", ngf-max-size="15000000", ng-disabled="!connected || !ready", ngf-pattern="'.pdf,.txt,.mp3,text/*,video/*'")
 				span.glyphicon.glyphicon-paperclip
 		#sendButton
-			button.btn.btn-sm(type="submit", ng-disabled="!connected || !ready || !text")
-				span.glyphicon.glyphicon-send
+			button.btn.btn-warning.btn-sm(type="submit", ng-disabled="!connected || !ready || (!text && !hasUploads())") {{ editingId ? "Zmeniť" : "Poslať" }}
 		#cancelButton(ng-show="editingId")
-			button.btn.btn-default.btn-sm(type="reset", ng-click="cancelEdit()")
-				span.glyphicon.glyphicon-remove
+			button.btn.btn-default.btn-sm(type="reset", ng-click="cancelEdit()") Zrušiť

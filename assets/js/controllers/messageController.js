@@ -1,20 +1,19 @@
-var module = angular.module('messageControllerModule', [ 'messageServiceModule', 'settingsServiceModule', 'notification' ]);
+var module = angular.module('messageControllerModule', [ 'messageServiceModule', 'settingsServiceModule', 'uploadServiceModule', 'notification' ]);
 
-module.controller('MessageController', [ '$scope', '$filter', '$location', '$anchorScroll', '$timeout', '$notification', 'Upload', 'settingsService', 'messageService', MessageController ]);
+module.controller('MessageController', [ '$scope', '$filter', '$location', '$anchorScroll', '$timeout', '$notification', 'settingsService', 'messageService', 'uploadService', MessageController ]);
 
-function MessageController($scope, $filter, $location, $anchorScroll, $timeout, $notification, Upload, settingsService, messageService) {
+function MessageController($scope, $filter, $location, $anchorScroll, $timeout, $notification, settingsService, messageService, uploadService) {
 	var self = this;
 
 	$scope.text = '';
 	$scope.messages = [];
 	$scope.editingId = null;
-	$scope.uploadedItems = [];
 
 	this.autoScroll = true;
 
 	$scope.setAutoScroll = function(value) {
 		self.autoScroll = value;
-	}
+	};
 
 	this.scrollDown = function() {
 		if (!self.autoScroll) {
@@ -42,7 +41,7 @@ function MessageController($scope, $filter, $location, $anchorScroll, $timeout, 
 
 	$scope.$on('messageReceived', function(event, message) {
 		self.scrollDown();
-	})
+	});
 
 	$scope.$on('messagesUpdated', function() {
 		$scope.messages = messageService.messages;
@@ -77,17 +76,17 @@ function MessageController($scope, $filter, $location, $anchorScroll, $timeout, 
 			$event.preventDefault();
 			$scope.send();
 		}
-	}
+	};
+	
+	$scope.hasUploads = function() {
+		return uploadService.uploadItems.length;
+	};
 
 	$scope.send = function() {
-		var outgoingText = $scope.text;
-		
-		if ($scope.uploadedItems.length) {
-			outgoingText += '\r\n\r\n' + 'http://localhost:1337/' + $scope.uploadedItems[0].fd;
-			$scope.uploadedItems = [];
-		}
-	
+		var uploadUrls = uploadService.getUploadUrls();
+		var outgoingText = uploadUrls ? uploadUrls + '\n' + $scope.text : $scope.text;		
 		messageService.send($scope.editingId, outgoingText);
+		uploadService.clear();
 		$scope.text = '';
 		$scope.editingId = null;
 		self.setFocus();
@@ -106,38 +105,5 @@ function MessageController($scope, $filter, $location, $anchorScroll, $timeout, 
 	$scope.cancelEdit = function() {
 		$scope.text = '';
 		$scope.editingId = null;
-	};
-	
-	$scope.upload = function (files) {
-		if (files && files.length) {
-			for (var i = 0; i < files.length; i++) {
-			  var file = files[i];
-			  if (!file.$error) {
-				Upload.upload({
-					url: 'upload',
-					data: {
-					  username: $scope.username,
-					  file: file  
-					}
-				}).then(function (resp) {
-					$timeout(function() {
-						resp.data.forEach(function(item) {
-							$scope.uploadedItems.push(item);
-						});
-						$scope.log = 'file: ' +
-						resp.config.data.file.name +
-						', Response: ' + JSON.stringify(resp.data) +
-						'\n' + $scope.log;
-					});
-				}, null, function (evt) {
-					var progressPercentage = parseInt(100.0 *
-							evt.loaded / evt.total);
-					$scope.log = 'progress: ' + progressPercentage + 
-						'% ' + evt.config.data.file.name + '\n' + 
-					  $scope.log;
-				});
-			  }
-			}
-		}
-	};
+	};	
 }

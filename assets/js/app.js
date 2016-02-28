@@ -5,6 +5,7 @@ var app = angular.module('eeechat', [
 	'userControllerModule',
 	'messageControllerModule',
 	'settingsControllerModule',
+	'uploadControllerModule',
 	'autoFocusModule',
 	'embedLinkyModule',
 	'angular-inview',

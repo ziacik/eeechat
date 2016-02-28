@@ -29,7 +29,7 @@ function coerceMessageId(id) {
 module.exports = {
 	create : function(req, res) {
 		var data = actionUtil.parseValues(req);
-		Message.create(data).then(function(message) {
+		return Message.create(data).then(function(message) {
 			var roomName = message.app + '/' + message.room;
 			
 			sails.sockets.broadcast(roomName, 'message', {
@@ -54,7 +54,7 @@ module.exports = {
 			delete values.id;
 		}
 		
-		Message.findOne(id).then(function(message) {
+		return Message.findOne(id).then(function(message) {
 			if (!message) {
 				return res.notFound();
 			}

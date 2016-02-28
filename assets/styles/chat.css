@@ -19,12 +19,6 @@ footer
 	display: table;
 	width: 100%;
 }
-#sendForm button 
-{
-	background:none !important;
-	border:none;
-	box-shadow:none;
-}
 #textArea
 {
 	display: table-cell;
@@ -35,6 +29,11 @@ footer
 	padding-left: 0.5em;
 	display: table-cell;
 	vertical-align: middle;
+}
+.transparent {
+	background:none !important;
+	border:none;
+	box-shadow:none;
 }
 #fileUploadButton
 {
