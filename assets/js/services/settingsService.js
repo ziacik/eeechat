@@ -5,7 +5,7 @@ function SettingsService($sails, $rootScope, modalService, notificationService, 
 	
 	this.load = function() {
 		$sails.get('/settings').then(function(res) {
-			self.settings = res.data;
+			self.settings = res.data[0];
 			notificationService.settings = self.settings;
 			$rootScope.$broadcast('settingsLoaded', self.settings);
 		}).catch(function(err) {
